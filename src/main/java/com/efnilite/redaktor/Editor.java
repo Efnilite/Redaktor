@@ -23,9 +23,6 @@ public class Editor {
     public int setBlocks(Material material, List<Block> locations) {
         BlockQueue blockQueue = new BlockQueue();
         blockQueue.build(locations);
-        blockQueue.run(material);
-
-        Redaktor.getInstance().getLogger().info("Changed " + locations.size() + " blocks.");
         return locations.size();
     }
 

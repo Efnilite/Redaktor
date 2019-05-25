@@ -1,25 +1,25 @@
 package com.efnilite.redaktor.util.getter;
 
-import com.efnilite.redaktor.object.queue.BlockQueue;
 import com.efnilite.redaktor.util.Tasks;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 public class BlockGetter extends BukkitRunnable implements AsyncGetter<List<Block>> {
 
-    private BlockQueue queue;
     private Location pos1;
     private Location pos2;
+    private Consumer<List<Block>>  consumer;
 
-    public BlockGetter(Location pos1, Location pos2) {
+    public BlockGetter(Location pos1, Location pos2, Consumer<List<Block>> consumer) {
         this.pos1 = pos1;
         this.pos2 = pos2;
+        this.consumer = consumer;
 
         Tasks.async(this);
     }
@@ -51,11 +51,6 @@ public class BlockGetter extends BukkitRunnable implements AsyncGetter<List<Bloc
 
     @Override
     public void asyncDone(List<Block> done) {
-        queue.build(done);
-        queue.run(Material.AIR);
-    }
-
-    public void setQueue(BlockQueue queue) {
-        this.queue = queue;
+        consumer.accept(done);
     }
 }

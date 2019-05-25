@@ -53,7 +53,7 @@ public class Schematic {
             current.add(block.getOffsetX(), block.getOffsetY(), block.getOffsetZ()); // to offset from original point
             blocks.add(new SettableBlockMap(current.getBlock(), block.getMaterial(), block.getData()));
         }
-        SingleBlockQueue blockQueue = new SingleBlockQueue();
+        SingleBlockQueue blockQueue = new SingleBlockQueue(blocks);
         blockQueue.build(blocks);
         blockQueue.run();
     }

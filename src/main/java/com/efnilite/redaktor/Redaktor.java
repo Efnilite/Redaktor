@@ -3,10 +3,11 @@ package com.efnilite.redaktor;
 import com.efnilite.redaktor.object.queue.BlockQueue;
 import com.efnilite.redaktor.object.schematic.Schematic;
 import com.efnilite.redaktor.object.schematic.WritableBlock;
-import com.efnilite.redaktor.util.getter.BlockGetter;
 import com.efnilite.redaktor.util.ChangeAllocator;
 import com.efnilite.redaktor.util.Reflect;
+import com.efnilite.redaktor.util.getter.BlockGetter;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -39,16 +40,6 @@ public class Redaktor extends JavaPlugin implements Listener {
         main = Thread.currentThread();
 
         this.getServer().getPluginManager().registerEvents(this, this);
-
-
-
-
-
-
-
-
-
-
 
         try {
             new Schematic().save("plugins/one.json", new WritableBlock[] {new WritableBlock(Material.AIR, null, 0, 0, 0),

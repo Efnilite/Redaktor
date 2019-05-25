@@ -1,4 +1,9 @@
 package com.efnilite.redaktor.object.queue;
 
-public interface EditQueue {
+import java.util.List;
+
+public interface EditQueue<T> {
+
+    void build(List<T> blocks);
+
 }
