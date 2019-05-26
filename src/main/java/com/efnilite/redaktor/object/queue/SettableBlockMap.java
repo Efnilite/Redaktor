@@ -10,6 +10,12 @@ public class SettableBlockMap {
     private Material material;
     private BlockData data;
 
+    public SettableBlockMap(Block block) {
+        this.block = block;
+        this.material = block.getType();
+        this.data = block.getBlockData();
+    }
+
     public SettableBlockMap(Block block, Material material, BlockData data) {
         this.block = block;
         this.material = material;

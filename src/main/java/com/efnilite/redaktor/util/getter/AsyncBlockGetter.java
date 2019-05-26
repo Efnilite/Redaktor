@@ -4,20 +4,19 @@ import com.efnilite.redaktor.util.Tasks;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_14_R1.scheduler.CraftScheduler;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class BlockGetter extends BukkitRunnable implements AsyncGetter<List<Block>> {
+public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List<Block>> {
 
     private Location pos1;
     private Location pos2;
     private Consumer<List<Block>> consumer;
 
-    public BlockGetter(Location pos1, Location pos2, Consumer<List<Block>> consumer) {
+    public AsyncBlockGetter(Location pos1, Location pos2, Consumer<List<Block>> consumer) {
         this.pos1 = pos1;
         this.pos2 = pos2;
         this.consumer = consumer;

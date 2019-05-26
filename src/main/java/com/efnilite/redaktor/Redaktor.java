@@ -1,13 +1,12 @@
 package com.efnilite.redaktor;
 
-import com.efnilite.redaktor.object.queue.BlockQueue;
-import com.efnilite.redaktor.object.schematic.Schematic;
-import com.efnilite.redaktor.object.schematic.WritableBlock;
+import com.efnilite.redaktor.object.cuboid.Cuboid;
+import com.efnilite.redaktor.object.queue.types.BlockQueue;
 import com.efnilite.redaktor.util.ChangeAllocator;
+import com.efnilite.redaktor.util.Configuration;
 import com.efnilite.redaktor.util.Reflect;
-import com.efnilite.redaktor.util.getter.BlockGetter;
+import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.Material;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,13 +14,12 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.IOException;
-
 public class Redaktor extends JavaPlugin implements Listener {
 
     private static Thread main;
     private static Plugin plugin;
     private static Editor editor;
+    private static Configuration configuration;
     private static ChangeAllocator allocator;
 
     @Override
@@ -35,18 +33,12 @@ public class Redaktor extends JavaPlugin implements Listener {
             this.getServer().getPluginManager().disablePlugin(this);
         }
 
+        configuration = new Configuration();
         allocator = new ChangeAllocator();
         editor = new Editor();
         main = Thread.currentThread();
 
         this.getServer().getPluginManager().registerEvents(this, this);
-
-        try {
-            new Schematic().save("plugins/one.json", new WritableBlock[] {new WritableBlock(Material.AIR, null, 0, 0, 0),
-                    new WritableBlock(Material.GOLD_BLOCK, null, 1, 0, 0)});
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     public static boolean isMainThread() {
@@ -61,6 +53,10 @@ public class Redaktor extends JavaPlugin implements Listener {
         return editor;
     }
 
+    public static Configuration getConfiguration() {
+        return configuration;
+    }
+
     public static ChangeAllocator getAllocator() {
         return allocator;
     }
@@ -70,14 +66,11 @@ public class Redaktor extends JavaPlugin implements Listener {
         Player player = e.getPlayer();
         if (e.getMessage().contains("set")) {
             BlockQueue queue = new BlockQueue();
-            BlockGetter getter = new BlockGetter(player.getLocation(), player.getLocation().clone().add(20, 20, 50));
-            getter.setQueue(queue);
+            queue.setMaterial(Material.AIR);
+            new AsyncBlockGetter(player.getLocation(), player.getLocation().clone().add(100, 20, 100), queue::build);
         } else if (e.getMessage().contains("eh")) {
-            try {
-                new Schematic().paste("plugins/one.json", player.getLocation());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            Cuboid cuboid = new Cuboid(player.getLocation(), player.getLocation().clone().add(20, 20, 20), player.getWorld());
+            cuboid.getBlocks().forEach(t -> getLogger().info(t.getLocation().toString()));
         }
     }
 }

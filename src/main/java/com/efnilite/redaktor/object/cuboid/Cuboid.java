@@ -1,22 +1,18 @@
 package com.efnilite.redaktor.object.cuboid;
 
-import jdk.nashorn.internal.objects.annotations.Getter;
+import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.Location;
-import org.bukkit.Warning;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cuboid {
 
     private World world;
     private Location pos1;
     private Location pos2;
-
-    public Cuboid() {
-        this(null, null, null);
-    }
 
     public Cuboid(Location pos1, Location pos2, World world) {
         this.pos1 = pos1;
@@ -48,43 +44,9 @@ public class Cuboid {
         return world;
     }
 
-    public Iterator<Block> iterator() {
-        return new Iterator<Block>() {
-            private Location pos1 = Cuboid.this.getPos1();
-            private Location pos2 = Cuboid.this.getPos2();
-            private int maxX = Math.max(pos1.getBlockX(), pos2.getBlockX());
-            private int minX = Math.min(pos1.getBlockX(), pos2.getBlockX());
-            private int maxY = Math.max(pos1.getBlockY(), pos2.getBlockY());
-            private int minY = Math.min(pos1.getBlockY(), pos2.getBlockY());
-            private int maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
-            private int minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
-            private int x = minX;
-            private int y = minY;
-            private int z = minZ;
-            private Location current = new Location(Cuboid.this.getWorld(), x, y, z);
-            private boolean hasNext = true;
-
-            @Override
-            public boolean hasNext() {
-                return this.hasNext;
-            }
-
-            @Override
-            public Block next() {
-                if ((x + 1) <= maxX) {
-                    current.setX(x++);
-                    return current.getBlock();
-                } else if ((y + 1) <= maxY) {
-                    current.setY(y++);
-                    return current.getBlock();
-                } else if ((z + 1) <= maxZ) {
-                    current.setZ(x++);
-                    return current.getBlock();
-                } else {
-                    hasNext = false;
-                    return null;
-                }
-            }
-        };
+    public List<Block> getBlocks() {
+        List<Block> blocks = new ArrayList<>();
+        new AsyncBlockGetter(pos1, pos2, blocks::addAll);
+        return blocks;
     }
 }

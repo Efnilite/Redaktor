@@ -1,6 +1,5 @@
 package com.efnilite.redaktor.object.schematic;
 
-import com.efnilite.redaktor.util.getter.BlockGetter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;

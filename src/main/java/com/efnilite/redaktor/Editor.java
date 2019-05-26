@@ -1,7 +1,7 @@
 package com.efnilite.redaktor;
 
 import com.efnilite.redaktor.object.cuboid.Cuboid;
-import com.efnilite.redaktor.object.queue.BlockQueue;
+import com.efnilite.redaktor.object.queue.types.BlockQueue;
 import com.efnilite.redaktor.util.ChangeAllocator;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,8 +27,7 @@ public class Editor {
     }
 
     public int setBlocks(Material material, Cuboid cuboid) {
-        List<Block> locations = new ArrayList<>();
-        cuboid.iterator().forEachRemaining(locations::add);
+        List<Block> locations = new ArrayList<>(cuboid.getBlocks());
         return this.setBlocks(material, locations);
     }
 }

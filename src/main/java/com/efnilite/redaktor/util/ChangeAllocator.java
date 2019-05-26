@@ -9,7 +9,7 @@ public class ChangeAllocator extends BukkitRunnable {
     private long lastNano;
 
     public ChangeAllocator() {
-        this.locator = 250.0;
+        this.locator = 1000.0;
         this.change = (int) locator;
         this.lastNano = System.currentTimeMillis();
 

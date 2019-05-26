@@ -1,21 +1,19 @@
-package com.efnilite.redaktor.object.queue;
+package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
+import com.efnilite.redaktor.object.queue.EditQueue;
+import com.efnilite.redaktor.object.queue.SettableBlockMap;
 import com.efnilite.redaktor.util.Tasks;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-public class BlockQueue implements EditQueue<Block> {
+public class SingleBlockQueue implements EditQueue<SettableBlockMap> {
 
-    private Material material;
-
-    public void build(List<Block> blocks) {
-        Queue<Block> queue = new LinkedList<>(blocks);
+    public void build(List<SettableBlockMap> blocks) {
+        Queue<SettableBlockMap> queue = new LinkedList<>(blocks);
 
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
@@ -26,15 +24,15 @@ public class BlockQueue implements EditQueue<Block> {
                         return;
                     }
 
-                    queue.poll().setType(material);
+                    SettableBlockMap map = queue.poll();
+                    map.getBlock().setType(map.getMaterial());
+                    if (map.getData() != null) {
+                        map.getBlock().setBlockData(map.getData());
+                    }
                 }
             }
         };
         Tasks.repeat(runnable, 1);
     }
-
-    public BlockQueue setMaterial(Material material) {
-        this.material = material;
-        return this;
-    }
 }
+
