@@ -1,10 +1,11 @@
 package com.efnilite.redaktor.object.schematic;
 
+import com.efnilite.redaktor.util.getter.BlockGetter;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
-public class WritableBlock implements Writable {
+public class WritableBlock {
 
     private Material material;
     private BlockData data;

@@ -48,8 +48,6 @@ public class Cuboid {
         return world;
     }
 
-    // Currently broken
-    @Deprecated
     public Iterator<Block> iterator() {
         return new Iterator<Block>() {
             private Location pos1 = Cuboid.this.getPos1();
@@ -73,7 +71,7 @@ public class Cuboid {
 
             @Override
             public Block next() {
-                if (( x+ 1) <= maxX) {
+                if ((x + 1) <= maxX) {
                     current.setX(x++);
                     return current.getBlock();
                 } else if ((y + 1) <= maxY) {
