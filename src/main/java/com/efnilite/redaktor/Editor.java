@@ -10,6 +10,7 @@ import org.bukkit.plugin.Plugin;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO - Update editor
 public class Editor {
 
     private Plugin plugin;
@@ -21,7 +22,7 @@ public class Editor {
     }
 
     public int setBlocks(Material material, List<Block> locations) {
-        BlockQueue blockQueue = new BlockQueue();
+        BlockQueue blockQueue = new BlockQueue(material);
         blockQueue.build(locations);
         return locations.size();
     }

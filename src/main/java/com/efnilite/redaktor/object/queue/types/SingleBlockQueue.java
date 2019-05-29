@@ -10,6 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * A queue for setting a lot of blocks to specific materials.
+ */
 public class SingleBlockQueue implements EditQueue<SettableBlockMap> {
 
     public void build(List<SettableBlockMap> blocks) {

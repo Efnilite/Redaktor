@@ -10,6 +10,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * A queue for dramatic effect.
+ * @see SingleBlockQueue
+ */
 public class SlowSingleQueue extends AbstractSlowQueue implements EditQueue<SettableBlockMap> {
 
     public SlowSingleQueue(int perTick) {

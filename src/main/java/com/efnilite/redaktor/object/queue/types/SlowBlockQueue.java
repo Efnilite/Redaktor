@@ -11,6 +11,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * A slower queue for dramatic effect.
+ * @see BlockQueue
+ */
 public class SlowBlockQueue extends AbstractSlowQueue implements EditQueue<Block> {
 
     private Material material;

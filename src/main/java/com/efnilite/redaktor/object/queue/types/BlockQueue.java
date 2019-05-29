@@ -12,6 +12,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+/**
+ * A queue for setting a lot of blocks to the same material.
+ */
 public class BlockQueue extends AbstractBlockQueue implements EditQueue<Block> {
 
     public BlockQueue(Material material) {

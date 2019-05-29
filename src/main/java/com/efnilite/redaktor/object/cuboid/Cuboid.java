@@ -1,5 +1,6 @@
 package com.efnilite.redaktor.object.cuboid;
 
+import com.efnilite.redaktor.util.bukkit.Locations;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -8,36 +9,55 @@ import org.bukkit.block.Block;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A 3D cuboid selection.
+ *
+ * @see Dimensions
+ */
 public class Cuboid {
 
     private World world;
-    private Location pos1;
-    private Location pos2;
+    private Location maximum;
+    private Location minimum;
+    private Dimensions dimensions;
 
     public Cuboid(Location pos1, Location pos2, World world) {
-        this.pos1 = pos1;
-        this.pos2 = pos2;
+        this.minimum = Locations.getMinimum(pos1, pos2);
+        this.maximum = Locations.getMaximum(pos1, pos2);
         this.world = world;
+        this.dimensions = new Dimensions(this);
     }
 
-    public void setPos1(Location pos1) {
-        this.pos1 = pos1;
+    public Cuboid(Location pos1, Location pos2) {
+        this.minimum = Locations.getMinimum(pos1, pos2);
+        this.maximum = Locations.getMaximum(pos1, pos2);
+        this.world = pos1.getWorld() == null ? pos2.getWorld() : pos1.getWorld();
+        this.dimensions = new Dimensions(this);
     }
 
-    public void setPos2(Location pos2) {
-        this.pos2 = pos2;
+
+    public void setMinimum(Location minimum) {
+        this.minimum = minimum;
+    }
+
+    public void setMaximum(Location maximum) {
+        this.maximum = maximum;
     }
 
     public void setWorld(World world) {
         this.world = world;
     }
 
-    public Location getPos1() {
-        return pos1;
+    public Location getMaximumPoint() {
+        return maximum;
     }
 
-    public Location getPos2() {
-        return pos2;
+    public Location getMinimumPoint() {
+        return minimum;
+    }
+
+    public Dimensions getDimensions() {
+        return dimensions;
     }
 
     public World getWorld() {
@@ -46,7 +66,7 @@ public class Cuboid {
 
     public List<Block> getBlocks() {
         List<Block> blocks = new ArrayList<>();
-        new AsyncBlockGetter(pos1, pos2, blocks::addAll);
+        new AsyncBlockGetter(maximum, minimum, blocks::addAll);
         return blocks;
     }
 }
