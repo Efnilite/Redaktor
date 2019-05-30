@@ -1,13 +1,19 @@
 package com.efnilite.redaktor.object.cuboid;
 
+import com.google.gson.annotations.Expose;
 import org.bukkit.Location;
 
 public class Dimensions {
 
+    @Expose
     private int width;
+    @Expose
     private int height;
+    @Expose
     private int length;
+    @Expose
     private Location maximum;
+    @Expose
     private Location minumum;
 
     public Dimensions(Cuboid cuboid) {

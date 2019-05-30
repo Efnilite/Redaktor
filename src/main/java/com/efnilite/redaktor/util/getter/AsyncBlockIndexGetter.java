@@ -1,22 +1,22 @@
 package com.efnilite.redaktor.util.getter;
 
+import com.efnilite.redaktor.object.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.util.Tasks;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.function.Consumer;
 
-public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List<Block>> {
+public class AsyncBlockIndexGetter extends BukkitRunnable implements AsyncGetter<HashMap<Block, BlockIndex>> {
 
     private Location pos1;
     private Location pos2;
-    private Consumer<List<Block>> consumer;
+    private Consumer<HashMap<Block, BlockIndex>> consumer;
 
-    public AsyncBlockGetter(Location pos1, Location pos2, Consumer<List<Block>> consumer) {
+    public AsyncBlockIndexGetter(Location pos1, Location pos2, Consumer<HashMap<Block, BlockIndex>> consumer) {
         this.pos1 = pos1;
         this.pos2 = pos2;
         this.consumer = consumer;
@@ -27,7 +27,7 @@ public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List
     @Override
     public void run() {
         World w = pos1.getWorld();
-        List<Block> blocks = new ArrayList<>();
+        HashMap<Block, BlockIndex> blocks = new HashMap<>();
         int maxX = Math.max(pos1.getBlockX(), pos2.getBlockX());
         int minX = Math.min(pos1.getBlockX(), pos2.getBlockX());
         int maxY = Math.max(pos1.getBlockY(), pos2.getBlockY());
@@ -42,9 +42,7 @@ public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List
                     loc.setY(y);
                     loc.setZ(z);
 
-
-
-                    blocks.add(loc.getBlock());
+                    blocks.put(loc.getBlock(), new BlockIndex(x - minX, y - minY, z - minZ));
                 }
             }
         }
@@ -52,7 +50,7 @@ public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List
     }
 
     @Override
-    public void asyncDone(List<Block> value) {
+    public void asyncDone(HashMap<Block, BlockIndex> value) {
         consumer.accept(value);
     }
 }

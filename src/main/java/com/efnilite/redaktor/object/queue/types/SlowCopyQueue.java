@@ -2,7 +2,7 @@ package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.object.queue.AbstractSlowQueue;
 import com.efnilite.redaktor.object.queue.EditQueue;
-import com.efnilite.redaktor.object.queue.SettableBlockMap;
+import com.efnilite.redaktor.object.queue.internal.BlockMap;
 import com.efnilite.redaktor.util.Tasks;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -12,16 +12,18 @@ import java.util.Queue;
 
 /**
  * A queue for dramatic effect.
- * @see SingleBlockQueue
+ *
+ * @see CopyQueue
  */
-public class SlowSingleQueue extends AbstractSlowQueue implements EditQueue<SettableBlockMap> {
+public class SlowCopyQueue extends AbstractSlowQueue implements EditQueue<List<BlockMap>> {
 
-    public SlowSingleQueue(int perTick) {
+    public SlowCopyQueue(int perTick) {
         super(perTick);
     }
 
-    public void build(List<SettableBlockMap> blocks) {
-        Queue<SettableBlockMap> queue = new LinkedList<>(blocks);
+    @Override
+    public void build(List<BlockMap> blocks) {
+        Queue<BlockMap> queue = new LinkedList<>(blocks);
 
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
@@ -32,10 +34,12 @@ public class SlowSingleQueue extends AbstractSlowQueue implements EditQueue<Sett
                         return;
                     }
 
-                    SettableBlockMap map = queue.poll();
-                    map.getBlock().setType(map.getMaterial());
-                    if (map.getData() != null) {
-                        map.getBlock().setBlockData(map.getData());
+                    BlockMap map = queue.poll();
+                    if (map.getMaterial() != map.getBlock().getType()) {
+                        map.getBlock().setType(map.getMaterial());
+                        if (map.getData() != map.getBlock().getBlockData() && map.getData() != null) {
+                            map.getBlock().setBlockData(map.getData());
+                        }
                     }
                 }
             }

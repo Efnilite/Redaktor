@@ -6,5 +6,6 @@ public abstract class AbstractSlowQueue {
 
     public AbstractSlowQueue(int perTick) {
         this.perTick = perTick;
+
     }
 }

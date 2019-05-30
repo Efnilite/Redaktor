@@ -10,6 +10,10 @@ public class PlayerFactory implements RegisterFactory<Player> {
 
     private HashMap<UUID, RedaktorPlayer> registeredPlayers;
 
+    public PlayerFactory() {
+        this.registeredPlayers = new HashMap<>();
+    }
+
     @Override
     public void unregister(Player player) {
         this.registeredPlayers.remove(player.getUniqueId());

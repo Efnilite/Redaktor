@@ -1,36 +1,24 @@
-package com.efnilite.redaktor.object.queue;
+package com.efnilite.redaktor.object.queue.internal;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
-public class SettableBlockMap {
+public class BlockMap {
 
     private Block block;
     private Material material;
     private BlockData data;
 
-    public SettableBlockMap(Block block) {
+    public BlockMap(Block block) {
         this.block = block;
         this.material = block.getType();
         this.data = block.getBlockData();
     }
 
-    public SettableBlockMap(Block block, Material material, BlockData data) {
+    public BlockMap(Block block, Material material, BlockData data) {
         this.block = block;
         this.material = material;
-        this.data = data;
-    }
-
-    public void setBlock(Block block) {
-        this.block = block;
-    }
-
-    public void setMaterial(Material material) {
-        this.material = material;
-    }
-
-    public void setData(BlockData data) {
         this.data = data;
     }
 

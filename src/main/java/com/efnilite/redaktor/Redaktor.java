@@ -1,5 +1,6 @@
 package com.efnilite.redaktor;
 
+import com.efnilite.redaktor.object.player.PlayerEvents;
 import com.efnilite.redaktor.object.player.PlayerFactory;
 import com.efnilite.redaktor.util.ChangeAllocator;
 import com.efnilite.redaktor.util.Configuration;
@@ -10,7 +11,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class Redaktor extends JavaPlugin {
 
     private static Plugin plugin;
-    private static Editor editor;
     private static Configuration configuration;
     private static ChangeAllocator allocator;
 
@@ -29,17 +29,14 @@ public class Redaktor extends JavaPlugin {
 
         configuration = new Configuration();
         allocator = new ChangeAllocator();
-        editor = new Editor();
 
         playerFactory = new PlayerFactory();
+
+        this.getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
     }
 
     public static Plugin getInstance() {
         return plugin;
-    }
-
-    public static Editor getEditor() {
-        return editor;
     }
 
     public static ChangeAllocator getAllocator() {

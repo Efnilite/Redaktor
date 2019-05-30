@@ -11,9 +11,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * @author Efnilite
- */
 public class Configuration {
 
     private HashMap<String, FileConfiguration> files = new HashMap<>();
@@ -23,7 +20,9 @@ public class Configuration {
         plugin = Redaktor.getInstance();
         plugin.getDataFolder().mkdir();
 
-        plugin.saveResource("config.yml", false);
+        if (!new File(plugin.getDataFolder().toString() + "/config.yml").exists()) {
+            plugin.saveResource("config.yml", false);
+        }
     }
 
     @SuppressWarnings("Duplicates")

@@ -9,9 +9,7 @@ import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -24,12 +22,11 @@ public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueu
     }
 
     @Override
-    public void build(List<Cuboid> blocks) {
-        Cuboid copy = blocks.get(0);
-        int x = copy.getDimensions().getWidth();
-        int z = copy.getDimensions().getLength();
+    public void build(Cuboid cuboid) {
+        int x = cuboid.getDimensions().getWidth();
+        int z = cuboid.getDimensions().getLength();
 
-        new AsyncBlockGetter(copy.getMaximumPoint(), copy.getMinimumPoint(), t -> {
+        new AsyncBlockGetter(cuboid.getMaximumPoint(), cuboid.getMinimumPoint(), t -> {
             Queue<Block> queue = new LinkedList<>();
             Queue<Block> original = new LinkedList<>();
             BukkitRunnable runnable = new BukkitRunnable() {
@@ -55,15 +52,19 @@ public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueu
                 @Override
                 public void run() {
                     for (int i = 0; i < Redaktor.getAllocator().getChanger(); i++) {
-                        if (queue.peek() == null) {
+                        if (queue.peek() == null || original.peek() != null) {
                             this.cancel();
                             return;
                         }
 
                         Block block = queue.poll();
                         Block or = original.poll();
-                        block.getLocation().getBlock().setType(or.getType());
-                        block.getLocation().getBlock().setBlockData(or.getBlockData());
+                        if (block.getType() != or.getType()) {
+                            block.getLocation().getBlock().setType(or.getType());
+                            if (block.getBlockData() != or.getBlockData()) {
+                                block.getLocation().getBlock().setBlockData(or.getBlockData());
+                            }
+                        }
                     }
                 }
             };

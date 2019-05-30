@@ -2,7 +2,7 @@ package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.object.queue.EditQueue;
-import com.efnilite.redaktor.object.queue.SettableBlockMap;
+import com.efnilite.redaktor.object.queue.internal.BlockMap;
 import com.efnilite.redaktor.util.Tasks;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -13,10 +13,11 @@ import java.util.Queue;
 /**
  * A queue for setting a lot of blocks to specific materials.
  */
-public class SingleBlockQueue implements EditQueue<SettableBlockMap> {
+public class CopyQueue implements EditQueue<List<BlockMap>> {
 
-    public void build(List<SettableBlockMap> blocks) {
-        Queue<SettableBlockMap> queue = new LinkedList<>(blocks);
+    @Override
+    public void build(List<BlockMap> map) {
+        Queue<BlockMap> queue = new LinkedList<>(map);
 
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
@@ -27,10 +28,12 @@ public class SingleBlockQueue implements EditQueue<SettableBlockMap> {
                         return;
                     }
 
-                    SettableBlockMap map = queue.poll();
-                    map.getBlock().setType(map.getMaterial());
-                    if (map.getData() != null) {
-                        map.getBlock().setBlockData(map.getData());
+                    BlockMap map = queue.poll();
+                    if (map.getMaterial() != map.getBlock().getType()) {
+                        map.getBlock().setType(map.getMaterial());
+                        if (map.getData() != null) {
+                            map.getBlock().setBlockData(map.getData());
+                        }
                     }
                 }
             }
