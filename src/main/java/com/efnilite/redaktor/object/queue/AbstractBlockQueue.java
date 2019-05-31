@@ -1,12 +1,12 @@
 package com.efnilite.redaktor.object.queue;
 
-import org.bukkit.Material;
+import com.efnilite.redaktor.object.pattern.Pattern;
 
 public abstract class AbstractBlockQueue {
 
-    protected Material material;
+    protected Pattern pattern;
 
-    public AbstractBlockQueue(Material material) {
-        this.material = material;
+    public AbstractBlockQueue(Pattern pattern) {
+        this.pattern = pattern;
     }
 }

@@ -31,9 +31,6 @@ public class CopyQueue implements EditQueue<List<BlockMap>> {
                     BlockMap map = queue.poll();
                     if (map.getMaterial() != map.getBlock().getType()) {
                         map.getBlock().setType(map.getMaterial());
-                        if (map.getData() != null) {
-                            map.getBlock().setBlockData(map.getData());
-                        }
                     }
                 }
             }

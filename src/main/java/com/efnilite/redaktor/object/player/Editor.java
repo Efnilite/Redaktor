@@ -1,11 +1,11 @@
 package com.efnilite.redaktor.object.player;
 
 import com.efnilite.redaktor.object.cuboid.Cuboid;
+import com.efnilite.redaktor.object.pattern.Pattern;
 import com.efnilite.redaktor.object.queue.types.BlockQueue;
 import com.efnilite.redaktor.object.queue.types.Cuboid2DResizeQueue;
 import com.efnilite.redaktor.object.queue.types.Cuboid3DResizeQueue;
 import com.efnilite.redaktor.object.queue.types.SlowBlockQueue;
-import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 
 public class Editor<T extends CommandSender> {
@@ -19,22 +19,22 @@ public class Editor<T extends CommandSender> {
     /**
      * Set all blocks in a Cuboid to a certain material.
      *
-     * @param   material
-     *          The material the blocks need to be changed to.
+     * @param   pattern
+     *          The pattern the blocks need to be changed to.
      *
      * @param   cuboid
      *          The cuboid.
      */
-    public void setBlocks(Material material, Cuboid cuboid) {
-        BlockQueue queue = new BlockQueue(material);
+    public void setBlocks(Pattern pattern, Cuboid cuboid) {
+        BlockQueue queue = new BlockQueue(pattern);
         queue.build(cuboid);
     }
 
     /**
      * Set all blocks slowly in a Cuboid to a certain material.
      *
-     * @param   material
-     *          The material the blocks need to be changed to.
+     * @param   pattern
+     *          The pattern the blocks need to be changed to.
      *
      * @param   cuboid
      *          The cuboid.
@@ -42,8 +42,8 @@ public class Editor<T extends CommandSender> {
      * @param   perTick
      *          The amount of blocks that need to be changed per tick.
      */
-    public void setSlowBlocks(Material material, Cuboid cuboid, int perTick) {
-        SlowBlockQueue queue = new SlowBlockQueue(perTick, material);
+    public void setSlowBlocks(Pattern pattern, Cuboid cuboid, int perTick) {
+        SlowBlockQueue queue = new SlowBlockQueue(perTick, pattern);
         queue.build(cuboid);
     }
 

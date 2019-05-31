@@ -1,6 +1,7 @@
 package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.object.cuboid.Cuboid;
+import com.efnilite.redaktor.object.pattern.Pattern;
 import com.efnilite.redaktor.object.queue.AbstractSlowQueue;
 import com.efnilite.redaktor.object.queue.EditQueue;
 import com.efnilite.redaktor.util.Tasks;
@@ -19,11 +20,11 @@ import java.util.Queue;
  */
 public class SlowBlockQueue extends AbstractSlowQueue implements EditQueue<Cuboid> {
 
-    private Material material;
+    private Pattern pattern;
 
-    public SlowBlockQueue(int perTick, Material material) {
+    public SlowBlockQueue(int perTick, Pattern pattern) {
         super(perTick);
-        this.material = material;
+        this.pattern = pattern;
     }
 
     @Override
@@ -41,6 +42,7 @@ public class SlowBlockQueue extends AbstractSlowQueue implements EditQueue<Cuboi
                         }
 
                         Block block = queue.poll();
+                        Material material = pattern.apply(block);
                         if (block.getType() != material) {
                             block.setType(material);
                         }

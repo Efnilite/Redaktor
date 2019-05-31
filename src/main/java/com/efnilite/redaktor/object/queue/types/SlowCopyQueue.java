@@ -37,9 +37,6 @@ public class SlowCopyQueue extends AbstractSlowQueue implements EditQueue<List<B
                     BlockMap map = queue.poll();
                     if (map.getMaterial() != map.getBlock().getType()) {
                         map.getBlock().setType(map.getMaterial());
-                        if (map.getData() != map.getBlock().getBlockData() && map.getData() != null) {
-                            map.getBlock().setBlockData(map.getData());
-                        }
                     }
                 }
             }
