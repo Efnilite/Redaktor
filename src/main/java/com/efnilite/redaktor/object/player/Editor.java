@@ -1,19 +1,38 @@
 package com.efnilite.redaktor.object.player;
 
+import com.efnilite.redaktor.Redaktor;
+import com.efnilite.redaktor.block.IBlockFactory;
 import com.efnilite.redaktor.object.cuboid.Cuboid;
 import com.efnilite.redaktor.object.pattern.Pattern;
 import com.efnilite.redaktor.object.queue.types.BlockQueue;
 import com.efnilite.redaktor.object.queue.types.Cuboid2DResizeQueue;
 import com.efnilite.redaktor.object.queue.types.Cuboid3DResizeQueue;
 import com.efnilite.redaktor.object.queue.types.SlowBlockQueue;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class Editor<T extends CommandSender> {
 
     private T sender;
+    private int change;
+    private World world;
+    private IBlockFactory tools;
 
     public Editor(T sender) {
+        this.tools = Redaktor.getBlockFactory();
         this.sender = sender;
+        if (sender instanceof Player) {
+            this.world = ((Player) sender).getWorld();
+        }
+    }
+
+    public Editor(T sender, World world) {
+        this.tools = Redaktor.getBlockFactory();
+        this.sender = sender;
+        this.world = world;
     }
 
     /**
@@ -92,5 +111,37 @@ public class Editor<T extends CommandSender> {
         } else {
             throw new IllegalStateException("x, y and z need to be above 0");
         }
+    }
+
+    /**
+     * Get a block at a location.
+     *
+     * @see #getBlock(Location)
+     *
+     * @param   x
+     *          The x-value.
+     *
+     * @param   y
+     *          The y-value.
+     *
+     * @param   z
+     *          The z-value.
+     *
+     * @return  The block at the location.
+     */
+    public Block getBlock(int x, int y, int z) {
+        return this.getBlock(new Location(world, x, y, z));
+    }
+
+    /**
+     * Get a block from a location.
+     *
+     * @param   location
+     *          The location.
+     *
+     * @return  The block at the location.
+     */
+    public Block getBlock(Location location) {
+        return world.getBlockAt(location);
     }
 }

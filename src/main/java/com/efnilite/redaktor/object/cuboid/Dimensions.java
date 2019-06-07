@@ -3,6 +3,11 @@ package com.efnilite.redaktor.object.cuboid;
 import com.google.gson.annotations.Expose;
 import org.bukkit.Location;
 
+/**
+ * The dimensions of a Cuboid
+ *
+ * @see Cuboid
+ */
 public class Dimensions {
 
     @Expose

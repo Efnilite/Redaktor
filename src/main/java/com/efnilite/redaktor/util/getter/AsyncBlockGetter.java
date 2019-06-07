@@ -10,6 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * A class for getting blocks async in a cube.
+ */
 public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List<Block>> {
 
     private Location pos1;
@@ -41,8 +44,6 @@ public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List
                     loc.setX(x);
                     loc.setY(y);
                     loc.setZ(z);
-
-
 
                     blocks.add(loc.getBlock());
                 }

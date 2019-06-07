@@ -82,10 +82,11 @@ public class Schematic {
     public void save(String file) throws IOException {
         if (cuboid != null) {
             FileWriter writer = new FileWriter(file);
-            new AsyncBlockIndexGetter(cuboid.getMaximumPoint(), cuboid.getMinimumPoint(), l -> {
+            new AsyncBlockIndexGetter(cuboid.getPos1(), cuboid.getPos2(), l -> {
                 List<WritableBlock> map = new ArrayList<>();
                 for (Block block : l.keySet()) {
-                    BlockIndex index = l.get(block);
+                    BlockIndex index = l.get(block
+                    );
                     map.add(new WritableBlock(block, index.getX(), index.getY(), index.getZ()));
                 }
                 gson.toJson(dimensions, writer);

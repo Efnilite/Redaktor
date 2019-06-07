@@ -1,5 +1,7 @@
 package com.efnilite.redaktor;
 
+import com.efnilite.redaktor.block.IBlockFactory;
+import com.efnilite.redaktor.block.server.IBlockFactory_v141;
 import com.efnilite.redaktor.object.player.PlayerEvents;
 import com.efnilite.redaktor.object.player.PlayerFactory;
 import com.efnilite.redaktor.util.ChangeAllocator;
@@ -13,8 +15,8 @@ public class Redaktor extends JavaPlugin {
     private static Plugin plugin;
     private static Configuration configuration;
     private static ChangeAllocator allocator;
-
     private static PlayerFactory playerFactory;
+    private static IBlockFactory blockFactory;
 
     @Override
     public void onEnable() {
@@ -27,12 +29,16 @@ public class Redaktor extends JavaPlugin {
             this.getServer().getPluginManager().disablePlugin(this);
         }
 
+        playerFactory = new PlayerFactory();
         configuration = new Configuration();
         allocator = new ChangeAllocator();
-
-        playerFactory = new PlayerFactory();
+        blockFactory = new IBlockFactory_v141();
 
         this.getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
+    }
+
+    public static IBlockFactory getBlockFactory() {
+        return blockFactory;
     }
 
     public static Plugin getInstance() {

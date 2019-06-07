@@ -4,8 +4,10 @@ import com.efnilite.redaktor.object.cuboid.Cuboid;
 import com.efnilite.redaktor.object.player.RedaktorPlayer;
 import com.efnilite.redaktor.object.schematic.Schematic;
 import com.efnilite.redaktor.object.schematic.internal.BlockIndex;
+import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
+import com.efnilite.redaktor.util.getter.AsyncConnectedGetter;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -38,7 +40,7 @@ public class RedaktorAPI {
      *          The location where it will be saved.
      */
     public static void saveCuboid(Cuboid cuboid, String file) {
-        newBlockGetter(cuboid.getPos1(), cuboid.getPos2(), l -> {
+        newBlockGetter(cuboid, l -> {
             try {
                 new Schematic(cuboid).save(file);
             } catch (IOException e) {
@@ -75,20 +77,15 @@ public class RedaktorAPI {
      * Creates a new AsyncBlockGetter.
      * This is to get a lot of blocks asynchronously.
      *
-     * @param   pos1
-     *          The minimum position of the square.
-     *
-     * @param   pos2
-     *          The maximum position of the square.
+     * @param   cuboid
+     *          The cuboid.
      *
      * @param   consumer
      *          What to do when the blocks have been retrieved.
      *          Since this is an async thread, this is needed.
-     *
-     * @return  a new AsyncBlockGetter
      */
-    public static AsyncBlockGetter newBlockGetter(Location pos1, Location pos2, Consumer<List<Block>> consumer) {
-        return new AsyncBlockGetter(pos1, pos2, consumer);
+    public static void newBlockGetter(Cuboid cuboid, Consumer<List<Block>> consumer) {
+        new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), consumer);
     }
 
     /**
@@ -100,21 +97,36 @@ public class RedaktorAPI {
      * If the second block of the list of blocks is returned,
      * the BlockIndex is 1, 0, 0. If it's the 10th block, it's 10, 0, 0.
      *
-     * @param   pos1
-     *          The minimum position of the square.
-     *
-     * @param   pos2
-     *          The maximum position of the square.
+     * @param   cuboid
+     *          The cuboid.
      *
      * @param   consumer
      *          What to do when the blocks have been retrieved.
      *          Since this is an async thread, this is needed.
-     *
-     * @return  a new AsyncBlockIndexGetter
      */
-    public static AsyncBlockIndexGetter newBlockIndexGetter(Location pos1, Location pos2, Consumer<HashMap<Block, BlockIndex>> consumer) {
-        return new AsyncBlockIndexGetter(pos1, pos2, consumer);
+    public static void newBlockIndexGetter(Cuboid cuboid, Consumer<HashMap<Block, BlockIndex>> consumer) {
+        new AsyncBlockIndexGetter(cuboid.getPos1(), cuboid.getPos2(), consumer);
     }
+
+    /**
+     * Creates a new AsyncConnectedGetter.
+     * This is used for asynchronously getting connected
+     * blocks from the same type at a location.
+     *
+     * @param   pos
+     *          The beginning position.
+     *
+     * @param   maxCount
+     *          The max amount of blocks that can be in line.
+     *          If you put -1 it will find every connected block.
+     *
+     * @param   consumer
+     *          What to do when all the blocks have been found.
+     */
+    public static void newBlockConnectodGetter(Location pos, int maxCount, Consumer<List<Block>> consumer) {
+        new AsyncConnectedGetter(pos, maxCount, consumer);
+    }
+
 
     /**
      * Returns the wrapper type of an org.bukkit.entity.Player
@@ -127,5 +139,29 @@ public class RedaktorAPI {
      */
     public static RedaktorPlayer wrap(Player player) {
         return RedaktorPlayer.wrap(player);
+    }
+
+    /**
+     * Checks if 2 Cuboids are the same.
+     *
+     * Idea by https://gitlab.com/Moderocky
+     *
+     * @param   cuboid
+     *          The original cuboid.
+     *
+     * @param   possibleCopy
+     *          The cuboid which might be a copy.
+     *
+     * @return  True if the cuboids have the same blocks.
+     *          False if not.
+     */
+    public static boolean isCopy(Cuboid cuboid, Cuboid possibleCopy) {
+        AsyncFuture<Boolean> future = new AsyncFuture<>();
+        newBlockGetter(cuboid, t -> {
+            newBlockGetter(possibleCopy, b -> {
+                future.complete(t.containsAll(b));
+            });
+        });
+        return future.get();
     }
 }

@@ -17,15 +17,4 @@ public class PlayerEvents implements Listener {
     public void onQuit(PlayerQuitEvent e) {
         Redaktor.getPlayerFactory().unregister(e.getPlayer());
     }
-
-    /*@EventHandler
-    public void onCommand(PlayerCommandPreprocessEvent e) {
-        if (e.getMessage().contains("sett")) {
-            try {
-                RedaktorAPI.toSchematic(new Cuboid(e.getPlayer().getLocation(), e.getPlayer().getLocation().add(2, 2, 2))).save("plugins/Example.json");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }*/
 }

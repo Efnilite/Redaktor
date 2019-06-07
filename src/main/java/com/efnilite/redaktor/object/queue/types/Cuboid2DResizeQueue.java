@@ -1,9 +1,11 @@
 package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
+import com.efnilite.redaktor.block.IBlockFactory;
 import com.efnilite.redaktor.object.cuboid.Cuboid;
 import com.efnilite.redaktor.object.queue.AbstractResizeQueue;
 import com.efnilite.redaktor.object.queue.EditQueue;
+import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.block.Block;
@@ -22,13 +24,16 @@ public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueu
     }
 
     @Override
-    public void build(Cuboid cuboid) {
+    public int build(Cuboid cuboid) {
+        IBlockFactory factory = Redaktor.getBlockFactory();
+        AsyncFuture<Integer> future = new AsyncFuture<>();
         int x = cuboid.getDimensions().getWidth();
         int z = cuboid.getDimensions().getLength();
 
-        new AsyncBlockGetter(cuboid.getMaximumPoint(), cuboid.getMinimumPoint(), t -> {
+        new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), t -> {
             Queue<Block> queue = new LinkedList<>();
             Queue<Block> original = new LinkedList<>();
+            int count;
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -47,12 +52,14 @@ public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueu
                 }
             };
             Tasks.async(runnable);
+            count = queue.size();
 
             BukkitRunnable runnable1 = new BukkitRunnable() {
                 @Override
                 public void run() {
                     for (int i = 0; i < Redaktor.getAllocator().getChanger(); i++) {
                         if (queue.peek() == null || original.peek() != null) {
+                            future.complete(queue.size());
                             this.cancel();
                             return;
                         }
@@ -60,15 +67,13 @@ public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueu
                         Block block = queue.poll();
                         Block or = original.poll();
                         if (block.getType() != or.getType()) {
-                            block.getLocation().getBlock().setType(or.getType());
-                            if (block.getBlockData() != or.getBlockData()) {
-                                block.getLocation().getBlock().setBlockData(or.getBlockData());
-                            }
+                            factory.setBlock(block, or.getType());
                         }
                     }
                 }
             };
             Tasks.repeat(runnable1, 1);
         });
+        return future.get();
     }
 }

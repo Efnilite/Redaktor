@@ -10,6 +10,13 @@ import org.bukkit.scheduler.BukkitRunnable;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
+/**
+ * A class for getting blocks in a cube including the index it is in.
+ *
+ * Used in
+ *
+ * @see com.efnilite.redaktor.object.schematic.Schematic
+ */
 public class AsyncBlockIndexGetter extends BukkitRunnable implements AsyncGetter<HashMap<Block, BlockIndex>> {
 
     private Location pos1;
