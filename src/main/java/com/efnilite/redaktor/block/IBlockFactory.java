@@ -1,5 +1,6 @@
 package com.efnilite.redaktor.block;
 
+import com.efnilite.redaktor.object.pattern.Pattern;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -27,8 +28,6 @@ public interface IBlockFactory {
     /**
      * Set a block without updating the surroudings or the block.
      *
-     * @see #setBlock(Location, Material)
-     *
      * @param   block
      *          The block.
      *
@@ -36,4 +35,17 @@ public interface IBlockFactory {
      *          The material it's going to be set to.
      */
     void setBlock(Block block, Material material);
+
+    /**
+     * Set a block without updating the surroudings or the block.
+     *
+     * @see #setBlock(Location, Material)
+     *
+     * @param   block
+     *          The block.
+     *
+     * @param   pattern
+     *          The pattern it's going to be set to.
+     */
+    void setBlock(Block block, Pattern pattern);
 }

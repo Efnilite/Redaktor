@@ -116,15 +116,11 @@ public class RedaktorAPI {
      * @param   pos
      *          The beginning position.
      *
-     * @param   maxCount
-     *          The max amount of blocks that can be in line.
-     *          If you put -1 it will find every connected block.
-     *
      * @param   consumer
      *          What to do when all the blocks have been found.
      */
-    public static void newBlockConnectodGetter(Location pos, int maxCount, Consumer<List<Block>> consumer) {
-        new AsyncConnectedGetter(pos, maxCount, consumer);
+    public static void newBlockConnectodGetter(Location pos, Consumer<List<Block>> consumer) {
+        new AsyncConnectedGetter(pos, consumer);
     }
 
 

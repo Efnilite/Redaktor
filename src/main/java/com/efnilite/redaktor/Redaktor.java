@@ -34,6 +34,8 @@ public class Redaktor extends JavaPlugin {
         allocator = new ChangeAllocator();
         blockFactory = new IBlockFactory_v141();
 
+        this.getLogger().warning("If you are reloading this server, Redaktor will break!");
+        this.getLogger().warning("Please refrain from using /reload since it will break a lot of other plugins, too.");
         this.getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
     }
 

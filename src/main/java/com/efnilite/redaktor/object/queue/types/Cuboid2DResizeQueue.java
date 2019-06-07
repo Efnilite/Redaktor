@@ -59,7 +59,7 @@ public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueu
                 public void run() {
                     for (int i = 0; i < Redaktor.getAllocator().getChanger(); i++) {
                         if (queue.peek() == null || original.peek() != null) {
-                            future.complete(queue.size());
+                            future.complete(count);
                             this.cancel();
                             return;
                         }

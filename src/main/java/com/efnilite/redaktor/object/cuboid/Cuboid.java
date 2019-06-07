@@ -2,6 +2,10 @@ package com.efnilite.redaktor.object.cuboid;
 
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A 3D cuboid selection.
@@ -27,6 +31,29 @@ public class Cuboid {
         this.pos2 = pos2;
         this.world = pos1.getWorld() == null ? pos2.getWorld() : pos1.getWorld();
         this.dimensions = new Dimensions(this);
+    }
+
+    public List<Block> getWalls() {
+        List<Block> blocks = new ArrayList<>();
+        Location max = this.getMaximumPoint();
+        Location min = this.getMinimumPoint();
+
+        Location current = pos1.clone().zero();
+        for (int y = min.getBlockY(); y <= max.getBlockY(); y++) {
+            for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
+                for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++) {
+                    if (min.getBlockX() == x || max.getBlockX() == x || min.getBlockZ() == z || max.getBlockZ() == z) {
+                        current.setX(x);
+                        current.setY(y);
+                        current.setZ(z);
+
+                        blocks.add(current.getBlock());
+                    }
+                }
+            }
+        }
+
+        return blocks;
     }
 
     public Location getMaximumPoint() {

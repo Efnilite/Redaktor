@@ -2,6 +2,9 @@ package com.efnilite.redaktor.util;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
+/**
+ * Calculates TPS to get a block/sec change limit.
+ */
 public class ChangeAllocator extends BukkitRunnable {
 
     private int change;

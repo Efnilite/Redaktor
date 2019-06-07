@@ -18,10 +18,13 @@ public class Editor<T extends CommandSender> {
 
     private T sender;
     private int change;
+    private int maxChange;
     private World world;
     private IBlockFactory tools;
 
     public Editor(T sender) {
+        this.change = 0;
+        this.maxChange = -1;
         this.tools = Redaktor.getBlockFactory();
         this.sender = sender;
         if (sender instanceof Player) {
@@ -30,9 +33,48 @@ public class Editor<T extends CommandSender> {
     }
 
     public Editor(T sender, World world) {
+        this.change = 0;
+        this.maxChange = -1;
         this.tools = Redaktor.getBlockFactory();
         this.sender = sender;
         this.world = world;
+    }
+
+    public Editor(T sender, World world, int maxChange) {
+        this.change = 0;
+        this.tools = Redaktor.getBlockFactory();
+        this.sender = sender;
+        this.world = world;
+        this.maxChange = maxChange;
+    }
+
+    /**
+     * Creates a Pyramid at a location.
+     *
+     * @param   position
+     *          The position of where the pyramid center will be.
+     *
+     * @param   pattern
+     *          The pattern the pyramid will follow.
+     *
+     * @param   size
+     *          The size (height) of the pyramid.
+     */
+    public void createPyramid(Location position, Pattern pattern, int size) {
+        int currentSize = size;
+
+        for (int y = 0; y < size; y++) {
+            for (int x = 0; x < currentSize; x++) {
+                for (int z = 0; z < currentSize; z++) {
+                    tools.setBlock(position.clone().add(x, y, z).getBlock(), pattern);
+                    tools.setBlock(position.clone().add(-x, y, z).getBlock(), pattern);
+                    tools.setBlock(position.clone().add(x, y, -z).getBlock(), pattern);
+                    tools.setBlock(position.clone().add(-x, y, -z).getBlock(), pattern);
+                    change += 4;
+                }
+            }
+            currentSize--;
+        }
     }
 
     /**
@@ -46,7 +88,7 @@ public class Editor<T extends CommandSender> {
      */
     public void setBlocks(Pattern pattern, Cuboid cuboid) {
         BlockQueue queue = new BlockQueue(pattern);
-        queue.build(cuboid);
+        change += queue.build(cuboid);
     }
 
     /**
@@ -63,11 +105,13 @@ public class Editor<T extends CommandSender> {
      */
     public void setSlowBlocks(Pattern pattern, Cuboid cuboid, int perTick) {
         SlowBlockQueue queue = new SlowBlockQueue(perTick, pattern);
-        queue.build(cuboid);
+        change += queue.build(cuboid);
     }
 
     /**
      * Copies a Cuboid in a 2-dimensional way.
+     *
+     * @see #copyCuboid(Cuboid, int, int, int) for a 3D way of doing this.
      *
      * @param   cuboid
      *          The cuboid.
@@ -81,7 +125,7 @@ public class Editor<T extends CommandSender> {
     public void copyCuboid(Cuboid cuboid, int x, int z) {
         if (x > 0 && z > 0) {
             Cuboid2DResizeQueue queue = new Cuboid2DResizeQueue(x, z);
-            queue.build(cuboid);
+            change += queue.build(cuboid);
         } else {
             throw new IllegalStateException("x and z need to be above 0");
         }
@@ -107,7 +151,7 @@ public class Editor<T extends CommandSender> {
     public void copyCuboid(Cuboid cuboid, int x, int y, int z) {
         if (x > 0 && y > 0 && z > 0) {
             Cuboid3DResizeQueue queue = new Cuboid3DResizeQueue(x, y, z);
-            queue.build(cuboid);
+            change += queue.build(cuboid);
         } else {
             throw new IllegalStateException("x, y and z need to be above 0");
         }
