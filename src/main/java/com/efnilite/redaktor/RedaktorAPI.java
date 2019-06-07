@@ -152,8 +152,8 @@ public class RedaktorAPI {
      * @param   possibleCopy
      *          The cuboid which might be a copy.
      *
-     * @return  True if the cuboids have the same blocks.
-     *          False if not.
+     * @return  true if the cuboids have the same blocks.
+     *          false if not.
      */
     public static boolean isCopy(Cuboid cuboid, Cuboid possibleCopy) {
         AsyncFuture<Boolean> future = new AsyncFuture<>();
