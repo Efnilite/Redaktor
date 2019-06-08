@@ -119,7 +119,7 @@ public class RedaktorAPI {
      * @param   consumer
      *          What to do when all the blocks have been found.
      */
-    public static void newBlockConnectodGetter(Location pos, Consumer<List<Block>> consumer) {
+    public static void newBlockConnectedGetter(Location pos, Consumer<List<Block>> consumer) {
         new AsyncConnectedGetter(pos, consumer);
     }
 
