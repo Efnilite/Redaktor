@@ -1,6 +1,7 @@
 package com.efnilite.redaktor;
 
 import com.efnilite.redaktor.block.IBlockFactory;
+import com.efnilite.redaktor.block.server.BlockFactory_v131;
 import com.efnilite.redaktor.block.server.BlockFactory_v141;
 import com.efnilite.redaktor.object.player.PlayerEvents;
 import com.efnilite.redaktor.object.player.PlayerFactory;
@@ -24,10 +25,15 @@ public class Redaktor extends JavaPlugin {
 
         String version = Reflect.getVersion();
 
-        if (!version.equals("v1_14_R1")) {
-            this.getLogger().severe("Redaktor only works on 1.14.x");
+        if (version.equals("v1_14_R1")) {
+            blockFactory = new BlockFactory_v141();
+        } else if (!version.equals("v1_13_R2")) {
+            blockFactory = new BlockFactory_v131();
+        } else {
+            this.getLogger().severe("Redaktor only works on 1.14.x and 1.13.x (not 1.13)");
             this.getServer().getPluginManager().disablePlugin(this);
         }
+
 
         playerFactory = new PlayerFactory();
         configuration = new Configuration();

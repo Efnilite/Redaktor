@@ -8,9 +8,4 @@
 #                                                        #
 #========================================================#
 
-schematics:
-
-    # Should schematics that are saved be put in
-    # a folder named after the player's uuid
-    # in the Redaktor folder?
-    uuid-folder: true
+# Yeah, there's nothing here yet :(

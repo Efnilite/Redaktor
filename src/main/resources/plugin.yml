@@ -1,5 +1,5 @@
 name: Redaktor
 author: Efnilite
-version: 0.1
+version: 1.0-API
 api-version: 1.13
 main: com.efnilite.redaktor.Redaktor
