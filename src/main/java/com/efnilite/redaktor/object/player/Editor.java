@@ -14,6 +14,12 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * The main editor for APIs and Players.
+ *
+ * @param   <T>
+ *          The CommandSender to which changes need to be sent.
+ */
 public class Editor<T extends CommandSender> {
 
     private T sender;

@@ -4,7 +4,7 @@ import com.google.gson.annotations.Expose;
 import org.bukkit.Location;
 
 /**
- * The dimensions of a CuboidSelection
+ * The dimensions of a CuboidSelection.
  *
  * @see CuboidSelection
  */

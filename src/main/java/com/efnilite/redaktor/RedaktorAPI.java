@@ -1,5 +1,9 @@
 package com.efnilite.redaktor;
 
+import com.efnilite.redaktor.object.pattern.BlockPattern;
+import com.efnilite.redaktor.object.pattern.MorePattern;
+import com.efnilite.redaktor.object.pattern.Pattern;
+import com.efnilite.redaktor.object.player.Editor;
 import com.efnilite.redaktor.object.player.RedaktorPlayer;
 import com.efnilite.redaktor.object.schematic.Schematic;
 import com.efnilite.redaktor.object.schematic.internal.BlockIndex;
@@ -8,8 +12,12 @@ import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
 import com.efnilite.redaktor.util.getter.AsyncConnectedGetter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -21,9 +29,56 @@ import java.util.function.Consumer;
 public class RedaktorAPI {
 
     private static Plugin plugin;
+    private static HashMap<World, Editor<ConsoleCommandSender>> worldEditors;
 
     RedaktorAPI() {
         plugin = Redaktor.getInstance();
+        worldEditors = new HashMap<>();
+
+        for (World world : Bukkit.getWorlds()) {
+            worldEditors.put(world, new Editor<>(Bukkit.getConsoleSender()));
+        }
+    }
+
+    /**
+     * A shortcut for converting patterns.
+     *
+     * Parses an array of Materials to a Pattern, usable
+     * for most block setting methods in common classes.
+     *
+     * @param   materials
+     *          The material(s) that need to be transferred
+     *          to a pattern.
+     *
+     * @return  A pattern based on the given materials.
+     */
+    public static Pattern toPattern(Material... materials) {
+        if (materials.length == 1) {
+            return new BlockPattern(materials[0]);
+        } else {
+            MorePattern pattern = new MorePattern();
+            for (Material material : materials) {
+                pattern.add(material);
+            }
+            return pattern;
+        }
+    }
+
+    /**
+     * Get a default Editor instance for a World.
+     * This is a way to use Editor methods in an API
+     * without using players.
+     *
+     * The Editor returned has an unlimited max change and does not
+     * log chances to the sender (in this case console)
+     *
+     * @param   world
+     *          The world the Editor is based in.
+     *
+     * @return  The Editor for that world.
+     */
+    public static Editor<ConsoleCommandSender> getDefaultEditor(World world) {
+        return worldEditors.get(world);
     }
 
     /**

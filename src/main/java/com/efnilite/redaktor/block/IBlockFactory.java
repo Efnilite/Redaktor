@@ -28,6 +28,8 @@ public interface IBlockFactory {
     /**
      * Set a block without updating the surroudings or the block.
      *
+     * @see #setBlock(Location, Material)
+     *
      * @param   block
      *          The block.
      *

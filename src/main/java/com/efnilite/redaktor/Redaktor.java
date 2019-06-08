@@ -9,6 +9,7 @@ import com.efnilite.redaktor.util.ChangeAllocator;
 import com.efnilite.redaktor.util.Configuration;
 import com.efnilite.redaktor.util.Reflect;
 import com.efnilite.redaktor.util.web.Metrics;
+import com.efnilite.redaktor.util.web.UpdateChecker;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -42,6 +43,9 @@ public class Redaktor extends JavaPlugin {
         blockFactory = new BlockFactory_v141();
 
         metrics = new Metrics(this);
+
+        new UpdateChecker();
+        new RedaktorAPI();
 
         this.getLogger().warning("If you are reloading this server, Redaktor will break!");
         this.getLogger().warning("Please refrain from using /reload since it will break a lot of other plugins, too.");
