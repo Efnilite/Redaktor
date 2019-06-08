@@ -22,12 +22,8 @@ public class RedaktorAPI {
 
     private static Plugin plugin;
 
-    static {
+    RedaktorAPI() {
         plugin = Redaktor.getInstance();
-    }
-
-    private RedaktorAPI() {
-
     }
 
     /**

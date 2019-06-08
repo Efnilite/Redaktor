@@ -8,16 +8,18 @@ import com.efnilite.redaktor.object.player.PlayerFactory;
 import com.efnilite.redaktor.util.ChangeAllocator;
 import com.efnilite.redaktor.util.Configuration;
 import com.efnilite.redaktor.util.Reflect;
+import com.efnilite.redaktor.util.web.Metrics;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Redaktor extends JavaPlugin {
 
     private static Plugin plugin;
-    private static Configuration configuration;
+    private static Metrics metrics;
     private static ChangeAllocator allocator;
-    private static PlayerFactory playerFactory;
     private static IBlockFactory blockFactory;
+    private static Configuration configuration;
+    private static PlayerFactory playerFactory;
 
     @Override
     public void onEnable() {
@@ -34,11 +36,12 @@ public class Redaktor extends JavaPlugin {
             this.getServer().getPluginManager().disablePlugin(this);
         }
 
-
         playerFactory = new PlayerFactory();
         configuration = new Configuration();
         allocator = new ChangeAllocator();
         blockFactory = new BlockFactory_v141();
+
+        metrics = new Metrics(this);
 
         this.getLogger().warning("If you are reloading this server, Redaktor will break!");
         this.getLogger().warning("Please refrain from using /reload since it will break a lot of other plugins, too.");
@@ -51,6 +54,10 @@ public class Redaktor extends JavaPlugin {
 
     public static Plugin getInstance() {
         return plugin;
+    }
+
+    public static Metrics getMetrics() {
+        return metrics;
     }
 
     public static ChangeAllocator getAllocator() {

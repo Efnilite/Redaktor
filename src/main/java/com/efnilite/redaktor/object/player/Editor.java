@@ -19,12 +19,14 @@ public class Editor<T extends CommandSender> {
     private T sender;
     private int change;
     private int maxChange;
+    private boolean sendUpdates;
     private World world;
     private IBlockFactory tools;
 
     public Editor(T sender) {
         this.change = 0;
         this.maxChange = -1;
+        this.sendUpdates = false;
         this.tools = Redaktor.getBlockFactory();
         this.sender = sender;
         if (sender instanceof Player) {
@@ -35,6 +37,7 @@ public class Editor<T extends CommandSender> {
     public Editor(T sender, World world) {
         this.change = 0;
         this.maxChange = -1;
+        this.sendUpdates = false;
         this.tools = Redaktor.getBlockFactory();
         this.sender = sender;
         this.world = world;
@@ -42,10 +45,20 @@ public class Editor<T extends CommandSender> {
 
     public Editor(T sender, World world, int maxChange) {
         this.change = 0;
+        this.sendUpdates = false;
         this.tools = Redaktor.getBlockFactory();
         this.sender = sender;
         this.world = world;
         this.maxChange = maxChange;
+    }
+
+    public Editor(T sender, int maxChange, boolean sendUpdates, World world) {
+        this.change = 0;
+        this.sender = sender;
+        this.maxChange = maxChange;
+        this.sendUpdates = sendUpdates;
+        this.world = world;
+        this.tools = Redaktor.getBlockFactory();
     }
 
     /**
