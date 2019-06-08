@@ -11,7 +11,7 @@ import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_14_R1.block.data.CraftBlockData;
 
-public class IBlockFactory_v141 implements IBlockFactory {
+public class BlockFactory_v141 implements IBlockFactory {
 
     @Override
     public void setBlock(Location location, Material material) {
@@ -20,7 +20,7 @@ public class IBlockFactory_v141 implements IBlockFactory {
         BlockPosition position = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 
         IBlockData old = world.getType(position);
-        boolean success = world.setTypeAndData(position, data, 1042);
+        boolean success = world.setTypeUpdate(position, data);
         if (success) {
             world.notify(position, old, data, 3);
         }

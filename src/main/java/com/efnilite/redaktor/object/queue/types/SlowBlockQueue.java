@@ -2,10 +2,10 @@ package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
-import com.efnilite.redaktor.object.cuboid.Cuboid;
 import com.efnilite.redaktor.object.pattern.Pattern;
 import com.efnilite.redaktor.object.queue.AbstractSlowQueue;
 import com.efnilite.redaktor.object.queue.EditQueue;
+import com.efnilite.redaktor.object.selection.CuboidSelection;
 import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
@@ -21,7 +21,7 @@ import java.util.Queue;
  *
  * @see BlockQueue
  */
-public class SlowBlockQueue extends AbstractSlowQueue implements EditQueue<Cuboid> {
+public class SlowBlockQueue extends AbstractSlowQueue implements EditQueue<CuboidSelection> {
 
     private Pattern pattern;
 
@@ -31,7 +31,7 @@ public class SlowBlockQueue extends AbstractSlowQueue implements EditQueue<Cuboi
     }
 
     @Override
-    public int build(Cuboid cuboid) {
+    public int build(CuboidSelection cuboid) {
         IBlockFactory factory = Redaktor.getBlockFactory();
         AsyncFuture<Integer> future = new AsyncFuture<>();
         new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), t -> {

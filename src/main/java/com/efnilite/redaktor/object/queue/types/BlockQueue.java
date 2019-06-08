@@ -2,10 +2,10 @@ package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
-import com.efnilite.redaktor.object.cuboid.Cuboid;
 import com.efnilite.redaktor.object.pattern.Pattern;
 import com.efnilite.redaktor.object.queue.AbstractBlockQueue;
 import com.efnilite.redaktor.object.queue.EditQueue;
+import com.efnilite.redaktor.object.selection.CuboidSelection;
 import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
@@ -19,14 +19,14 @@ import java.util.Queue;
 /**
  * A queue for setting a lot of blocks to the same material.
  */
-public class BlockQueue extends AbstractBlockQueue implements EditQueue<Cuboid> {
+public class BlockQueue extends AbstractBlockQueue implements EditQueue<CuboidSelection> {
 
     public BlockQueue(Pattern pattern) {
         super(pattern);
     }
 
     @Override
-    public int build(Cuboid cuboid) {
+    public int build(CuboidSelection cuboid) {
         IBlockFactory factory = Redaktor.getBlockFactory();
         AsyncFuture<Integer> future = new AsyncFuture<>();
         new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), t -> {

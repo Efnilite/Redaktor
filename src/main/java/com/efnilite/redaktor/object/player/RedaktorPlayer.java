@@ -1,7 +1,7 @@
 package com.efnilite.redaktor.object.player;
 
 import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.object.cuboid.Cuboid;
+import com.efnilite.redaktor.object.selection.CuboidSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class RedaktorPlayer {
 
     private Editor<Player> editor;
-    private Cuboid selection;
+    private CuboidSelection selection;
     private Location pos1;
     private Location pos2;
     private Player player;
@@ -46,7 +46,7 @@ public class RedaktorPlayer {
         return pos2;
     }
 
-    public Cuboid getSelection() {
+    public CuboidSelection getSelection() {
         return selection;
     }
 

@@ -1,8 +1,7 @@
 package com.efnilite.redaktor.object.player;
 
 import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.object.pattern.BlockPattern;
-import org.bukkit.Material;
+import com.efnilite.redaktor.object.selection.CuboidSelection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
@@ -24,11 +23,7 @@ public class PlayerEvents implements Listener {
     @EventHandler
     public void testing(PlayerCommandPreprocessEvent e) {
         if (e.getMessage().contains("sett")) {
-            Redaktor.getPlayerFactory().getRegisteredPlayers().get(e.getPlayer().getUniqueId())
-                    .getEditor()
-                    .createPyramid(e.getPlayer().getLocation(),
-                            new BlockPattern(Material.STONE),
-                            3);
+            new CuboidSelection(e.getPlayer().getLocation(), e.getPlayer().getLocation().clone().add(10, 10, 10)).test();
         }
     }
 }

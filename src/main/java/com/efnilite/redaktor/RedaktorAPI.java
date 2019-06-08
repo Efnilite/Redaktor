@@ -1,9 +1,9 @@
 package com.efnilite.redaktor;
 
-import com.efnilite.redaktor.object.cuboid.Cuboid;
 import com.efnilite.redaktor.object.player.RedaktorPlayer;
 import com.efnilite.redaktor.object.schematic.Schematic;
 import com.efnilite.redaktor.object.schematic.internal.BlockIndex;
+import com.efnilite.redaktor.object.selection.CuboidSelection;
 import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
@@ -39,7 +39,7 @@ public class RedaktorAPI {
      * @param   file
      *          The location where it will be saved.
      */
-    public static void saveCuboid(Cuboid cuboid, String file) {
+    public static void saveCuboid(CuboidSelection cuboid, String file) {
         newBlockGetter(cuboid, l -> {
             try {
                 new Schematic(cuboid).save(file);
@@ -62,14 +62,14 @@ public class RedaktorAPI {
     }
 
     /**
-     * Creates a new Schematic instance from a Cuboid.
+     * Creates a new Schematic instance from a CuboidSelection.
      *
      * @param   cuboid
      *          The cuboid that needs to be saved.
      *
      * @return  a new Schematic
      */
-    public static Schematic toSchematic(Cuboid cuboid) {
+    public static Schematic toSchematic(CuboidSelection cuboid) {
         return new Schematic(cuboid);
     }
 
@@ -84,7 +84,7 @@ public class RedaktorAPI {
      *          What to do when the blocks have been retrieved.
      *          Since this is an async thread, this is needed.
      */
-    public static void newBlockGetter(Cuboid cuboid, Consumer<List<Block>> consumer) {
+    public static void newBlockGetter(CuboidSelection cuboid, Consumer<List<Block>> consumer) {
         new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), consumer);
     }
 
@@ -104,7 +104,7 @@ public class RedaktorAPI {
      *          What to do when the blocks have been retrieved.
      *          Since this is an async thread, this is needed.
      */
-    public static void newBlockIndexGetter(Cuboid cuboid, Consumer<HashMap<Block, BlockIndex>> consumer) {
+    public static void newBlockIndexGetter(CuboidSelection cuboid, Consumer<HashMap<Block, BlockIndex>> consumer) {
         new AsyncBlockIndexGetter(cuboid.getPos1(), cuboid.getPos2(), consumer);
     }
 
@@ -151,7 +151,7 @@ public class RedaktorAPI {
      * @return  true if the cuboids have the same blocks.
      *          false if not.
      */
-    public static boolean isCopy(Cuboid cuboid, Cuboid possibleCopy) {
+    public static boolean isCopy(CuboidSelection cuboid, CuboidSelection possibleCopy) {
         AsyncFuture<Boolean> future = new AsyncFuture<>();
         newBlockGetter(cuboid, t -> {
             newBlockGetter(possibleCopy, b -> {

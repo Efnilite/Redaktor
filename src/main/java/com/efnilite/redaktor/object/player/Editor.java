@@ -2,12 +2,12 @@ package com.efnilite.redaktor.object.player;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
-import com.efnilite.redaktor.object.cuboid.Cuboid;
 import com.efnilite.redaktor.object.pattern.Pattern;
 import com.efnilite.redaktor.object.queue.types.BlockQueue;
 import com.efnilite.redaktor.object.queue.types.Cuboid2DResizeQueue;
 import com.efnilite.redaktor.object.queue.types.Cuboid3DResizeQueue;
 import com.efnilite.redaktor.object.queue.types.SlowBlockQueue;
+import com.efnilite.redaktor.object.selection.CuboidSelection;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -78,7 +78,7 @@ public class Editor<T extends CommandSender> {
     }
 
     /**
-     * Set all blocks in a Cuboid to a certain material.
+     * Set all blocks in a CuboidSelection to a certain material.
      *
      * @param   pattern
      *          The pattern the blocks need to be changed to.
@@ -86,13 +86,13 @@ public class Editor<T extends CommandSender> {
      * @param   cuboid
      *          The cuboid.
      */
-    public void setBlocks(Pattern pattern, Cuboid cuboid) {
+    public void setBlocks(Pattern pattern, CuboidSelection cuboid) {
         BlockQueue queue = new BlockQueue(pattern);
         change += queue.build(cuboid);
     }
 
     /**
-     * Set all blocks slowly in a Cuboid to a certain material.
+     * Set all blocks slowly in a CuboidSelection to a certain material.
      *
      * @param   pattern
      *          The pattern the blocks need to be changed to.
@@ -103,15 +103,15 @@ public class Editor<T extends CommandSender> {
      * @param   perTick
      *          The amount of blocks that need to be changed per tick.
      */
-    public void setSlowBlocks(Pattern pattern, Cuboid cuboid, int perTick) {
+    public void setSlowBlocks(Pattern pattern, CuboidSelection cuboid, int perTick) {
         SlowBlockQueue queue = new SlowBlockQueue(perTick, pattern);
         change += queue.build(cuboid);
     }
 
     /**
-     * Copies a Cuboid in a 2-dimensional way.
+     * Copies a CuboidSelection in a 2-dimensional way.
      *
-     * @see #copyCuboid(Cuboid, int, int, int) for a 3D way of doing this.
+     * @see #copyCuboid(CuboidSelection, int, int, int) for a 3D way of doing this.
      *
      * @param   cuboid
      *          The cuboid.
@@ -122,7 +122,7 @@ public class Editor<T extends CommandSender> {
      * @param   z
      *          The amount of times the cuboid needs to be copied in the z-value.
      */
-    public void copyCuboid(Cuboid cuboid, int x, int z) {
+    public void copyCuboid(CuboidSelection cuboid, int x, int z) {
         if (x > 0 && z > 0) {
             Cuboid2DResizeQueue queue = new Cuboid2DResizeQueue(x, z);
             change += queue.build(cuboid);
@@ -132,9 +132,9 @@ public class Editor<T extends CommandSender> {
     }
 
     /**
-     * Copies a Cuboid in a 3-dimensional way.
+     * Copies a CuboidSelection in a 3-dimensional way.
      *
-     * @see #copyCuboid(Cuboid, int, int) for a 2D way of doing this.
+     * @see #copyCuboid(CuboidSelection, int, int) for a 2D way of doing this.
      *
      * @param   cuboid
      *          The cuboid.
@@ -148,7 +148,7 @@ public class Editor<T extends CommandSender> {
      * @param   z
      *          The amount of times the cuboid needs to be copied in the z-value.
      */
-    public void copyCuboid(Cuboid cuboid, int x, int y, int z) {
+    public void copyCuboid(CuboidSelection cuboid, int x, int y, int z) {
         if (x > 0 && y > 0 && z > 0) {
             Cuboid3DResizeQueue queue = new Cuboid3DResizeQueue(x, y, z);
             change += queue.build(cuboid);

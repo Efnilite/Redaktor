@@ -2,9 +2,9 @@ package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
-import com.efnilite.redaktor.object.cuboid.Cuboid;
 import com.efnilite.redaktor.object.queue.AbstractResizeQueue;
 import com.efnilite.redaktor.object.queue.EditQueue;
+import com.efnilite.redaktor.object.selection.CuboidSelection;
 import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
@@ -17,14 +17,14 @@ import java.util.Queue;
 /**
  * A queue for copying cuboid in a 2D way (using x and z)
  */
-public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueue<Cuboid> {
+public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueue<CuboidSelection> {
 
     public Cuboid2DResizeQueue(int x, int z) {
         super(x, 0, z);
     }
 
     @Override
-    public int build(Cuboid cuboid) {
+    public int build(CuboidSelection cuboid) {
         IBlockFactory factory = Redaktor.getBlockFactory();
         AsyncFuture<Integer> future = new AsyncFuture<>();
         int x = cuboid.getDimensions().getWidth();

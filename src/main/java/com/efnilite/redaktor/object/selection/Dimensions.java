@@ -1,12 +1,12 @@
-package com.efnilite.redaktor.object.cuboid;
+package com.efnilite.redaktor.object.selection;
 
 import com.google.gson.annotations.Expose;
 import org.bukkit.Location;
 
 /**
- * The dimensions of a Cuboid
+ * The dimensions of a CuboidSelection
  *
- * @see Cuboid
+ * @see CuboidSelection
  */
 public class Dimensions {
 
@@ -21,7 +21,7 @@ public class Dimensions {
     @Expose
     private Location minumum;
 
-    public Dimensions(Cuboid cuboid) {
+    public Dimensions(CuboidSelection cuboid) {
         this.maximum = cuboid.getMaximumPoint();
         this.minumum = cuboid.getMinimumPoint();
 

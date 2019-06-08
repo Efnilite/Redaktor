@@ -1,7 +1,7 @@
 package com.efnilite.redaktor;
 
 import com.efnilite.redaktor.block.IBlockFactory;
-import com.efnilite.redaktor.block.server.IBlockFactory_v141;
+import com.efnilite.redaktor.block.server.BlockFactory_v141;
 import com.efnilite.redaktor.object.player.PlayerEvents;
 import com.efnilite.redaktor.object.player.PlayerFactory;
 import com.efnilite.redaktor.util.ChangeAllocator;
@@ -32,7 +32,7 @@ public class Redaktor extends JavaPlugin {
         playerFactory = new PlayerFactory();
         configuration = new Configuration();
         allocator = new ChangeAllocator();
-        blockFactory = new IBlockFactory_v141();
+        blockFactory = new BlockFactory_v141();
 
         this.getLogger().warning("If you are reloading this server, Redaktor will break!");
         this.getLogger().warning("Please refrain from using /reload since it will break a lot of other plugins, too.");
