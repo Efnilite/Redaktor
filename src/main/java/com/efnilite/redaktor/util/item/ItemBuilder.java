@@ -9,6 +9,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A class for creating items.
+ */
 public class ItemBuilder {
 
     private int amount = 1;
@@ -35,6 +38,11 @@ public class ItemBuilder {
         this.type = material;
     }
 
+    /**
+     * Finishes everything and gives the ItemStack result.
+     *
+     * @return  the result
+     */
     public ItemStack build() {
         ItemStack item = new ItemStack(type, amount);
         ItemMeta meta = Bukkit.getItemFactory().getItemMeta(item.getType());
