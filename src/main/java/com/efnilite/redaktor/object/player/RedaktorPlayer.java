@@ -1,7 +1,6 @@
 package com.efnilite.redaktor.object.player;
 
 import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.object.selection.CuboidSelection;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -13,7 +12,6 @@ import org.bukkit.entity.Player;
 public class RedaktorPlayer {
 
     private Editor<Player> editor;
-    private CuboidSelection selection;
     private Location pos1;
     private Location pos2;
     private Player player;
@@ -27,11 +25,10 @@ public class RedaktorPlayer {
         this.pos1 = null;
         this.pos2 = null;
         this.player = null;
-        this.selection = null;
     }
 
     public void send(String message) {
-        this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
+        this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&a&cRedaktor&r&8) " + message));
     }
 
     public Location getPos1() {
@@ -46,12 +43,16 @@ public class RedaktorPlayer {
         return pos2;
     }
 
-    public CuboidSelection getSelection() {
-        return selection;
-    }
-
     public Editor<Player> getEditor() {
         return editor;
+    }
+
+    public void setPos1(Location pos1) {
+        this.pos1 = pos1;
+    }
+
+    public void setPos2(Location pos2) {
+        this.pos2 = pos2;
     }
 
     public static RedaktorPlayer wrap(Player player) {

@@ -3,13 +3,15 @@ package com.efnilite.redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
 import com.efnilite.redaktor.block.server.BlockFactory_v131;
 import com.efnilite.redaktor.block.server.BlockFactory_v141;
-import com.efnilite.redaktor.object.player.PlayerEvents;
 import com.efnilite.redaktor.object.player.PlayerFactory;
+import com.efnilite.redaktor.object.player.PlayerListener;
 import com.efnilite.redaktor.util.ChangeAllocator;
 import com.efnilite.redaktor.util.Configuration;
 import com.efnilite.redaktor.util.Reflect;
 import com.efnilite.redaktor.util.web.Metrics;
 import com.efnilite.redaktor.util.web.UpdateChecker;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -47,9 +49,13 @@ public class Redaktor extends JavaPlugin {
         new UpdateChecker();
         new RedaktorAPI();
 
-        this.getLogger().warning("If you are reloading this server, Redaktor will break!");
-        this.getLogger().warning("Please refrain from using /reload since it will break a lot of other plugins, too.");
-        this.getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
+
+        if (Bukkit.getOnlinePlayers().size() > 0) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                playerFactory.register(player);
+            }
+        }
     }
 
     public static IBlockFactory getBlockFactory() {

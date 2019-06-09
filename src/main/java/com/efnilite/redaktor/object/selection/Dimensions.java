@@ -28,9 +28,13 @@ public class Dimensions {
         Location max = this.maximum;
         Location min = this.minumum;
 
-        this.width = max.getBlockX() - min.getBlockX();
-        this.height = max.getBlockY() - min.getBlockY();
-        this.length = max.getBlockZ() - min.getBlockZ();
+        this.width = max.getBlockX() - min.getBlockX() + 1;
+        this.height = max.getBlockY() - min.getBlockY() + 1;
+        this.length = max.getBlockZ() - min.getBlockZ() + 1;
+    }
+
+    public int getVolume() {
+        return width * height * length;
     }
 
     public int getWidth() {
