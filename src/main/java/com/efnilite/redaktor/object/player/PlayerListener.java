@@ -81,6 +81,7 @@ public class PlayerListener implements Listener {
 
         if (command.equals("wand")) {
             if (player.hasPermission(configuration.getFile("permissions.yml").getString("permissions.wand"))) {
+                e.setCancelled(true);
                 player.getInventory().addItem(this.wand);
             }
         }

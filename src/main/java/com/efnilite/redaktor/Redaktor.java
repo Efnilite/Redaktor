@@ -3,6 +3,9 @@ package com.efnilite.redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
 import com.efnilite.redaktor.block.server.BlockFactory_v131;
 import com.efnilite.redaktor.block.server.BlockFactory_v141;
+import com.efnilite.redaktor.command.Commandable;
+import com.efnilite.redaktor.command.RedaktorCommands;
+import com.efnilite.redaktor.command.util.CommandFactory;
 import com.efnilite.redaktor.object.player.PlayerFactory;
 import com.efnilite.redaktor.object.player.PlayerListener;
 import com.efnilite.redaktor.util.ChangeAllocator;
@@ -20,9 +23,11 @@ public class Redaktor extends JavaPlugin {
     private static Plugin plugin;
     private static Metrics metrics;
     private static ChangeAllocator allocator;
-    private static IBlockFactory blockFactory;
     private static Configuration configuration;
+
+    private static IBlockFactory blockFactory;
     private static PlayerFactory playerFactory;
+    private static CommandFactory commandFactory;
 
     @Override
     public void onEnable() {
@@ -39,10 +44,11 @@ public class Redaktor extends JavaPlugin {
             this.getServer().getPluginManager().disablePlugin(this);
         }
 
-        playerFactory = new PlayerFactory();
         configuration = new Configuration();
         allocator = new ChangeAllocator();
-        blockFactory = new BlockFactory_v141();
+
+        commandFactory = new CommandFactory();
+        playerFactory = new PlayerFactory();
 
         metrics = new Metrics(this);
 
@@ -56,6 +62,24 @@ public class Redaktor extends JavaPlugin {
                 playerFactory.register(player);
             }
         }
+
+        Commandable[] commandables = new Commandable[] { new RedaktorCommands() };
+        for (Commandable commandable : commandables) {
+            commandFactory.registerClass(commandable);
+        }
+    }
+
+    @Override
+    public void onDisable() {
+        if (Bukkit.getOnlinePlayers().size() > 0) {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                playerFactory.unregister(player);
+            }
+        }
+    }
+
+    public static CommandFactory getCommandFactory() {
+        return commandFactory;
     }
 
     public static IBlockFactory getBlockFactory() {

@@ -35,4 +35,9 @@ public class BlockFactory_v141 implements IBlockFactory {
     public void setBlock(Block block, Pattern pattern) {
         this.setBlock(block.getLocation(), pattern.apply(block));
     }
+
+    @Override
+    public void setBlock(org.bukkit.World world, int x, int y, int z, Pattern pattern) {
+        this.setBlock(new Location(world, x, y, z).getBlock(), pattern);
+    }
 }

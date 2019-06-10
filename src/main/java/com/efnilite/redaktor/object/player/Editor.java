@@ -68,35 +68,6 @@ public class Editor<T extends CommandSender> {
     }
 
     /**
-     * Creates a Pyramid at a location.
-     *
-     * @param   position
-     *          The position of where the pyramid center will be.
-     *
-     * @param   pattern
-     *          The pattern the pyramid will follow.
-     *
-     * @param   size
-     *          The size (height) of the pyramid.
-     */
-    public void createPyramid(Location position, Pattern pattern, int size) {
-        int currentSize = size;
-
-        for (int y = 0; y < size; y++) {
-            for (int x = 0; x < currentSize; x++) {
-                for (int z = 0; z < currentSize; z++) {
-                    tools.setBlock(position.clone().add(x, y, z).getBlock(), pattern);
-                    tools.setBlock(position.clone().add(-x, y, z).getBlock(), pattern);
-                    tools.setBlock(position.clone().add(x, y, -z).getBlock(), pattern);
-                    tools.setBlock(position.clone().add(-x, y, -z).getBlock(), pattern);
-                    change += 4;
-                }
-            }
-            currentSize--;
-        }
-    }
-
-    /**
      * Set all blocks in a CuboidSelection to a certain material.
      *
      * @param   pattern
