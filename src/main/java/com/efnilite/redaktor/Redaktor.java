@@ -5,6 +5,7 @@ import com.efnilite.redaktor.block.server.BlockFactory_v131;
 import com.efnilite.redaktor.block.server.BlockFactory_v141;
 import com.efnilite.redaktor.command.Commandable;
 import com.efnilite.redaktor.command.RedaktorCommands;
+import com.efnilite.redaktor.command.SelectionCommands;
 import com.efnilite.redaktor.command.util.CommandFactory;
 import com.efnilite.redaktor.object.player.PlayerFactory;
 import com.efnilite.redaktor.object.player.PlayerListener;
@@ -63,7 +64,7 @@ public class Redaktor extends JavaPlugin {
             }
         }
 
-        Commandable[] commandables = new Commandable[] { new RedaktorCommands() };
+        Commandable[] commandables = new Commandable[] { new RedaktorCommands(), new SelectionCommands() };
         for (Commandable commandable : commandables) {
             commandFactory.registerClass(commandable);
         }

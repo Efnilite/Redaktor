@@ -1,4 +1,0 @@
-permissions:
-
-    # The permission required to use /wand
-    wand: redaktor.wand

@@ -70,13 +70,13 @@ public class Editor<T extends CommandSender> {
     /**
      * Set all blocks in a CuboidSelection to a certain material.
      *
-     * @param   pattern
-     *          The pattern the blocks need to be changed to.
-     *
      * @param   cuboid
      *          The cuboid.
+     *
+     * @param   pattern
+     *          The pattern the blocks need to be changed to.
      */
-    public void setBlocks(Pattern pattern, CuboidSelection cuboid) {
+    public void setBlocks(CuboidSelection cuboid, Pattern pattern) {
         BlockQueue queue = new BlockQueue(pattern);
         change += queue.build(cuboid);
     }
@@ -93,7 +93,7 @@ public class Editor<T extends CommandSender> {
      * @param   perTick
      *          The amount of blocks that need to be changed per tick.
      */
-    public void setSlowBlocks(Pattern pattern, CuboidSelection cuboid, int perTick) {
+    public void setSlowBlocks(CuboidSelection cuboid, Pattern pattern, int perTick) {
         SlowBlockQueue queue = new SlowBlockQueue(perTick, pattern);
         change += queue.build(cuboid);
     }

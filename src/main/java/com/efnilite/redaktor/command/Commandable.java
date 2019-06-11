@@ -5,11 +5,4 @@ package com.efnilite.redaktor.command;
  */
 public interface Commandable {
 
-    /**
-     * Gets the class (not instance) of the Commandable.
-     *
-     * @return the class
-     */
-    Class<?> getTypeClass();
-
 }

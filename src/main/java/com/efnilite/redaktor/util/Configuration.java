@@ -20,9 +20,8 @@ public class Configuration {
         plugin = Redaktor.getInstance();
         plugin.getDataFolder().mkdir();
 
-        if (!new File(plugin.getDataFolder().toString() + "/permissions.yml").exists()) {
+        if (!new File(plugin.getDataFolder().toString() + "/config.yml").exists()) {
             plugin.saveResource("config.yml", false);
-            plugin.saveResource("permissions.yml", false);
         }
     }
 

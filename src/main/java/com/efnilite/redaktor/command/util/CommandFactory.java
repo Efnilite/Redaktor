@@ -1,8 +1,8 @@
 package com.efnilite.redaktor.command.util;
 
-import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.command.Commandable;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
@@ -74,13 +74,16 @@ public class CommandFactory implements CommandExecutor {
             commandName = label.split(":")[1];
         }
 
-        if (strings == null) {
-            Redaktor.getInstance().getLogger().info("strings");
+        CommandInstanceMap map = methods.get(commandName);
+        Method method = map.getMethod();
+        Command annotation = method.getAnnotation(Command.class);
+
+        if (!sender.hasPermission(annotation.permission())) {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', annotation.permissionMessage()));
+            return false;
         }
 
         try {
-            CommandInstanceMap map = methods.get(commandName);
-            Method method = map.getMethod();
             method.invoke(map.getCommandable(), sender, strings);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
