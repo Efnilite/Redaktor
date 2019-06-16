@@ -12,37 +12,39 @@ import java.util.stream.Collectors;
 
 public class UpdateChecker {
 
-	private Plugin plugin;
+    private Plugin plugin;
 
-	public UpdateChecker() {
-		this.plugin = Redaktor.getInstance();
+    public UpdateChecker() {
+        this.plugin = Redaktor.getInstance();
+    }
 
-		this.check();
-	}
+    public boolean check() {
+        String latest = this.getLatestVersion();
+        if (!plugin.getDescription().getVersion().equals(latest)) {
+            plugin.getLogger().info("A new version of Redaktor is available to download!");
+            plugin.getLogger().info("Newest version: " + latest);
+            return true;
+        } else {
+            plugin.getLogger().info("Redaktor is currently up-to-date!");
+            return false;
+        }
+    }
 
-	private void check() {
-		String latest = this.getLatestVersion();
-		if (!plugin.getDescription().getVersion().equals(latest)) {
-			plugin.getLogger().info("A new version of Redaktor is available to download!");
-			plugin.getLogger().info("Newest version: " + latest);
-		} else {
-			plugin.getLogger().info("Redaktor is currently up-to-date!");
-		}
-	}
+    public String getLatestVersion() {
+        InputStream stream;
 
-	private String getLatestVersion() {
-		InputStream stream;
-		try {
-			stream = new URL("https://raw.githubusercontent.com/Efnilite/Redaktor/master/src/main/resources/plugin.yml").openStream();
-		} catch (IOException e) {
-			plugin.getLogger().info("Unable to check for updates!");
-			return "";
-		}
-		BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-		return reader.lines()
-				.filter(s -> s.contains("version: "))
-				.collect(Collectors.toList())
-				.get(0)
-				.replace("version: ", "");
-	}
+        try {
+            stream = new URL("https://raw.githubusercontent.com/Efnilite/Redaktor/master/src/main/resources/plugin.yml").openStream();
+        } catch (IOException e) {
+            plugin.getLogger().info("Unable to check for updates!");
+            return "";
+        }
+
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        return reader.lines()
+                .filter(s -> s.contains("version: "))
+                .collect(Collectors.toList())
+                .get(0)
+                .replace("version: ", "");
+    }
 }

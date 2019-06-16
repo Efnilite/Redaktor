@@ -28,7 +28,7 @@ public class RedaktorPlayer {
     }
 
     public void send(String message) {
-        this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&a&cRedaktor&r&8) " + message));
+        this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7" + message));
     }
 
     public Location getPos1() {

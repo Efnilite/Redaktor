@@ -8,6 +8,7 @@ import com.efnilite.redaktor.object.queue.types.Cuboid2DResizeQueue;
 import com.efnilite.redaktor.object.queue.types.Cuboid3DResizeQueue;
 import com.efnilite.redaktor.object.queue.types.SlowBlockQueue;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -58,7 +59,7 @@ public class Editor<T extends CommandSender> {
         this.maxChange = maxChange;
     }
 
-    public Editor(T sender, int maxChange, boolean sendUpdates, World world) {
+    public Editor(T sender, World world, int maxChange, boolean sendUpdates) {
         this.change = 0;
         this.sender = sender;
         this.maxChange = maxChange;
@@ -78,7 +79,9 @@ public class Editor<T extends CommandSender> {
      */
     public void setBlocks(CuboidSelection cuboid, Pattern pattern) {
         BlockQueue queue = new BlockQueue(pattern);
-        change += queue.build(cuboid);
+        int change = queue.build(cuboid);
+        this.change += change;
+        send("You successfully set " + change + " blocks.");
     }
 
     /**
@@ -95,7 +98,9 @@ public class Editor<T extends CommandSender> {
      */
     public void setSlowBlocks(CuboidSelection cuboid, Pattern pattern, int perTick) {
         SlowBlockQueue queue = new SlowBlockQueue(perTick, pattern);
-        change += queue.build(cuboid);
+        int change = queue.build(cuboid);
+        this.change += change;
+        send("You successfully set " + change + " blocks.");
     }
 
     /**
@@ -115,7 +120,9 @@ public class Editor<T extends CommandSender> {
     public void copyCuboid(CuboidSelection cuboid, int x, int z) {
         if (x > 0 && z > 0) {
             Cuboid2DResizeQueue queue = new Cuboid2DResizeQueue(x, z);
-            change += queue.build(cuboid);
+            int change = queue.build(cuboid);
+            this.change += change;
+            send("You successfully set " + change + " blocks.");
         } else {
             throw new IllegalStateException("x and z need to be above 0");
         }
@@ -141,9 +148,24 @@ public class Editor<T extends CommandSender> {
     public void copyCuboid(CuboidSelection cuboid, int x, int y, int z) {
         if (x > 0 && y > 0 && z > 0) {
             Cuboid3DResizeQueue queue = new Cuboid3DResizeQueue(x, y, z);
-            change += queue.build(cuboid);
+            int change = queue.build(cuboid);
+            this.change += change;
+            send("You successfully set " + change + " blocks.");
         } else {
             throw new IllegalStateException("x, y and z need to be above 0");
+        }
+    }
+
+
+    /**
+     * Sends a message to the Editor owner, if {@link #sendUpdates} is true.
+     *
+     * @param   message
+     *          The message to be sent.
+     */
+    public void send(String message) {
+        if (this.sendUpdates) {
+            this.sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&a&cRedaktor&r&8) &7" + message));
         }
     }
 

@@ -1,15 +1,15 @@
 package com.efnilite.redaktor;
 
+import com.efnilite.connotations.CommandFactory;
+import com.efnilite.connotations.Commandable;
 import com.efnilite.redaktor.block.IBlockFactory;
 import com.efnilite.redaktor.block.server.BlockFactory_v131;
 import com.efnilite.redaktor.block.server.BlockFactory_v141;
-import com.efnilite.redaktor.command.Commandable;
 import com.efnilite.redaktor.command.RedaktorCommands;
 import com.efnilite.redaktor.command.SelectionCommands;
-import com.efnilite.redaktor.command.util.CommandFactory;
 import com.efnilite.redaktor.object.player.PlayerFactory;
 import com.efnilite.redaktor.object.player.PlayerListener;
-import com.efnilite.redaktor.util.ChangeAllocator;
+import com.efnilite.redaktor.util.ChangeLocator;
 import com.efnilite.redaktor.util.Configuration;
 import com.efnilite.redaktor.util.Reflect;
 import com.efnilite.redaktor.util.web.Metrics;
@@ -23,8 +23,9 @@ public class Redaktor extends JavaPlugin {
 
     private static Plugin plugin;
     private static Metrics metrics;
-    private static ChangeAllocator allocator;
+    private static ChangeLocator allocator;
     private static Configuration configuration;
+    private static UpdateChecker checker;
 
     private static IBlockFactory blockFactory;
     private static PlayerFactory playerFactory;
@@ -46,14 +47,14 @@ public class Redaktor extends JavaPlugin {
         }
 
         configuration = new Configuration();
-        allocator = new ChangeAllocator();
+        allocator = new ChangeLocator();
+        checker = new UpdateChecker();
 
-        commandFactory = new CommandFactory();
         playerFactory = new PlayerFactory();
 
+        commandFactory = new CommandFactory(this);
         metrics = new Metrics(this);
 
-        new UpdateChecker();
         new RedaktorAPI();
 
         this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
@@ -79,6 +80,10 @@ public class Redaktor extends JavaPlugin {
         }
     }
 
+    public static UpdateChecker getChecker() {
+        return checker;
+    }
+
     public static CommandFactory getCommandFactory() {
         return commandFactory;
     }
@@ -95,7 +100,7 @@ public class Redaktor extends JavaPlugin {
         return metrics;
     }
 
-    public static ChangeAllocator getAllocator() {
+    public static ChangeLocator getAllocator() {
         return allocator;
     }
 

@@ -1,7 +1,8 @@
 package com.efnilite.redaktor.command;
 
+import com.efnilite.connotations.Command;
+import com.efnilite.connotations.Commandable;
 import com.efnilite.redaktor.RedaktorAPI;
-import com.efnilite.redaktor.command.util.Command;
 import com.efnilite.redaktor.object.player.RedaktorPlayer;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
 import org.bukkit.command.CommandSender;

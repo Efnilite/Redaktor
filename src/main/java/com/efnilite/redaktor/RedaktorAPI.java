@@ -43,6 +43,7 @@ public class RedaktorAPI {
 
     /**
      * A way to parse a Pattern from a string.
+     * Note: this is very likely to not work.
      *
      * @param   string
      *          The string of the Pattern.
