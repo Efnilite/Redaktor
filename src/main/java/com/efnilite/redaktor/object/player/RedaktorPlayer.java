@@ -21,22 +21,12 @@ public class RedaktorPlayer {
         this.editor = new Editor<>(player);
     }
 
-    public void delete() {
-        this.pos1 = null;
-        this.pos2 = null;
-        this.player = null;
-    }
-
     public void send(String message) {
         this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7" + message));
     }
 
     public Location getPos1() {
         return pos1;
-    }
-
-    public Player getPlayer() {
-        return player;
     }
 
     public Location getPos2() {

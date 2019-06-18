@@ -18,9 +18,9 @@ public @interface Command {
 
     String description() default "";
 
-    String permission() default "You don't have enough permissions to do that!";
+    String permission() default "";
 
-    String permissionMessage() default "";
+    String permissionMessage() default "You don't have enough permissions to do that!";
 
     String usage() default "";
 

@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.object.schematic.internal;
+package com.efnilite.redaktor.schematic.internal;
 
 public class BlockIndex {
 

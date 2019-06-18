@@ -14,17 +14,22 @@ public class RedaktorCommands implements Commandable {
 
     @Command
     public void redaktor(CommandSender sender, String[] args) {
-        if (args[0].equalsIgnoreCase("version")) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7Redaktor is currently version " +
-                    Redaktor.getInstance().getDescription().getVersion()));
-        } else if (args[0].equalsIgnoreCase("update")) {
-            UpdateChecker checker = Redaktor.getChecker();
-            if (checker.check()) {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7Redaktor can be updated to" +
-                        "version " + checker.getLatestVersion() + "!"));
+        if (!args[0].isEmpty()) {
+            if (args[0].equalsIgnoreCase("version")) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7Redaktor is currently version " + Redaktor.getInstance().getDescription().getVersion()));
+            } else if (args[0].equalsIgnoreCase("update")) {
+                UpdateChecker checker = Redaktor.getChecker();
+                if (checker.check()) {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7Redaktor can be updated to" + "version " + checker.getLatestVersion() + "!"));
+                } else {
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7Redaktor is currently" + "" + "up-to-date!"));
+                }
             } else {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7Redaktor is currently" + "" +
-                        "up-to-date!"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7------ &8(&cRedaktor&8) &7------"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c/redaktor &7- &fPrints this message"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c/redaktor version &7- &fPrints the version"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c/redaktor update &7- &fCheck to see if there's an update"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c/wand &7- &fGet the Wand"));
             }
         } else {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7------ &8(&cRedaktor&8) &7------"));

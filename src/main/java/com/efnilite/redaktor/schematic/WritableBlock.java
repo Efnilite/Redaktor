@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.object.schematic;
+package com.efnilite.redaktor.schematic;
 
 import com.google.gson.annotations.Expose;
 import org.bukkit.Material;

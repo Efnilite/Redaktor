@@ -29,9 +29,10 @@ public class BlockQueue extends AbstractBlockQueue implements EditQueue<CuboidSe
     public int build(CuboidSelection cuboid) {
         IBlockFactory factory = Redaktor.getBlockFactory();
         AsyncFuture<Integer> future = new AsyncFuture<>();
-        new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), t -> {
+        new AsyncBlockGetter(cuboid.getMaximumPoint(), cuboid.getMinimumPoint(), t -> {
             Queue<Block> queue = new LinkedList<>(t);
             int count = queue.size();
+            Redaktor.getInstance().getLogger().info(count + "");
 
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override

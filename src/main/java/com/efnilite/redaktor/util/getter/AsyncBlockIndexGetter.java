@@ -1,6 +1,6 @@
 package com.efnilite.redaktor.util.getter;
 
-import com.efnilite.redaktor.object.schematic.internal.BlockIndex;
+import com.efnilite.redaktor.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.util.Tasks;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,7 +15,7 @@ import java.util.function.Consumer;
  *
  * Used in
  *
- * @see com.efnilite.redaktor.object.schematic.Schematic
+ * @see com.efnilite.redaktor.schematic.Schematic
  */
 public class AsyncBlockIndexGetter extends BukkitRunnable implements AsyncGetter<HashMap<Block, BlockIndex>> {
 

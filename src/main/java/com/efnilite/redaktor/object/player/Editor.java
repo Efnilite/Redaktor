@@ -9,9 +9,7 @@ import com.efnilite.redaktor.object.queue.types.Cuboid3DResizeQueue;
 import com.efnilite.redaktor.object.queue.types.SlowBlockQueue;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -78,10 +76,14 @@ public class Editor<T extends CommandSender> {
      *          The pattern the blocks need to be changed to.
      */
     public void setBlocks(CuboidSelection cuboid, Pattern pattern) {
-        BlockQueue queue = new BlockQueue(pattern);
-        int change = queue.build(cuboid);
-        this.change += change;
-        send("You successfully set " + change + " blocks.");
+        if (checkLimit()) {
+            Redaktor.getInstance().getLogger().info("BlockQueue");
+            BlockQueue queue = new BlockQueue(pattern);
+            Redaktor.getInstance().getLogger().info("Build");
+            int change = queue.build(cuboid);
+            this.change += change;
+            send("You successfully set " + change + " blocks.");
+        }
     }
 
     /**
@@ -97,10 +99,12 @@ public class Editor<T extends CommandSender> {
      *          The amount of blocks that need to be changed per tick.
      */
     public void setSlowBlocks(CuboidSelection cuboid, Pattern pattern, int perTick) {
-        SlowBlockQueue queue = new SlowBlockQueue(perTick, pattern);
-        int change = queue.build(cuboid);
-        this.change += change;
-        send("You successfully set " + change + " blocks.");
+        if (checkLimit()) {
+            SlowBlockQueue queue = new SlowBlockQueue(perTick, pattern);
+            int change = queue.build(cuboid);
+            this.change += change;
+            send("You successfully set " + change + " blocks.");
+        }
     }
 
     /**
@@ -118,13 +122,15 @@ public class Editor<T extends CommandSender> {
      *          The amount of times the cuboid needs to be copied in the z-value.
      */
     public void copyCuboid(CuboidSelection cuboid, int x, int z) {
-        if (x > 0 && z > 0) {
-            Cuboid2DResizeQueue queue = new Cuboid2DResizeQueue(x, z);
-            int change = queue.build(cuboid);
-            this.change += change;
-            send("You successfully set " + change + " blocks.");
-        } else {
-            throw new IllegalStateException("x and z need to be above 0");
+        if (checkLimit()) {
+            if (x > 0 && z > 0) {
+                Cuboid2DResizeQueue queue = new Cuboid2DResizeQueue(x, z);
+                int change = queue.build(cuboid);
+                this.change += change;
+                send("You successfully set " + change + " blocks.");
+            } else {
+                throw new IllegalArgumentException("x and z need to be above 0");
+            }
         }
     }
 
@@ -146,16 +152,33 @@ public class Editor<T extends CommandSender> {
      *          The amount of times the cuboid needs to be copied in the z-value.
      */
     public void copyCuboid(CuboidSelection cuboid, int x, int y, int z) {
-        if (x > 0 && y > 0 && z > 0) {
-            Cuboid3DResizeQueue queue = new Cuboid3DResizeQueue(x, y, z);
-            int change = queue.build(cuboid);
-            this.change += change;
-            send("You successfully set " + change + " blocks.");
-        } else {
-            throw new IllegalStateException("x, y and z need to be above 0");
+        if (checkLimit()) {
+            if (x > 0 && y > 0 && z > 0) {
+                Cuboid3DResizeQueue queue = new Cuboid3DResizeQueue(x, y, z);
+                int change = queue.build(cuboid);
+                this.change += change;
+                send("You successfully set " + change + " blocks.");
+            } else {
+                throw new IllegalArgumentException("x, y and z need to be above 0");
+            }
         }
     }
 
+    /**
+     * Checks the change limit.
+     * <p>
+     * The change limit can be used for restricting how many blocks a player
+     * (or an api) can edit.
+     *
+     * @return false if it is over the limit
+     */
+    public boolean checkLimit() {
+        boolean con = this.change > this.maxChange;
+        if (!con) {
+            send("Your Editor has reached the maximal change count!");
+        }
+        return con;
+    }
 
     /**
      * Sends a message to the Editor owner, if {@link #sendUpdates} is true.
@@ -167,37 +190,5 @@ public class Editor<T extends CommandSender> {
         if (this.sendUpdates) {
             this.sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&a&cRedaktor&r&8) &7" + message));
         }
-    }
-
-    /**
-     * Get a block at a location.
-     *
-     * @see #getBlock(Location)
-     *
-     * @param   x
-     *          The x-value.
-     *
-     * @param   y
-     *          The y-value.
-     *
-     * @param   z
-     *          The z-value.
-     *
-     * @return  The block at the location.
-     */
-    public Block getBlock(int x, int y, int z) {
-        return this.getBlock(new Location(world, x, y, z));
-    }
-
-    /**
-     * Get a block from a location.
-     *
-     * @param   location
-     *          The location.
-     *
-     * @return  The block at the location.
-     */
-    public Block getBlock(Location location) {
-        return world.getBlockAt(location);
     }
 }

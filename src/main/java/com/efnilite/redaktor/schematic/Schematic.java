@@ -1,14 +1,15 @@
-package com.efnilite.redaktor.object.schematic;
+package com.efnilite.redaktor.schematic;
 
 import com.efnilite.redaktor.object.queue.internal.BlockMap;
 import com.efnilite.redaktor.object.queue.types.CopyQueue;
-import com.efnilite.redaktor.object.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
 import com.efnilite.redaktor.object.selection.Dimensions;
+import com.efnilite.redaktor.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
+import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -16,6 +17,7 @@ import org.bukkit.block.Block;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,7 +66,7 @@ public class Schematic {
             FileReader reader = new FileReader(file);
             return gson.fromJson(reader, Dimensions.class);
         } else {
-            throw new IllegalStateException("File can't be null!");
+            throw new IllegalArgumentException("File can't be null!");
         }
     }
 
@@ -98,7 +100,7 @@ public class Schematic {
                 }
             });
         } else {
-            throw new IllegalStateException("CuboidSelection can't be null to save!");
+            throw new IllegalArgumentException("CuboidSelection can't be null to save!");
         }
     }
 
@@ -118,7 +120,8 @@ public class Schematic {
     public CuboidSelection paste(Location at) throws IOException {
         if (file != null) {
             JsonReader reader = new JsonReader(new FileReader(file));
-            WritableBlock[] writableBlocks = gson.fromJson(reader, WritableBlock[].class);
+            Type type = new TypeToken<List<WritableBlock>>() {}.getType();
+            List<WritableBlock> writableBlocks = gson.fromJson(reader, type);
             List<BlockMap> blocks = new ArrayList<>();
             for (WritableBlock block : writableBlocks) {
                 Location current = at.clone();
@@ -130,7 +133,7 @@ public class Schematic {
             Dimensions dimensions = gson.fromJson(reader, Dimensions.class);
             return new CuboidSelection(dimensions.getMaximumPoint(), dimensions.getMinimumPoint());
         } else {
-            throw new IllegalStateException("File can't be null to save!");
+            throw new IllegalArgumentException("File can't be null to save!");
         }
     }
 }

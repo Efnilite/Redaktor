@@ -31,6 +31,8 @@ public class Redaktor extends JavaPlugin {
     private static PlayerFactory playerFactory;
     private static CommandFactory commandFactory;
 
+    private static boolean isLatest;
+
     @Override
     public void onEnable() {
         plugin = this;
@@ -39,8 +41,10 @@ public class Redaktor extends JavaPlugin {
 
         if (version.equals("v1_14_R1")) {
             blockFactory = new BlockFactory_v141();
+            isLatest = true;
         } else if (!version.equals("v1_13_R2")) {
             blockFactory = new BlockFactory_v131();
+            isLatest = false;
         } else {
             this.getLogger().severe("Redaktor only works on 1.14.x and 1.13.x (not 1.13)");
             this.getServer().getPluginManager().disablePlugin(this);
@@ -69,6 +73,8 @@ public class Redaktor extends JavaPlugin {
         for (Commandable commandable : commandables) {
             commandFactory.registerClass(commandable);
         }
+
+        checker.check();
     }
 
     @Override
@@ -78,6 +84,10 @@ public class Redaktor extends JavaPlugin {
                 playerFactory.unregister(player);
             }
         }
+    }
+
+    public static boolean isLatest() {
+        return isLatest;
     }
 
     public static UpdateChecker getChecker() {

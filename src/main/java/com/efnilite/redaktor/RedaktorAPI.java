@@ -1,14 +1,15 @@
 package com.efnilite.redaktor;
 
+import com.efnilite.redaktor.command.SuperItemCommands;
 import com.efnilite.redaktor.object.pattern.BlockPattern;
 import com.efnilite.redaktor.object.pattern.ChancePattern;
 import com.efnilite.redaktor.object.pattern.MorePattern;
 import com.efnilite.redaktor.object.pattern.Pattern;
 import com.efnilite.redaktor.object.player.Editor;
 import com.efnilite.redaktor.object.player.RedaktorPlayer;
-import com.efnilite.redaktor.object.schematic.Schematic;
-import com.efnilite.redaktor.object.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
+import com.efnilite.redaktor.schematic.Schematic;
+import com.efnilite.redaktor.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
@@ -20,6 +21,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
@@ -32,6 +34,7 @@ public class RedaktorAPI {
     private static Plugin plugin;
     private static HashMap<World, Editor<ConsoleCommandSender>> worldEditors;
 
+    // To avoid creating a new instance
     RedaktorAPI() {
         plugin = Redaktor.getInstance();
         worldEditors = new HashMap<>();
@@ -53,6 +56,7 @@ public class RedaktorAPI {
     public static Pattern parsePattern(String string) {
         if (!string.contains(",")) {
             Material material = Material.getMaterial(string.toUpperCase());
+            Redaktor.getInstance().getLogger().info("Parsed pattern 1");
             return new BlockPattern(material);
         } else if (!string.contains("%")) {
             String[] mats = string.split(",");
@@ -61,6 +65,7 @@ public class RedaktorAPI {
                 Material material = Material.getMaterial(mat.toUpperCase());
                 pattern.add(material);
             }
+            Redaktor.getInstance().getLogger().info("Parsed pattern 2");
             return pattern;
         } else {
             String[] mats = string.split(",");
@@ -70,13 +75,14 @@ public class RedaktorAPI {
                 int chance = Integer.parseInt(mat.split("%")[1]);
                 pattern.add(material, chance);
             }
+            Redaktor.getInstance().getLogger().info("Parsed pattern 3");
             return pattern;
         }
     }
 
     /**
      * A shortcut for converting patterns.
-     *
+     * <p>
      * Parses an array of Materials to a Pattern, usable
      * for most block setting methods in common classes.
      *
@@ -99,20 +105,27 @@ public class RedaktorAPI {
     }
 
     /**
-     * Get a default Editor instance for a World.
-     * This is a way to use Editor methods in an API
-     * without using players.
+     * Checks if 2 Cuboids are the same.
      *
-     * The Editor returned has an unlimited max change and does not
-     * log chances to the sender (in this case console)
+     * Idea by https://gitlab.com/Moderocky
      *
-     * @param   world
-     *          The world the Editor is based in.
+     * @param   cuboid
+     *          The original cuboid.
      *
-     * @return  The Editor for that world.
+     * @param   possibleCopy
+     *          The cuboid which might be a copy.
+     *
+     * @return  true if the cuboids have the same blocks.
+     *          false if not.
      */
-    public static Editor<ConsoleCommandSender> getDefaultEditor(World world) {
-        return worldEditors.get(world);
+    public static boolean isCopy(CuboidSelection cuboid, CuboidSelection possibleCopy) {
+        AsyncFuture<Boolean> future = new AsyncFuture<>();
+        newBlockGetter(cuboid, t -> {
+            newBlockGetter(possibleCopy, b -> {
+                future.complete(t.containsAll(b));
+            });
+        });
+        return future.get();
     }
 
     /**
@@ -132,6 +145,36 @@ public class RedaktorAPI {
                 e.printStackTrace();
             }
         });
+    }
+
+    /**
+     * Convert an ItemStack to a SuperItem.
+     *
+     * @param   item
+     *          The ItemStack to be converted.
+     *
+     * @param   whatToExecute
+     *          The command to be executed.
+     */
+    public static void createSuperItem(ItemStack item, String whatToExecute) {
+        SuperItemCommands.SuperItemBuilder.create(item, whatToExecute);
+    }
+
+    /**
+     * Get a default Editor instance for a World.
+     * This is a way to use Editor methods in an API
+     * without using players.
+     * <p>
+     * The Editor returned has an unlimited max change and does not
+     * log chances to the sender (in this case console)
+     *
+     * @param   world
+     *          The world the Editor is based in.
+     *
+     * @return  The Editor for that world.
+     */
+    public static Editor<ConsoleCommandSender> getDefaultEditor(World world) {
+        return worldEditors.get(world);
     }
 
     /**
@@ -175,9 +218,10 @@ public class RedaktorAPI {
 
     /**
      * Creates a new AsyncIndexBlockGetter
+     * <p>
      * This is used for getting a lot of blocks asynchronously,
      * including the index from position 1.
-     *
+     * <p>
      * Example:
      * If the second block of the list of blocks is returned,
      * the BlockIndex is 1, 0, 0. If it's the 10th block, it's 10, 0, 0.
@@ -220,29 +264,5 @@ public class RedaktorAPI {
      */
     public static RedaktorPlayer wrap(Player player) {
         return RedaktorPlayer.wrap(player);
-    }
-
-    /**
-     * Checks if 2 Cuboids are the same.
-     *
-     * Idea by https://gitlab.com/Moderocky
-     *
-     * @param   cuboid
-     *          The original cuboid.
-     *
-     * @param   possibleCopy
-     *          The cuboid which might be a copy.
-     *
-     * @return  true if the cuboids have the same blocks.
-     *          false if not.
-     */
-    public static boolean isCopy(CuboidSelection cuboid, CuboidSelection possibleCopy) {
-        AsyncFuture<Boolean> future = new AsyncFuture<>();
-        newBlockGetter(cuboid, t -> {
-            newBlockGetter(possibleCopy, b -> {
-                future.complete(t.containsAll(b));
-            });
-        });
-        return future.get();
     }
 }
