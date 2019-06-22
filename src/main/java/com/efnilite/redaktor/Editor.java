@@ -1,17 +1,17 @@
-package com.efnilite.redaktor.object.player;
+package com.efnilite.redaktor;
 
-import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.block.IBlockFactory;
 import com.efnilite.redaktor.object.pattern.Pattern;
-import com.efnilite.redaktor.object.queue.types.BlockQueue;
-import com.efnilite.redaktor.object.queue.types.Cuboid2DResizeQueue;
-import com.efnilite.redaktor.object.queue.types.Cuboid3DResizeQueue;
-import com.efnilite.redaktor.object.queue.types.SlowBlockQueue;
+import com.efnilite.redaktor.object.queue.types.*;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
+import com.efnilite.redaktor.object.selection.internal.HistorySelection;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The main editor for APIs and Players.
@@ -26,16 +26,18 @@ public class Editor<T extends CommandSender> {
     private int maxChange;
     private boolean sendUpdates;
     private World world;
-    private IBlockFactory tools;
+    private List<HistorySelection> history;
 
     public Editor(T sender) {
         this.change = 0;
         this.maxChange = -1;
         this.sendUpdates = false;
-        this.tools = Redaktor.getBlockFactory();
         this.sender = sender;
+        this.history = new ArrayList<>();
         if (sender instanceof Player) {
             this.world = ((Player) sender).getWorld();
+        } else {
+            this.world = Bukkit.getWorlds().get(0);
         }
     }
 
@@ -43,27 +45,27 @@ public class Editor<T extends CommandSender> {
         this.change = 0;
         this.maxChange = -1;
         this.sendUpdates = false;
-        this.tools = Redaktor.getBlockFactory();
         this.sender = sender;
         this.world = world;
+        this.history = new ArrayList<>();
     }
 
     public Editor(T sender, World world, int maxChange) {
         this.change = 0;
         this.sendUpdates = false;
-        this.tools = Redaktor.getBlockFactory();
-        this.sender = sender;
         this.world = world;
+        this.sender = sender;
         this.maxChange = maxChange;
+        this.history = new ArrayList<>();
     }
 
     public Editor(T sender, World world, int maxChange, boolean sendUpdates) {
         this.change = 0;
+        this.world = world;
         this.sender = sender;
         this.maxChange = maxChange;
         this.sendUpdates = sendUpdates;
-        this.world = world;
-        this.tools = Redaktor.getBlockFactory();
+        this.history = new ArrayList<>();
     }
 
     /**
@@ -77,11 +79,12 @@ public class Editor<T extends CommandSender> {
      */
     public void setBlocks(CuboidSelection cuboid, Pattern pattern) {
         if (checkLimit()) {
-            Redaktor.getInstance().getLogger().info("BlockQueue");
             BlockQueue queue = new BlockQueue(pattern);
-            Redaktor.getInstance().getLogger().info("Build");
-            int change = queue.build(cuboid);
-            this.change += change;
+            queue.build(cuboid);
+
+            this.change += cuboid.getDimensions().getVolume();
+            this.history.add(cuboid.toHistory());
+
             send("You successfully set " + change + " blocks.");
         }
     }
@@ -100,9 +103,12 @@ public class Editor<T extends CommandSender> {
      */
     public void setSlowBlocks(CuboidSelection cuboid, Pattern pattern, int perTick) {
         if (checkLimit()) {
-            SlowBlockQueue queue = new SlowBlockQueue(perTick, pattern);
-            int change = queue.build(cuboid);
-            this.change += change;
+            SlowBlockQueue queue = new SlowBlockQueue(pattern, perTick);
+            queue.build(cuboid);
+
+            this.change += cuboid.getDimensions().getVolume();
+            this.history.add(cuboid.toHistory());
+
             send("You successfully set " + change + " blocks.");
         }
     }
@@ -125,8 +131,11 @@ public class Editor<T extends CommandSender> {
         if (checkLimit()) {
             if (x > 0 && z > 0) {
                 Cuboid2DResizeQueue queue = new Cuboid2DResizeQueue(x, z);
-                int change = queue.build(cuboid);
-                this.change += change;
+                queue.build(cuboid);
+
+                this.change += cuboid.getDimensions().getVolume();
+                this.history.add(cuboid.toHistory());
+
                 send("You successfully set " + change + " blocks.");
             } else {
                 throw new IllegalArgumentException("x and z need to be above 0");
@@ -155,13 +164,44 @@ public class Editor<T extends CommandSender> {
         if (checkLimit()) {
             if (x > 0 && y > 0 && z > 0) {
                 Cuboid3DResizeQueue queue = new Cuboid3DResizeQueue(x, y, z);
-                int change = queue.build(cuboid);
-                this.change += change;
+                queue.build(cuboid);
+
+                this.change += cuboid.getDimensions().getVolume();
+                this.history.add(cuboid.toHistory());
+
                 send("You successfully set " + change + " blocks.");
             } else {
                 throw new IllegalArgumentException("x, y and z need to be above 0");
             }
         }
+    }
+
+    /**
+     * Undo an amount of actions.
+     *
+     * @param   amount
+     *          The amount of undos.
+     */
+    public void undo(int amount) {
+        for (int i = 0; i < amount; i++) {
+            if (this.history.size() >= 1) {
+                HistorySelection selection = this.history.get(0);
+
+                CopyQueue queue = new CopyQueue();
+                queue.build(selection.getBlockMap());
+
+                this.history.remove(0);
+            } else {
+                return;
+            }
+        }
+    }
+
+    /**
+     * Undo the latest action
+     */
+    public void undo() {
+        this.undo(1);
     }
 
     /**

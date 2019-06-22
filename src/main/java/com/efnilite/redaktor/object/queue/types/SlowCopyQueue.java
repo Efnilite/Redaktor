@@ -2,11 +2,10 @@ package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
-import com.efnilite.redaktor.object.queue.AbstractSlowQueue;
 import com.efnilite.redaktor.object.queue.EditQueue;
 import com.efnilite.redaktor.object.queue.internal.BlockMap;
-import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.Tasks;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.LinkedList;
@@ -18,25 +17,24 @@ import java.util.Queue;
  *
  * @see CopyQueue
  */
-public class SlowCopyQueue extends AbstractSlowQueue implements EditQueue<List<BlockMap>> {
+public class SlowCopyQueue implements EditQueue<List<BlockMap>> {
 
-    public SlowCopyQueue(int perTick) {
-        super(perTick);
+    private int tick;
+
+    public SlowCopyQueue(int tick) {
+        this.tick = tick;
     }
 
     @Override
-    public int build(List<BlockMap> blocks) {
+    public void build(List<BlockMap> blocks) {
         IBlockFactory factory = Redaktor.getBlockFactory();
         Queue<BlockMap> queue = new LinkedList<>(blocks);
-        AsyncFuture<Integer> future = new AsyncFuture<>();
-        int count = queue.size();
 
         BukkitRunnable runnable = new BukkitRunnable() {
             @Override
             public void run() {
-                for (int i = 0; i < perTick; i++) {
+                for (int i = 0; i < tick; i++) {
                     if (queue.peek() == null) {
-                        future.complete(count);
                         this.cancel();
                         return;
                     }
@@ -44,12 +42,13 @@ public class SlowCopyQueue extends AbstractSlowQueue implements EditQueue<List<B
                     BlockMap map = queue.poll();
                     if (map.getMaterial() != map.getBlock().getType()) {
                         factory.setBlock(map.getBlock(), map.getMaterial());
+                        if (!map.getData().equals(map.getBlock().getBlockData().getAsString())) {
+                            factory.setBlock(map.getBlock().getLocation(), map.getMaterial(), Bukkit.createBlockData(map.getData()));
+                        }
                     }
                 }
             }
         };
         Tasks.repeat(runnable, 1);
-        return future.get();
     }
 }
-

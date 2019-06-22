@@ -1,6 +1,5 @@
 package com.efnilite.redaktor.util.getter;
 
-import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.util.Tasks;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -47,7 +46,6 @@ public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List
                     loc.setZ(z);
 
                     blocks.add(loc.getBlock());
-                    Redaktor.getInstance().getLogger().info(loc.getBlock().toString());
                 }
             }
         }

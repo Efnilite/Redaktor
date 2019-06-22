@@ -5,7 +5,6 @@ import com.efnilite.redaktor.object.pattern.BlockPattern;
 import com.efnilite.redaktor.object.pattern.ChancePattern;
 import com.efnilite.redaktor.object.pattern.MorePattern;
 import com.efnilite.redaktor.object.pattern.Pattern;
-import com.efnilite.redaktor.object.player.Editor;
 import com.efnilite.redaktor.object.player.RedaktorPlayer;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
 import com.efnilite.redaktor.schematic.Schematic;

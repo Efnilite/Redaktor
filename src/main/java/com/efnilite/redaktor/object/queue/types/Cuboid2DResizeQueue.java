@@ -2,10 +2,8 @@ package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
-import com.efnilite.redaktor.object.queue.AbstractResizeQueue;
 import com.efnilite.redaktor.object.queue.EditQueue;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
-import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.block.Block;
@@ -17,23 +15,25 @@ import java.util.Queue;
 /**
  * A queue for copying cuboid in a 2D way (using x and z)
  */
-public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueue<CuboidSelection> {
+public class Cuboid2DResizeQueue implements EditQueue<CuboidSelection> {
+
+    private int x;
+    private int z;
 
     public Cuboid2DResizeQueue(int x, int z) {
-        super(x, 0, z);
+        this.x = x;
+        this.z = z;
     }
 
     @Override
-    public int build(CuboidSelection cuboid) {
+    public void build(CuboidSelection cuboid) {
         IBlockFactory factory = Redaktor.getBlockFactory();
-        AsyncFuture<Integer> future = new AsyncFuture<>();
         int x = cuboid.getDimensions().getWidth();
         int z = cuboid.getDimensions().getLength();
 
         new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), t -> {
             Queue<Block> queue = new LinkedList<>();
             Queue<Block> original = new LinkedList<>();
-            int count;
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
@@ -52,14 +52,12 @@ public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueu
                 }
             };
             Tasks.async(runnable);
-            count = queue.size();
 
             BukkitRunnable runnable1 = new BukkitRunnable() {
                 @Override
                 public void run() {
                     for (int i = 0; i < Redaktor.getAllocator().getChanger(); i++) {
                         if (queue.peek() == null || original.peek() != null) {
-                            future.complete(count);
                             this.cancel();
                             return;
                         }
@@ -74,6 +72,5 @@ public class Cuboid2DResizeQueue extends AbstractResizeQueue implements EditQueu
             };
             Tasks.repeat(runnable1, 1);
         });
-        return future.get();
     }
 }

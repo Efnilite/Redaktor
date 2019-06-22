@@ -1,5 +1,6 @@
 package com.efnilite.redaktor.object.selection;
 
+import com.efnilite.redaktor.object.selection.internal.HistorySelection;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -8,7 +9,7 @@ import org.bukkit.World;
  *
  * @see Dimensions
  */
-public class CuboidSelection {
+public class CuboidSelection implements Selection {
 
     private World world;
     private Location pos1;
@@ -29,6 +30,11 @@ public class CuboidSelection {
         this.dimensions = new Dimensions(this);
     }
 
+    /**
+     * Gets the walls
+     *
+     * @return the collection of cuboids containing the walls.
+     */
     public SquareSelection getWalls() {
         Location max = this.getMaximumPoint();
         Location min = this.getMinimumPoint();
@@ -45,6 +51,11 @@ public class CuboidSelection {
         );
     }
 
+    /**
+     * Gets all edges (including the top and bottom, excluded in {@link #getWalls()}
+     *
+     * @return the collection of cuboids containing the edges
+     */
     public SquareSelection getEdges() {
         Location max = this.getMaximumPoint();
         Location min = this.getMinimumPoint();
@@ -65,10 +76,29 @@ public class CuboidSelection {
         );
     }
 
+    /**
+     * Creates a new {@link HistorySelection}
+     *
+     * @return a new HistorySelection
+     */
+    public HistorySelection toHistory() {
+        return new HistorySelection(world, pos1, pos2);
+    }
+
+    /**
+     * Calculate the maximal point
+     *
+     * @return the maximal point
+     */
     public Location getMaximumPoint() {
         return new Location(world, Math.max(pos1.getBlockX(), pos2.getBlockX()), Math.max(pos1.getBlockY(), pos2.getBlockY()), Math.max(pos1.getBlockZ(), pos2.getBlockZ()));
     }
 
+    /**
+     * Calculate the minimal point
+     *
+     * @return the minimal point
+     */
     public Location getMinimumPoint() {
         return new Location(world, Math.min(pos1.getBlockX(), pos2.getBlockX()), Math.min(pos1.getBlockY(), pos2.getBlockY()), Math.min(pos1.getBlockZ(), pos2.getBlockZ()));
     }

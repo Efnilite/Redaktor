@@ -1,10 +1,11 @@
 com.efnilite.redaktor
 com.efnilite.redaktor.block
 com.efnilite.redaktor.object.pattern
-com.efnilite.redaktor.object.player
 com.efnilite.redaktor.object.queue
 com.efnilite.redaktor.object.queue.types
 com.efnilite.redaktor.object.selection
 com.efnilite.redaktor.schematic
+com.efnilite.redaktor.util
+com.efnilite.redaktor.util.factory
 com.efnilite.redaktor.util.getter
 com.efnilite.redaktor.util.item

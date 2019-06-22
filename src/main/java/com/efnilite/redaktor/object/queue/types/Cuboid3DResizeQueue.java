@@ -2,10 +2,8 @@ package com.efnilite.redaktor.object.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
-import com.efnilite.redaktor.object.queue.AbstractResizeQueue;
 import com.efnilite.redaktor.object.queue.EditQueue;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
-import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.block.Block;
@@ -17,16 +15,21 @@ import java.util.Queue;
 /**
  * A queue for copying cuboids in a 3D way
  */
-public class Cuboid3DResizeQueue extends AbstractResizeQueue implements EditQueue<CuboidSelection> {
+public class Cuboid3DResizeQueue implements EditQueue<CuboidSelection> {
+
+    private int x;
+    private int y;
+    private int z;
 
     public Cuboid3DResizeQueue(int x, int y, int z) {
-        super(x, y, z);
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     @Override
-    public int build(CuboidSelection cuboid) {
+    public void build(CuboidSelection cuboid) {
         IBlockFactory factory = Redaktor.getBlockFactory();
-        AsyncFuture<Integer> future = new AsyncFuture<>();
         int x = cuboid.getDimensions().getWidth();
         int z = cuboid.getDimensions().getLength();
 
@@ -63,7 +66,6 @@ public class Cuboid3DResizeQueue extends AbstractResizeQueue implements EditQueu
                 public void run() {
                     for (int i = 0; i < Redaktor.getAllocator().getChanger(); i++) {
                         if (queue.peek() == null || original.peek() == null) {
-                            future.complete(queue.size());
                             this.cancel();
                             return;
                         }
@@ -78,6 +80,5 @@ public class Cuboid3DResizeQueue extends AbstractResizeQueue implements EditQueu
             };
             Tasks.repeat(runnable1, 1);
         });
-        return future.get();
     }
 }

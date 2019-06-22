@@ -13,9 +13,7 @@ public interface EditQueue<T> {
      *
      * @param   cuboid
      *          The data it needs to build whatever the EditQueue does.
-     *
-     * @return  The amount of blocks that have been changed.
      */
-    int build(T cuboid);
+    void build(T cuboid);
 
 }

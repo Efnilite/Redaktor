@@ -1,5 +1,6 @@
 package com.efnilite.redaktor.object.player;
 
+import com.efnilite.redaktor.Editor;
 import com.efnilite.redaktor.Redaktor;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;

@@ -1,10 +1,9 @@
 package com.efnilite.redaktor.block;
 
-import com.efnilite.redaktor.object.pattern.Pattern;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 
 /**
  * Class for setting & getting blocks using net.minecraft.server
@@ -42,33 +41,14 @@ public interface IBlockFactory {
     /**
      * Set a block without updating the surroudings or the block.
      *
-     * @see #setBlock(Location, Material)
+     * @param   location
+     *          The location.
      *
-     * @param   block
-     *          The block.
+     * @param   material
+     *          The material it's going to be set to.
      *
-     * @param   pattern
-     *          The pattern it's going to be set to.
+     * @param   data
+     *          The material data.
      */
-    void setBlock(Block block, Pattern pattern);
-
-
-    /**
-     * Set a block without updating the surroudings or the block.
-     *
-     * @see #setBlock(Location, Material)
-     *
-     * @param   x
-     *          The x value.
-     *
-     * @param   y
-     *          The y value.
-     *
-     * @param   z
-     *          The z value.
-     *
-     * @param   pattern
-     *          The pattern it's going to be set to.
-     */
-    void setBlock(World world, int x, int y, int z, Pattern pattern);
+    void setBlock(Location location, Material material, BlockData data);
 }

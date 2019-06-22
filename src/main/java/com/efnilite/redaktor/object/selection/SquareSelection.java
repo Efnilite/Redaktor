@@ -9,7 +9,7 @@ import java.util.List;
  *
  * @see CuboidSelection
  */
-public class SquareSelection {
+public class SquareSelection implements Selection {
 
     private List<CuboidSelection> cuboids;
 

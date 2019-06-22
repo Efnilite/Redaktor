@@ -3,10 +3,8 @@ package com.efnilite.redaktor.object.queue.types;
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
 import com.efnilite.redaktor.object.pattern.Pattern;
-import com.efnilite.redaktor.object.queue.AbstractSlowQueue;
 import com.efnilite.redaktor.object.queue.EditQueue;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
-import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.Material;
@@ -21,19 +19,19 @@ import java.util.Queue;
  *
  * @see BlockQueue
  */
-public class SlowBlockQueue extends AbstractSlowQueue implements EditQueue<CuboidSelection> {
+public class SlowBlockQueue implements EditQueue<CuboidSelection> {
 
+    private int tick;
     private Pattern pattern;
 
-    public SlowBlockQueue(int perTick, Pattern pattern) {
-        super(perTick);
+    public SlowBlockQueue(Pattern pattern, int tick) {
+        this.tick = tick;
         this.pattern = pattern;
     }
 
     @Override
-    public int build(CuboidSelection cuboid) {
+    public void build(CuboidSelection cuboid) {
         IBlockFactory factory = Redaktor.getBlockFactory();
-        AsyncFuture<Integer> future = new AsyncFuture<>();
         new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), t -> {
             Queue<Block> queue = new LinkedList<>(t);
             int count = queue.size();
@@ -41,9 +39,8 @@ public class SlowBlockQueue extends AbstractSlowQueue implements EditQueue<Cuboi
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override
                 public void run() {
-                    for (int i = 0; i < perTick; i++) {
+                    for (int i = 0; i < tick; i++) {
                         if (queue.peek() == null) {
-                            future.complete(count);
                             this.cancel();
                             return;
                         }
@@ -58,6 +55,5 @@ public class SlowBlockQueue extends AbstractSlowQueue implements EditQueue<Cuboi
             };
             Tasks.repeat(runnable, 1);
         });
-        return future.get();
     }
 }
