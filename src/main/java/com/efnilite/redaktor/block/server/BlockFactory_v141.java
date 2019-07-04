@@ -5,8 +5,6 @@ import net.minecraft.server.v1_14_R1.BlockPosition;
 import net.minecraft.server.v1_14_R1.IBlockData;
 import net.minecraft.server.v1_14_R1.World;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_14_R1.block.data.CraftBlockData;
@@ -14,20 +12,7 @@ import org.bukkit.craftbukkit.v1_14_R1.block.data.CraftBlockData;
 public class BlockFactory_v141 implements IBlockFactory {
 
     @Override
-    public void setBlock(Location location, Material material) {
-        IBlockData data = ((CraftBlockData) material.createBlockData()).getState();
-        World world = ((CraftWorld) location.getWorld()).getHandle();
-        BlockPosition position = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-
-        IBlockData old = world.getType(position);
-        boolean success = world.setTypeUpdate(position, data);
-        if (success) {
-            world.notify(position, old, data, 3);
-        }
-    }
-
-    @Override
-    public void setBlock(Location location, Material material, BlockData data) {
+    public void setBlock(Location location, BlockData data) {
         IBlockData newData = ((CraftBlockData) data).getState();
         World world = ((CraftWorld) location.getWorld()).getHandle();
         BlockPosition position = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
@@ -37,10 +22,5 @@ public class BlockFactory_v141 implements IBlockFactory {
         if (success) {
             world.notify(position, old, newData, 3);
         }
-    }
-
-    @Override
-    public void setBlock(Block block, Material material) {
-        this.setBlock(block.getLocation(), material);
     }
 }

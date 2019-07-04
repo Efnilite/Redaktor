@@ -1,8 +1,9 @@
 package com.efnilite.redaktor.pattern;
 
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,8 +63,12 @@ public enum BlockTypes {
         this.materials = materials;
     }
 
-    public List<Material> getMaterials() {
-        return Arrays.asList(materials);
+    public List<BlockData> getMaterials() {
+        List<BlockData> back = new ArrayList<>();
+        for (Material material : materials) {
+            back.add(material.createBlockData());
+        }
+        return back;
     }
 
     public static BlockTypes getType(String name) {

@@ -29,7 +29,7 @@ public class HistorySelection implements Selection {
 
         new AsyncBlockGetter(pos1, pos2, t -> {
             for (Block block : t) {
-                map.add(new BlockMap(block, block.getType()));
+                map.add(new BlockMap(block, block.getBlockData()));
             }
         });
     }

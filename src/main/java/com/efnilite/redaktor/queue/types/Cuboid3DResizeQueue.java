@@ -72,8 +72,8 @@ public class Cuboid3DResizeQueue implements EditQueue<CuboidSelection> {
 
                         Block block = queue.poll();
                         Block or = original.poll();
-                        if (block.getType() != or.getType()) {
-                            factory.setBlock(block, or.getType());
+                        if (!block.getBlockData().getAsString(true).equals(or.getBlockData().getAsString(true))) {
+                            factory.setBlock(block.getLocation(), or.getBlockData());
                         }
                     }
                 }

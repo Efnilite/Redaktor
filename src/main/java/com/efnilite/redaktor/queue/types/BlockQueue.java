@@ -7,8 +7,8 @@ import com.efnilite.redaktor.queue.EditQueue;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.LinkedList;
@@ -41,9 +41,9 @@ public class BlockQueue implements EditQueue<CuboidSelection> {
                         }
 
                         Block block = queue.poll();
-                        Material material = pattern.apply(block);
-                        if (block.getType() != material) {
-                            factory.setBlock(block, material);
+                        BlockData data = pattern.apply(block);
+                        if (!block.getBlockData().getAsString(true).equals(data.getAsString(true))) {
+                            factory.setBlock(block.getLocation(), data);
                         }
                     }
                 }

@@ -1,8 +1,8 @@
 package com.efnilite.redaktor.pattern.types;
 
 import com.efnilite.redaktor.pattern.Pattern;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,29 +15,29 @@ import java.util.Random;
 public class MorePattern implements Pattern {
 
     private Random random;
-    private List<Material> materials;
+    private List<BlockData> materials;
 
     public MorePattern() {
         this.random = new Random();
         this.materials = new ArrayList<>();
     }
 
-    public MorePattern(List<Material> materials) {
+    public MorePattern(List<BlockData> materials) {
         this.random = new Random();
         this.materials = materials;
     }
 
     @Override
-    public Material apply(Block block) {
+    public BlockData apply(Block block) {
         int index = random.nextInt(materials.size() - 1);
         return materials.get(index);
     }
 
-    public void add(Material material) {
+    public void add(BlockData material) {
         this.materials.add(material);
     }
 
-    public void addAll(List<Material> materials) {
+    public void addAll(List<BlockData> materials) {
         this.materials.addAll(materials);
     }
 }

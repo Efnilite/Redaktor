@@ -3,10 +3,7 @@ package com.efnilite.redaktor.command;
 import com.efnilite.connotations.Command;
 import com.efnilite.connotations.Commandable;
 import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.pattern.types.BlockPattern;
 import com.efnilite.redaktor.player.RedaktorPlayer;
-import com.efnilite.redaktor.queue.types.BlockQueue;
-import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.item.ItemBuilder;
 import com.efnilite.redaktor.util.web.UpdateChecker;
 import org.bukkit.ChatColor;
@@ -42,13 +39,6 @@ public class RedaktorCommands implements Commandable {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c/redaktor update &7- &fCheck to see if there's an update"));
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&c/wand &7- &fGet the Wand"));
         }
-    }
-
-    @Command
-    public void test(CommandSender sender, String[] args) {
-        Player player = (Player) sender;
-        BlockQueue queue = new BlockQueue(new BlockPattern(Material.STONE));
-        queue.build(new CuboidSelection(player.getLocation(), player.getLocation().add(2, 2, 2)));
     }
 
     @Command(

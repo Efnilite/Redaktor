@@ -1,44 +1,28 @@
 package com.efnilite.redaktor.queue.internal;
 
-import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 
 public class BlockMap {
 
     private Block block;
-    private String data;
-    private Material material;
+    private BlockData data;
 
     public BlockMap(Block block) {
         this.block = block;
-        this.material = block.getType();
+        this.data = block.getBlockData();
     }
 
-    public BlockMap(Block block, Material material) {
-        this.block = block;
-        this.material = material;
-    }
-
-    public BlockMap(Block block, String data) {
+    public BlockMap(Block block, BlockData data) {
         this.block = block;
         this.data = data;
     }
 
-    public BlockMap(Block block, String data, Material material) {
-        this.block = block;
-        this.data = data;
-        this.material = material;
-    }
-
-    public String getData() {
+    public BlockData getData() {
         return data;
     }
 
     public Block getBlock() {
         return block;
-    }
-
-    public Material getMaterial() {
-        return material;
     }
 }

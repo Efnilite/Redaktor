@@ -65,11 +65,11 @@ public class RedaktorAPI {
      */
     public static Pattern toPattern(Material... materials) {
         if (materials.length == 1) {
-            return new BlockPattern(materials[0]);
+            return new BlockPattern(materials[0].createBlockData());
         } else {
             MorePattern pattern = new MorePattern();
             for (Material material : materials) {
-                pattern.add(material);
+                pattern.add(material.createBlockData());
             }
             return pattern;
         }

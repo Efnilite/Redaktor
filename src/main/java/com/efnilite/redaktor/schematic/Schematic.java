@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.stream.JsonReader;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -109,7 +110,7 @@ public class Schematic {
             for (WritableBlock block : writableBlocks) {
                 Location current = at.clone();
                 current.add(block.getOffsetX(), block.getOffsetY(), block.getOffsetZ()); // to offset from original point
-                blocks.add(new BlockMap(current.getBlock(), block.getData()));
+                blocks.add(new BlockMap(current.getBlock(), Bukkit.createBlockData(block.getData())));
             }
             CopyQueue blockQueue = new CopyQueue();
             blockQueue.build(blocks);
@@ -159,7 +160,7 @@ public class Schematic {
 
                     data = data.replaceAll(pattern.toString(), "facing=" + facing.getString());
 
-                    blocks.add(new BlockMap(current.getBlock(), data));
+                    blocks.add(new BlockMap(current.getBlock(), Bukkit.createBlockData(data)));
                 }
                 CopyQueue blockQueue = new CopyQueue();
                 blockQueue.build(blocks);
@@ -193,7 +194,6 @@ public class Schematic {
             throw new IllegalArgumentException("File can't be null!");
         }
     }
-
 
     public enum Facing {
 

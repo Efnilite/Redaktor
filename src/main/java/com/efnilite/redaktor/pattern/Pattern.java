@@ -23,9 +23,9 @@ public interface Pattern {
      *          The block where the pattern needs
      *          to be calculated.
      *
-     * @return  the Material the block needs to be set to.
+     * @return  the BlockData the block needs to be set to.
      */
-    Material apply(Block block);
+    BlockData apply(Block block);
 
     /**
      * A class for parsing patterns
@@ -57,7 +57,7 @@ public interface Pattern {
                     } if (element.contains("&")) {
                         String parsed = pattern.replaceAll("&", "");
                         BlockData data = Bukkit.createBlockData(Util.randomizeBooleans(parsed));
-                        more.add(data.getMaterial());
+                        more.add(data);
                         continue;
                     }
 
@@ -65,7 +65,7 @@ public interface Pattern {
                     if (material == null) {
                         return null;
                     }
-                    more.add(material);
+                    more.add(material.createBlockData());
                 }
                 return more;
             }
@@ -78,7 +78,7 @@ public interface Pattern {
             } if (pattern.contains("&")) {
                 String parsed = pattern.replaceAll("&", "");
                 BlockData data = Bukkit.createBlockData(Util.randomizeBooleans(parsed));
-                back = new BlockPattern(data.getMaterial());
+                back = new BlockPattern(data);
             }
 
             if (back == null) {
@@ -86,7 +86,7 @@ public interface Pattern {
                 if (material == null) {
                     return null;
                 }
-                back = new BlockPattern(material);
+                back = new BlockPattern(material.createBlockData());
             }
             return back;
         }
