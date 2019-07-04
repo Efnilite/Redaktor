@@ -1,23 +1,10 @@
 package com.efnilite.redaktor.command;
 
-import com.efnilite.connotations.Command;
 import com.efnilite.connotations.Commandable;
-import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.object.player.RedaktorPlayer;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
-
-import java.util.StringJoiner;
 
 public class SuperItemCommands implements Commandable {
 
-    @Command(
+    /*@Command(
         permission = "redaktor.supertool"
     )
     public void supertool(CommandSender sender, String[] args) {
@@ -73,5 +60,5 @@ public class SuperItemCommands implements Commandable {
             container2.set(name2, PersistentDataType.STRING, command);
             item.setItemMeta(meta);
         }
-    }
+    }*/
 }

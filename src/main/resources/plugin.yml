@@ -1,6 +1,6 @@
 name: Redaktor
 author: Efnilite
-version: 1.0
+version: 1.0a
 api-version: 1.14
-website: https://github.com/Efnilite/Redaktor
 main: com.efnilite.redaktor.Redaktor
+website: https://github.com/Efnilite/Redaktor

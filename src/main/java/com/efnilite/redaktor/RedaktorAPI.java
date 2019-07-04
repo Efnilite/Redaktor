@@ -1,10 +1,8 @@
 package com.efnilite.redaktor;
 
-import com.efnilite.redaktor.command.SuperItemCommands;
-import com.efnilite.redaktor.object.pattern.BlockPattern;
-import com.efnilite.redaktor.object.pattern.ChancePattern;
-import com.efnilite.redaktor.object.pattern.MorePattern;
 import com.efnilite.redaktor.object.pattern.Pattern;
+import com.efnilite.redaktor.object.pattern.types.BlockPattern;
+import com.efnilite.redaktor.object.pattern.types.MorePattern;
 import com.efnilite.redaktor.object.player.RedaktorPlayer;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
 import com.efnilite.redaktor.schematic.Schematic;
@@ -20,8 +18,6 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.Plugin;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -30,12 +26,11 @@ import java.util.function.Consumer;
 
 public class RedaktorAPI {
 
-    private static Plugin plugin;
+    private static Pattern.Parser parser;
     private static HashMap<World, Editor<ConsoleCommandSender>> worldEditors;
 
-    // To avoid creating a new instance
     RedaktorAPI() {
-        plugin = Redaktor.getInstance();
+        parser = new Pattern.Parser();
         worldEditors = new HashMap<>();
 
         for (World world : Bukkit.getWorlds()) {
@@ -45,7 +40,7 @@ public class RedaktorAPI {
 
     /**
      * A way to parse a Pattern from a string.
-     * Note: this is very likely to not work.
+     * Note: this isn't tested yet
      *
      * @param   string
      *          The string of the Pattern.
@@ -53,30 +48,7 @@ public class RedaktorAPI {
      * @return  the Pattern instance, made with the data available in string (the param).
      */
     public static Pattern parsePattern(String string) {
-        if (!string.contains(",")) {
-            Material material = Material.getMaterial(string.toUpperCase());
-            Redaktor.getInstance().getLogger().info("Parsed pattern 1");
-            return new BlockPattern(material);
-        } else if (!string.contains("%")) {
-            String[] mats = string.split(",");
-            MorePattern pattern = new MorePattern();
-            for (String mat : mats) {
-                Material material = Material.getMaterial(mat.toUpperCase());
-                pattern.add(material);
-            }
-            Redaktor.getInstance().getLogger().info("Parsed pattern 2");
-            return pattern;
-        } else {
-            String[] mats = string.split(",");
-            ChancePattern pattern = new ChancePattern();
-            for (String mat : mats) {
-                Material material = Material.getMaterial(mat.split("%")[0]);
-                int chance = Integer.parseInt(mat.split("%")[1]);
-                pattern.add(material, chance);
-            }
-            Redaktor.getInstance().getLogger().info("Parsed pattern 3");
-            return pattern;
-        }
+        return parser.parse(string);
     }
 
     /**
@@ -146,7 +118,7 @@ public class RedaktorAPI {
         });
     }
 
-    /**
+    /*/**
      * Convert an ItemStack to a SuperItem.
      *
      * @param   item
@@ -155,9 +127,9 @@ public class RedaktorAPI {
      * @param   whatToExecute
      *          The command to be executed.
      */
-    public static void createSuperItem(ItemStack item, String whatToExecute) {
+    /*public static void createSuperItem(ItemStack item, String whatToExecute) {
         SuperItemCommands.SuperItemBuilder.create(item, whatToExecute);
-    }
+    }*/
 
     /**
      * Get a default Editor instance for a World.

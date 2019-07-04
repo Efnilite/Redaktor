@@ -3,7 +3,8 @@ package com.efnilite.redaktor.command;
 import com.efnilite.connotations.Command;
 import com.efnilite.connotations.Commandable;
 import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.object.pattern.BlockPattern;
+import com.efnilite.redaktor.object.pattern.types.BlockPattern;
+import com.efnilite.redaktor.object.player.RedaktorPlayer;
 import com.efnilite.redaktor.object.queue.types.BlockQueue;
 import com.efnilite.redaktor.object.selection.CuboidSelection;
 import com.efnilite.redaktor.util.item.ItemBuilder;
@@ -17,7 +18,7 @@ public class RedaktorCommands implements Commandable {
 
     @Command
     public void redaktor(CommandSender sender, String[] args) {
-        if (!args[0].isEmpty()) {
+        if (args[0] != null) {
             if (args[0].equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7Redaktor is currently version " + Redaktor.getInstance().getDescription().getVersion()));
             } else if (args[0].equalsIgnoreCase("update")) {
@@ -50,11 +51,26 @@ public class RedaktorCommands implements Commandable {
         queue.build(new CuboidSelection(player.getLocation(), player.getLocation().add(2, 2, 2)));
     }
 
-    @Command(permission = "redaktor.wand")
+    @Command(
+            permission = "redaktor.wand"
+    )
     public void wand(CommandSender sender, String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             player.getInventory().addItem(new ItemBuilder(Material.WOODEN_AXE, "&cWand").build());
+        }
+    }
+
+    @Command(
+            permission = "redaktor.undo"
+    )
+    public void undo(CommandSender sender, String[] args) {
+        Player pl = (Player) sender;
+        RedaktorPlayer player = RedaktorPlayer.wrap(pl);
+        if (args[0] != null) {
+            player.getEditor().undo(Integer.parseInt(args[0]));
+        } else {
+            player.getEditor().undo();
         }
     }
 }

@@ -24,6 +24,12 @@ public class BlockMap {
         this.data = data;
     }
 
+    public BlockMap(Block block, String data, Material material) {
+        this.block = block;
+        this.data = data;
+        this.material = material;
+    }
+
     public String getData() {
         return data;
     }
