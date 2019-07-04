@@ -4,7 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.block.data.BlockData;
 
 /**
- * Class for setting & getting blocks using net.minecraft.server
+ * Class for setting and getting blocks using net.minecraft.server
  *
  * This is because if this was using Bukkit's types it would
  * automatically update blocks that have been placed, resulting
