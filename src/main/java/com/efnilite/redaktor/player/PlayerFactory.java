@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.object.player;
+package com.efnilite.redaktor.player;
 
 import com.efnilite.redaktor.util.factory.RegisterFactory;
 import org.bukkit.entity.Player;

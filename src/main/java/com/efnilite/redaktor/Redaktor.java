@@ -7,11 +7,9 @@ import com.efnilite.redaktor.block.server.BlockFactory_v131;
 import com.efnilite.redaktor.block.server.BlockFactory_v141;
 import com.efnilite.redaktor.command.RedaktorCommands;
 import com.efnilite.redaktor.command.SelectionCommands;
-import com.efnilite.redaktor.object.player.PlayerFactory;
-import com.efnilite.redaktor.object.player.PlayerListener;
+import com.efnilite.redaktor.player.PlayerFactory;
+import com.efnilite.redaktor.player.PlayerListener;
 import com.efnilite.redaktor.util.ChangeLocator;
-import com.efnilite.redaktor.util.Configuration;
-import com.efnilite.redaktor.util.Reflect;
 import com.efnilite.redaktor.util.web.Metrics;
 import com.efnilite.redaktor.util.web.UpdateChecker;
 import org.bukkit.Bukkit;
@@ -24,7 +22,6 @@ public class Redaktor extends JavaPlugin {
     private static Plugin plugin;
     private static Metrics metrics;
     private static ChangeLocator allocator;
-    private static Configuration configuration;
     private static UpdateChecker checker;
 
     private static IBlockFactory blockFactory;
@@ -37,7 +34,7 @@ public class Redaktor extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
-        String version = Reflect.getVersion();
+        String version = this.getVersion();
 
         if (version.equals("v1_14_R1")) {
             blockFactory = new BlockFactory_v141();
@@ -50,7 +47,6 @@ public class Redaktor extends JavaPlugin {
             this.getServer().getPluginManager().disablePlugin(this);
         }
 
-        configuration = new Configuration();
         allocator = new ChangeLocator();
         checker = new UpdateChecker();
 
@@ -86,16 +82,8 @@ public class Redaktor extends JavaPlugin {
         }
     }
 
-    public static boolean isLatest() {
-        return isLatest;
-    }
-
     public static UpdateChecker getChecker() {
         return checker;
-    }
-
-    public static CommandFactory getCommandFactory() {
-        return commandFactory;
     }
 
     public static IBlockFactory getBlockFactory() {
@@ -106,19 +94,15 @@ public class Redaktor extends JavaPlugin {
         return plugin;
     }
 
-    public static Metrics getMetrics() {
-        return metrics;
-    }
-
     public static ChangeLocator getAllocator() {
         return allocator;
     }
 
-    public static Configuration getConfiguration() {
-        return configuration;
-    }
-
     public static PlayerFactory getPlayerFactory() {
         return playerFactory;
+    }
+
+    private String getVersion() {
+        return Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     }
 }

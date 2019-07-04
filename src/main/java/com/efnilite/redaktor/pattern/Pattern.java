@@ -1,9 +1,12 @@
-package com.efnilite.redaktor.object.pattern;
+package com.efnilite.redaktor.pattern;
 
-import com.efnilite.redaktor.object.pattern.types.BlockPattern;
-import com.efnilite.redaktor.object.pattern.types.MorePattern;
+import com.efnilite.redaktor.pattern.types.BlockPattern;
+import com.efnilite.redaktor.pattern.types.MorePattern;
+import com.efnilite.redaktor.util.Util;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 
 /**
  * An interface for Patterns.
@@ -33,6 +36,14 @@ public interface Pattern {
 
         }
 
+        /**
+         * Parse a {@link Pattern} from a string.
+         *
+         * @param   pattern
+         *          The string of the pattern.
+         *
+         * @return  a new {@link Pattern} instance.
+         */
         public Pattern parse(String pattern) {
             if (pattern.contains(",")) {
                 String[] elements = pattern.split(",");
@@ -42,28 +53,42 @@ public interface Pattern {
                         String parsed = pattern.replaceAll("#", "");
                         BlockTypes type = BlockTypes.getType(parsed);
                         more.addAll(type.getMaterials());
-                    } else {
-                        Material material = Material.matchMaterial(pattern);
-                        if (material == null) {
-                            return null;
-                        }
-                        more.add(material);
+                        continue;
+                    } if (element.contains("&")) {
+                        String parsed = pattern.replaceAll("&", "");
+                        BlockData data = Bukkit.createBlockData(Util.randomizeBooleans(parsed));
+                        more.add(data.getMaterial());
+                        continue;
                     }
+
+                    Material material = Material.matchMaterial(pattern);
+                    if (material == null) {
+                        return null;
+                    }
+                    more.add(material);
                 }
                 return more;
             }
 
+            Pattern back = null;
             if (pattern.contains("#")) {
                 String parsed = pattern.replaceAll("#", "");
                 BlockTypes type = BlockTypes.getType(parsed);
-                return new MorePattern(type.getMaterials());
-            } else {
+                back = new MorePattern(type.getMaterials());
+            } if (pattern.contains("&")) {
+                String parsed = pattern.replaceAll("&", "");
+                BlockData data = Bukkit.createBlockData(Util.randomizeBooleans(parsed));
+                back = new BlockPattern(data.getMaterial());
+            }
+
+            if (back == null) {
                 Material material = Material.matchMaterial(pattern);
                 if (material == null) {
                     return null;
                 }
-                return new BlockPattern(material);
+                back = new BlockPattern(material);
             }
+            return back;
         }
     }
 }

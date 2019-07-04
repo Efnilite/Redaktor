@@ -4,8 +4,8 @@ import com.efnilite.connotations.Command;
 import com.efnilite.connotations.Commandable;
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.RedaktorAPI;
-import com.efnilite.redaktor.object.player.RedaktorPlayer;
-import com.efnilite.redaktor.object.selection.CuboidSelection;
+import com.efnilite.redaktor.player.RedaktorPlayer;
+import com.efnilite.redaktor.selection.CuboidSelection;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

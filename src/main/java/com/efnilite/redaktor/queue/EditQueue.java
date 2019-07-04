@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.object.queue;
+package com.efnilite.redaktor.queue;
 
 /**
  * A class for all queues.

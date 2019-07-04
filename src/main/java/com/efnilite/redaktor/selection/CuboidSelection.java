@@ -1,6 +1,6 @@
-package com.efnilite.redaktor.object.selection;
+package com.efnilite.redaktor.selection;
 
-import com.efnilite.redaktor.object.selection.internal.HistorySelection;
+import com.efnilite.redaktor.selection.internal.HistorySelection;
 import org.bukkit.Location;
 import org.bukkit.World;
 

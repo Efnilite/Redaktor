@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.object.player;
+package com.efnilite.redaktor.player;
 
 import com.efnilite.redaktor.Editor;
 import com.efnilite.redaktor.Redaktor;

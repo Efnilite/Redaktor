@@ -1,9 +1,9 @@
-package com.efnilite.redaktor.object.queue.types;
+package com.efnilite.redaktor.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.IBlockFactory;
-import com.efnilite.redaktor.object.queue.EditQueue;
-import com.efnilite.redaktor.object.selection.CuboidSelection;
+import com.efnilite.redaktor.queue.EditQueue;
+import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.block.Block;

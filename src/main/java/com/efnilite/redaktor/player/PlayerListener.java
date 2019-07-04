@@ -1,8 +1,8 @@
-package com.efnilite.redaktor.object.player;
+package com.efnilite.redaktor.player;
 
 import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.object.selection.CuboidSelection;
-import com.efnilite.redaktor.util.Strings;
+import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.util.Util;
 import com.efnilite.redaktor.util.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -52,9 +52,9 @@ public class PlayerListener implements Listener {
                                 player.setPos1(e.getClickedBlock().getLocation().clone());
                                 if (player.getPos1() != null && player.getPos2() != null) {
                                     CuboidSelection selection = new CuboidSelection(player.getPos1(), player.getPos2());
-                                    player.send("&7Position 2 set to " + Strings.toString(e.getClickedBlock().getLocation()) + " (" + selection.getDimensions().getVolume() + " blocks)");
+                                    player.send("&7Position 2 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (" + selection.getDimensions().getVolume() + " blocks)");
                                 } else {
-                                    player.send("&7Position 1 set to " + Strings.toString(e.getClickedBlock().getLocation()) + " (0 blocks)");
+                                    player.send("&7Position 1 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (0 blocks)");
                                 }
                             }
                         }
@@ -73,9 +73,9 @@ public class PlayerListener implements Listener {
                                 player.setPos2(e.getClickedBlock().getLocation().clone());
                                 if (player.getPos1() != null && player.getPos2() != null) {
                                     CuboidSelection selection = new CuboidSelection(player.getPos1(), player.getPos2());
-                                    player.send("&7Position 2 set to " + Strings.toString(e.getClickedBlock().getLocation()) + " (" + selection.getDimensions().getVolume() + " blocks)");
+                                    player.send("&7Position 2 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (" + selection.getDimensions().getVolume() + " blocks)");
                                 } else {
-                                    player.send("&7Position 2 set to " + Strings.toString(e.getClickedBlock().getLocation()) + " (0 blocks)");
+                                    player.send("&7Position 2 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (0 blocks)");
                                 }
                             }
                         }

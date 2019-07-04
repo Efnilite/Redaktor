@@ -1,8 +1,8 @@
-package com.efnilite.redaktor.object.selection.internal;
+package com.efnilite.redaktor.selection.internal;
 
-import com.efnilite.redaktor.object.queue.internal.BlockMap;
-import com.efnilite.redaktor.object.selection.CuboidSelection;
-import com.efnilite.redaktor.object.selection.Selection;
+import com.efnilite.redaktor.queue.internal.BlockMap;
+import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.selection.Selection;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.Location;
 import org.bukkit.World;

@@ -1,0 +1,37 @@
+package com.efnilite.redaktor.util;
+
+import org.bukkit.Location;
+
+import java.util.Random;
+
+public class Util {
+
+    private static Random random;
+
+    static {
+        random = new Random();
+    }
+
+    public static String toString(Location location) {
+        return (location.getX() + ", " + location.getY() + ", " + location.getZ()).replace(".0", "");
+    }
+
+    public static String randomizeBooleans(String string) {
+        return string.toLowerCase().replaceAll("(true|false)", Boolean.toString(Booleans.values()[random.nextInt(2) - 1].getValue()).toLowerCase());
+    }
+
+    private enum Booleans {
+        TRUE(true),
+        FALSE(false);
+
+        private boolean value;
+
+        Booleans(boolean value) {
+            this.value = value;
+        }
+
+        public boolean getValue() {
+            return value;
+        }
+    }
+}

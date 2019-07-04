@@ -1,10 +1,10 @@
 package com.efnilite.redaktor.schematic;
 
-import com.efnilite.redaktor.object.queue.internal.BlockMap;
-import com.efnilite.redaktor.object.queue.types.CopyQueue;
-import com.efnilite.redaktor.object.selection.CuboidSelection;
-import com.efnilite.redaktor.object.selection.Dimensions;
+import com.efnilite.redaktor.queue.internal.BlockMap;
+import com.efnilite.redaktor.queue.types.CopyQueue;
 import com.efnilite.redaktor.schematic.internal.BlockIndex;
+import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.selection.Dimensions;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

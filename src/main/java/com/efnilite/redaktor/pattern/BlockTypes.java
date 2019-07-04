@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.object.pattern;
+package com.efnilite.redaktor.pattern;
 
 import org.bukkit.Material;
 

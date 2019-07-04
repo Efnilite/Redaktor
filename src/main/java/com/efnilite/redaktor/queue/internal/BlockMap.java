@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.object.queue.internal;
+package com.efnilite.redaktor.queue.internal;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;

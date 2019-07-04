@@ -1,6 +1,6 @@
-package com.efnilite.redaktor.object.pattern.types;
+package com.efnilite.redaktor.pattern.types;
 
-import com.efnilite.redaktor.object.pattern.Pattern;
+import com.efnilite.redaktor.pattern.Pattern;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 

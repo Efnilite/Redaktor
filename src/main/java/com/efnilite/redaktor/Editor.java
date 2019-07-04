@@ -1,9 +1,9 @@
 package com.efnilite.redaktor;
 
-import com.efnilite.redaktor.object.pattern.Pattern;
-import com.efnilite.redaktor.object.queue.types.*;
-import com.efnilite.redaktor.object.selection.CuboidSelection;
-import com.efnilite.redaktor.object.selection.internal.HistorySelection;
+import com.efnilite.redaktor.pattern.Pattern;
+import com.efnilite.redaktor.queue.types.*;
+import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.selection.internal.HistorySelection;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;

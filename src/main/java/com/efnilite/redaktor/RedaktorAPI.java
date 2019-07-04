@@ -1,12 +1,12 @@
 package com.efnilite.redaktor;
 
-import com.efnilite.redaktor.object.pattern.Pattern;
-import com.efnilite.redaktor.object.pattern.types.BlockPattern;
-import com.efnilite.redaktor.object.pattern.types.MorePattern;
-import com.efnilite.redaktor.object.player.RedaktorPlayer;
-import com.efnilite.redaktor.object.selection.CuboidSelection;
+import com.efnilite.redaktor.pattern.Pattern;
+import com.efnilite.redaktor.pattern.types.BlockPattern;
+import com.efnilite.redaktor.pattern.types.MorePattern;
+import com.efnilite.redaktor.player.RedaktorPlayer;
 import com.efnilite.redaktor.schematic.Schematic;
 import com.efnilite.redaktor.schematic.internal.BlockIndex;
+import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;

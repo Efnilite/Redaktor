@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.object.selection;
+package com.efnilite.redaktor.selection;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,9 +1,9 @@
 com.efnilite.redaktor
 com.efnilite.redaktor.block
-com.efnilite.redaktor.object.pattern
-com.efnilite.redaktor.object.queue
-com.efnilite.redaktor.object.queue.types
-com.efnilite.redaktor.object.selection
+com.efnilite.redaktor.pattern
+com.efnilite.redaktor.queue
+com.efnilite.redaktor.queue.types
+com.efnilite.redaktor.selection
 com.efnilite.redaktor.schematic
 com.efnilite.redaktor.util
 com.efnilite.redaktor.util.factory

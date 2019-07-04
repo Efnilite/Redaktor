@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.object.selection;
+package com.efnilite.redaktor.selection;
 
 import com.google.gson.annotations.Expose;
 import org.bukkit.Location;
