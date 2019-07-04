@@ -33,7 +33,7 @@ public class Schematic {
 
     public Schematic(String file) {
         this.cuboid = null;
-        this.file = file;
+        this.file = file.endsWith(".json") ? file : file + ".json";
         this.dimensions = null;
         this.gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
@@ -66,7 +66,7 @@ public class Schematic {
      */
     public void save(String file) throws IOException {
         if (cuboid != null) {
-            FileWriter writer = new FileWriter(file);
+            FileWriter writer = new FileWriter(file.endsWith(".json") ? file : file + ".json");
             new AsyncBlockIndexGetter(cuboid.getPos1(), cuboid.getPos2(), l -> {
                 List<WritableBlock> map = new ArrayList<>();
                 for (Block block : l.keySet()) {
@@ -84,7 +84,7 @@ public class Schematic {
                 }
             });
         } else {
-            throw new IllegalArgumentException("CuboidSelection can't be null to save!");
+            throw new IllegalArgumentException("Cuboid can't be null to save!");
         }
     }
 
@@ -103,7 +103,7 @@ public class Schematic {
      */
     public CuboidSelection paste(Location at) throws IOException {
         if (file != null) {
-            JsonReader reader = new JsonReader(new FileReader(file));
+            JsonReader reader = new JsonReader(new FileReader(file.endsWith(".json") ? file : file + ".json"));
             WritableSchematic schematic = gson.fromJson(reader, WritableSchematic.class);
             List<WritableBlock> writableBlocks = schematic.getBlocks();
             List<BlockMap> blocks = new ArrayList<>();
