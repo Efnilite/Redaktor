@@ -1,4 +1,4 @@
-package com.efnilite.connotations;
+package com.efnilite.redaktor.command.util;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

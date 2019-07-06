@@ -3,7 +3,7 @@ package com.efnilite.redaktor;
 import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.pattern.types.BlockPattern;
 import com.efnilite.redaktor.pattern.types.MorePattern;
-import com.efnilite.redaktor.player.RedaktorPlayer;
+import com.efnilite.redaktor.player.BukkitPlayer;
 import com.efnilite.redaktor.schematic.Schematic;
 import com.efnilite.redaktor.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.selection.CuboidSelection;
@@ -36,19 +36,6 @@ public class RedaktorAPI {
         for (World world : Bukkit.getWorlds()) {
             worldEditors.put(world, new Editor<>(Bukkit.getConsoleSender()));
         }
-    }
-
-    /**
-     * A way to parse a Pattern from a string.
-     * Note: this isn't tested yet
-     *
-     * @param   string
-     *          The string of the Pattern.
-     *
-     * @return  the Pattern instance, made with the data available in string (the param).
-     */
-    public static Pattern parsePattern(String string) {
-        return parser.parse(string);
     }
 
     /**
@@ -223,6 +210,18 @@ public class RedaktorAPI {
         new AsyncConnectedGetter(pos, consumer);
     }
 
+    /**
+     * A way to parse a Pattern from a string.
+     * Note: this isn't tested yet
+     *
+     * @param   string
+     *          The string of the Pattern.
+     *
+     * @return  the Pattern instance, made with the data available in string (the param).
+     */
+    public static Pattern parsePattern(String string) {
+        return parser.parse(string);
+    }
 
     /**
      * Returns the wrapper type of an org.bukkit.entity.Player
@@ -231,9 +230,9 @@ public class RedaktorAPI {
      * @param   player
      *          The org.bukkit.entity.Player that needs to be converted.
      *
-     * @return  a registered RedaktorPlayer
+     * @return  a registered BukkitPlayer
      */
-    public static RedaktorPlayer wrap(Player player) {
-        return RedaktorPlayer.wrap(player);
+    public static BukkitPlayer wrap(Player player) {
+        return BukkitPlayer.wrap(player);
     }
 }

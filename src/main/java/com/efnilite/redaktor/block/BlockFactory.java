@@ -10,7 +10,7 @@ import org.bukkit.block.data.BlockData;
  * automatically update blocks that have been placed, resulting
  * in a lot of lag for block updates.
  */
-public interface IBlockFactory {
+public interface BlockFactory {
 
     /**
      * Set a block without updating the surroudings or the block.

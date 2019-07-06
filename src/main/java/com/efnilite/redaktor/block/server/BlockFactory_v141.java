@@ -1,6 +1,6 @@
 package com.efnilite.redaktor.block.server;
 
-import com.efnilite.redaktor.block.IBlockFactory;
+import com.efnilite.redaktor.block.BlockFactory;
 import net.minecraft.server.v1_14_R1.BlockPosition;
 import net.minecraft.server.v1_14_R1.IBlockData;
 import net.minecraft.server.v1_14_R1.World;
@@ -9,7 +9,7 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_14_R1.block.data.CraftBlockData;
 
-public class BlockFactory_v141 implements IBlockFactory {
+public class BlockFactory_v141 implements BlockFactory {
 
     @Override
     public void setBlock(Location location, BlockData data) {

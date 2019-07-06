@@ -1,4 +1,4 @@
-package com.efnilite.connotations;
+package com.efnilite.redaktor.command.util;
 
 /**
  * A class for registering custom commands with methods.

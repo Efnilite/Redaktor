@@ -1,7 +1,7 @@
 package com.efnilite.redaktor.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.block.IBlockFactory;
+import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.queue.EditQueue;
 import com.efnilite.redaktor.queue.internal.BlockMap;
 import com.efnilite.redaktor.util.Tasks;
@@ -26,7 +26,7 @@ public class SlowCopyQueue implements EditQueue<List<BlockMap>> {
 
     @Override
     public void build(List<BlockMap> blocks) {
-        IBlockFactory factory = Redaktor.getBlockFactory();
+        BlockFactory factory = Redaktor.getBlockFactory();
         Queue<BlockMap> queue = new LinkedList<>(blocks);
 
         BukkitRunnable runnable = new BukkitRunnable() {

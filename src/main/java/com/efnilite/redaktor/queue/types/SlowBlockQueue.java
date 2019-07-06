@@ -1,7 +1,7 @@
 package com.efnilite.redaktor.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.block.IBlockFactory;
+import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.queue.EditQueue;
 import com.efnilite.redaktor.selection.CuboidSelection;
@@ -31,7 +31,7 @@ public class SlowBlockQueue implements EditQueue<CuboidSelection> {
 
     @Override
     public void build(CuboidSelection cuboid) {
-        IBlockFactory factory = Redaktor.getBlockFactory();
+        BlockFactory factory = Redaktor.getBlockFactory();
         new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), t -> {
             Queue<Block> queue = new LinkedList<>(t);
             int count = queue.size();

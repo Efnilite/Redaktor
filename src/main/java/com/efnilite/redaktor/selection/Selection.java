@@ -1,3 +1,5 @@
 package com.efnilite.redaktor.selection;
 
-public interface Selection {}
+public interface Selection {
+
+}

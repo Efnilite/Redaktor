@@ -15,29 +15,28 @@ import java.util.Random;
 public class MorePattern implements Pattern {
 
     private Random random;
-    private List<BlockData> materials;
+    private List<BlockData> datas;
 
     public MorePattern() {
         this.random = new Random();
-        this.materials = new ArrayList<>();
+        this.datas = new ArrayList<>();
     }
 
     public MorePattern(List<BlockData> materials) {
         this.random = new Random();
-        this.materials = materials;
+        this.datas = materials;
     }
 
     @Override
     public BlockData apply(Block block) {
-        int index = random.nextInt(materials.size() - 1);
-        return materials.get(index);
+        return datas.get(random.nextInt(datas.size() - 1));
     }
 
     public void add(BlockData material) {
-        this.materials.add(material);
+        this.datas.add(material);
     }
 
     public void addAll(List<BlockData> materials) {
-        this.materials.addAll(materials);
+        this.datas.addAll(materials);
     }
 }

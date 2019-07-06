@@ -1,5 +1,7 @@
-package com.efnilite.connotations;
+package com.efnilite.redaktor.command.util;
 
+import com.efnilite.redaktor.command.Command;
+import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandExecutor;
@@ -94,7 +96,7 @@ public class CommandFactory implements CommandExecutor {
         }
 
         try {
-            method.invoke(map.getCommandable(), sender, strings);
+            method.invoke(map.getCommandable(), RedaktorPlayer.wrap(sender), strings);
         } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }

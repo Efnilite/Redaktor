@@ -1,4 +1,4 @@
-package com.efnilite.connotations;
+package com.efnilite.redaktor.command.util;
 
 import java.lang.reflect.Method;
 

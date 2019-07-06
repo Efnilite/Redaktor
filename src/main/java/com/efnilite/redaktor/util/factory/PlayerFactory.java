@@ -1,6 +1,6 @@
-package com.efnilite.redaktor.player;
+package com.efnilite.redaktor.util.factory;
 
-import com.efnilite.redaktor.util.factory.RegisterFactory;
+import com.efnilite.redaktor.player.BukkitPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class PlayerFactory implements RegisterFactory<Player> {
 
-    private HashMap<UUID, RedaktorPlayer> registeredPlayers;
+    private HashMap<UUID, BukkitPlayer> registeredPlayers;
 
     public PlayerFactory() {
         this.registeredPlayers = new HashMap<>();
@@ -21,10 +21,10 @@ public class PlayerFactory implements RegisterFactory<Player> {
 
     @Override
     public void register(Player player) {
-        this.registeredPlayers.put(player.getUniqueId(), new RedaktorPlayer(player));
+        this.registeredPlayers.put(player.getUniqueId(), new BukkitPlayer(player));
     }
 
-    public HashMap<UUID, RedaktorPlayer> getRegisteredPlayers() {
+    public HashMap<UUID, BukkitPlayer> getRegisteredPlayers() {
         return registeredPlayers;
     }
 }

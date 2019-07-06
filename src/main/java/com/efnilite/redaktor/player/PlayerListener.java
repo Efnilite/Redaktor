@@ -40,7 +40,7 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
         Player pl = e.getPlayer();
-        RedaktorPlayer player = RedaktorPlayer.wrap(pl);
+        BukkitPlayer player = BukkitPlayer.wrap(pl);
 
         if (e.getHand() == EquipmentSlot.HAND) {
             if (e.getAction() == Action.LEFT_CLICK_BLOCK) {

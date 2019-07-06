@@ -1,7 +1,7 @@
 package com.efnilite.redaktor.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.block.IBlockFactory;
+import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.queue.EditQueue;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.Tasks;
@@ -29,7 +29,7 @@ public class Cuboid3DResizeQueue implements EditQueue<CuboidSelection> {
 
     @Override
     public void build(CuboidSelection cuboid) {
-        IBlockFactory factory = Redaktor.getBlockFactory();
+        BlockFactory factory = Redaktor.getBlockFactory();
         int x = cuboid.getDimensions().getWidth();
         int z = cuboid.getDimensions().getLength();
 

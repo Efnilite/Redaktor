@@ -1,17 +1,18 @@
 package com.efnilite.redaktor;
 
-import com.efnilite.connotations.CommandFactory;
-import com.efnilite.connotations.Commandable;
-import com.efnilite.redaktor.block.IBlockFactory;
+import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.block.server.BlockFactory_v131;
 import com.efnilite.redaktor.block.server.BlockFactory_v141;
 import com.efnilite.redaktor.command.RedaktorCommands;
 import com.efnilite.redaktor.command.SelectionCommands;
-import com.efnilite.redaktor.player.PlayerFactory;
+import com.efnilite.redaktor.command.util.CommandFactory;
+import com.efnilite.redaktor.command.util.Commandable;
 import com.efnilite.redaktor.player.PlayerListener;
 import com.efnilite.redaktor.util.ChangeLocator;
+import com.efnilite.redaktor.util.factory.PlayerFactory;
 import com.efnilite.redaktor.util.web.Metrics;
 import com.efnilite.redaktor.util.web.UpdateChecker;
+import com.efnilite.redaktor.wrapper.console.ConsolePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -24,9 +25,11 @@ public class Redaktor extends JavaPlugin {
     private static ChangeLocator allocator;
     private static UpdateChecker checker;
 
-    private static IBlockFactory blockFactory;
+    private static BlockFactory blockFactory;
     private static PlayerFactory playerFactory;
     private static CommandFactory commandFactory;
+
+    private static ConsolePlayer console;
 
     private static boolean isLatest;
 
@@ -51,9 +54,11 @@ public class Redaktor extends JavaPlugin {
         checker = new UpdateChecker();
 
         playerFactory = new PlayerFactory();
-
         commandFactory = new CommandFactory(this);
+
         metrics = new Metrics(this);
+
+        console = new ConsolePlayer(this.getServer().getConsoleSender());
 
         new RedaktorAPI();
 
@@ -82,11 +87,15 @@ public class Redaktor extends JavaPlugin {
         }
     }
 
+    public static ConsolePlayer getConsolePlayer() {
+        return console;
+    }
+
     public static UpdateChecker getChecker() {
         return checker;
     }
 
-    public static IBlockFactory getBlockFactory() {
+    public static BlockFactory getBlockFactory() {
         return blockFactory;
     }
 
