@@ -1,6 +1,7 @@
 package com.efnilite.redaktor.wrapper.console;
 
 import com.efnilite.redaktor.Editor;
+import com.efnilite.redaktor.util.Util;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -35,6 +36,11 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
     @Override
     public boolean isPlayer() {
         return false;
+    }
+
+    @Override
+    public Location getLocation() {
+        return Util.zero();
     }
 
     @Override

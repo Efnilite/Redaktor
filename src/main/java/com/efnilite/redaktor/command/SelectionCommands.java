@@ -3,6 +3,7 @@ package com.efnilite.redaktor.command;
 import com.efnilite.redaktor.command.util.Commandable;
 import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.util.Util;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 
 public class SelectionCommands implements Commandable {
@@ -11,6 +12,26 @@ public class SelectionCommands implements Commandable {
 
     public SelectionCommands() {
         this.parser = new Pattern.Parser();
+    }
+
+    @Command(permission = "redaktor.pos1", description = "Set position 1 of your selection to a location.",
+            usage = "/pos1 [location] (example: /pos1 43,5,76)", aliases = { "position1" })
+    public void pos1(RedaktorPlayer<?> sender, String[] args) {
+        if (args[0] == null) {
+            sender.setPos1(sender.getLocation());
+        } else {
+            sender.setPos1(Util.fromString(args[0]));
+        }
+    }
+
+    @Command(permission = "redaktor.pos2", description = "Set position 2 of your selection to a location.",
+            usage = "/pos2 [location] (example: /pos1 65,54,-32)", aliases = { "position2" })
+    public void pos2(RedaktorPlayer<?> sender, String[] args) {
+        if (args[0] == null) {
+            sender.setPos2(sender.getLocation());
+        } else {
+            sender.setPos2(Util.fromString(args[0]));
+        }
     }
 
     @Command(permission = "redaktor.set", usage = "/set <pattern>")

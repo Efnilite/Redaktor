@@ -38,9 +38,7 @@ public class RedaktorCommands implements Commandable {
         }
     }
 
-    @Command(
-            permission = "redaktor.wand"
-    )
+    @Command(permission = "redaktor.wand")
     public void wand(RedaktorPlayer<?> sender, String[] args) {
         if (sender.isPlayer()) {
             Player player = (Player) sender;
@@ -48,9 +46,7 @@ public class RedaktorCommands implements Commandable {
         }
     }
 
-    @Command(
-            permission = "redaktor.undo"
-    )
+    @Command(permission = "redaktor.undo")
     public void undo(RedaktorPlayer<?> sender, String[] args) {
         Player pl = (Player) sender;
         if (args[0] != null) {

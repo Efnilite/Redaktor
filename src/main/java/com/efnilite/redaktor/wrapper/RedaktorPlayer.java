@@ -17,6 +17,8 @@ public interface RedaktorPlayer<T extends CommandSender> {
 
     boolean isPlayer();
 
+    Location getLocation();
+
     Location getPos1();
 
     Location getPos2();

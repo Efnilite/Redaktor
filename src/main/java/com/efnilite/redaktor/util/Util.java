@@ -12,9 +12,23 @@ public class Util {
         random = new Random();
     }
 
+    public static Location zero() {
+        return new Location(null, 0, 0, 0);
+    }
+
+    public static Location fromString(String string) {
+        String[] elements = string.split(",");
+        if (elements.length == 3) {
+            return new Location(null, Integer.parseInt(elements[0]), Integer.parseInt(elements[1]), Integer.parseInt(elements[2]));
+        } else {
+            return zero();
+        }
+    }
+
     public static String toString(Location location) {
         return (location.getX() + ", " + location.getY() + ", " + location.getZ()).replace(".0", "");
     }
+
 
     public static String randomizeBooleans(String string) {
         return string.toLowerCase().replaceAll("(true|false)", Boolean.toString(Booleans.values()[random.nextInt(2) - 1].getValue()).toLowerCase());

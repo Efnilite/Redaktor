@@ -44,6 +44,11 @@ public class BukkitPlayer implements RedaktorPlayer<Player> {
     }
 
     @Override
+    public Location getLocation() {
+        return player.getLocation();
+    }
+
+    @Override
     public Location getPos1() {
         return pos1;
     }
