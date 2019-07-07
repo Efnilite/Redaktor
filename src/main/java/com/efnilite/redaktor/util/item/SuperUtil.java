@@ -38,4 +38,13 @@ public class SuperUtil {
         container.set(namespacedKey, type, t);
         itemStack.setItemMeta(meta);
     }
+
+    public static <T> void removePersistentData(ItemStack itemStack, String key) {
+        ItemMeta meta = itemStack.getItemMeta();
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        NamespacedKey namespacedKey = new NamespacedKey(Redaktor.getInstance(), key);
+
+        container.remove(namespacedKey);
+        itemStack.setItemMeta(meta);
+    }
 }
