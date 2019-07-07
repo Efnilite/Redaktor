@@ -4,8 +4,8 @@ import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.Util;
 import com.efnilite.redaktor.util.item.ItemBuilder;
+import com.efnilite.redaktor.util.item.SuperUtil;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,8 +15,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public class PlayerListener implements Listener {
@@ -52,16 +50,15 @@ public class PlayerListener implements Listener {
                                 player.setPos1(e.getClickedBlock().getLocation().clone());
                                 if (player.getPos1() != null && player.getPos2() != null) {
                                     CuboidSelection selection = new CuboidSelection(player.getPos1(), player.getPos2());
-                                    player.send("&7Position 2 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (" + selection.getDimensions().getVolume() + " blocks)");
+                                    player.send("&7Position 1 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (" + selection.getDimensions().getVolume() + " blocks)");
                                 } else {
                                     player.send("&7Position 1 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (0 blocks)");
                                 }
                             }
                         }
-                    } else if (hasPersistentData(pl.getInventory().getItemInMainHand(), "isSuperItem")) {
-                        String command = this.getPersistentData(pl.getInventory().getItemInMainHand(), "SuperItemCommand", PersistentDataType.STRING);
-
-                        // do a lot of stuff
+                    } else if (SuperUtil.hasPersistentData(pl.getInventory().getItemInMainHand(), "issuper", PersistentDataType.STRING)) {
+                        String command = (String) SuperUtil.getPersistentData(pl.getInventory().getItemInMainHand(), "supercommand", PersistentDataType.STRING);
+                        pl.performCommand(command);
                     }
                 }
             } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -79,29 +76,12 @@ public class PlayerListener implements Listener {
                                 }
                             }
                         }
-                    } else if (hasPersistentData(pl.getInventory().getItemInMainHand(), "isSuperItem")) {
-                        String command = this.getPersistentData(pl.getInventory().getItemInMainHand(), "SuperItemCommand", PersistentDataType.STRING);
-
-                        // do a lot of stuff
+                    } else if (SuperUtil.hasPersistentData(pl.getInventory().getItemInMainHand(), "issuper", PersistentDataType.STRING)) {
+                        String command = (String) SuperUtil.getPersistentData(pl.getInventory().getItemInMainHand(), "supercommand", PersistentDataType.STRING);
+                        pl.performCommand(command);
                     }
                 }
             }
         }
-    }
-
-    private <A, B> B getPersistentData(ItemStack item, String key, PersistentDataType<A, B> type) {
-        ItemMeta meta = item.getItemMeta();
-        PersistentDataContainer container = meta.getPersistentDataContainer();
-        NamespacedKey name = new NamespacedKey(Redaktor.getInstance(), key);
-
-        return container.get(name, type);
-    }
-
-    private boolean hasPersistentData(ItemStack item, String key) {
-        ItemMeta meta = item.getItemMeta();
-        PersistentDataContainer container = meta.getPersistentDataContainer();
-        NamespacedKey name = new NamespacedKey(Redaktor.getInstance(), key);
-
-        return container.has(name, PersistentDataType.BYTE);
     }
 }

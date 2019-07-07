@@ -1,6 +1,5 @@
 package com.efnilite.redaktor.command.util;
 
-import com.efnilite.redaktor.command.Command;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

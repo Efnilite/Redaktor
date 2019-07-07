@@ -1,6 +1,7 @@
 package com.efnilite.redaktor.command;
 
 import com.efnilite.redaktor.Redaktor;
+import com.efnilite.redaktor.command.util.Command;
 import com.efnilite.redaktor.command.util.Commandable;
 import com.efnilite.redaktor.util.item.ItemBuilder;
 import com.efnilite.redaktor.util.web.UpdateChecker;

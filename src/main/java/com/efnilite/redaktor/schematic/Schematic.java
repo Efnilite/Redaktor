@@ -1,5 +1,7 @@
 package com.efnilite.redaktor.schematic;
 
+import com.efnilite.redaktor.event.SchematicPasteEvent;
+import com.efnilite.redaktor.event.SchematicSaveEvent;
 import com.efnilite.redaktor.queue.internal.BlockMap;
 import com.efnilite.redaktor.queue.types.CopyQueue;
 import com.efnilite.redaktor.schematic.internal.BlockIndex;
@@ -66,6 +68,8 @@ public class Schematic {
      */
     public void save(String file) throws IOException {
         if (cuboid != null) {
+            Bukkit.getPluginManager().callEvent(new SchematicSaveEvent(this, file));
+
             FileWriter writer = new FileWriter(file.endsWith(".json") ? file : file + ".json");
             new AsyncBlockIndexGetter(cuboid.getPos1(), cuboid.getPos2(), l -> {
                 List<WritableBlock> map = new ArrayList<>();
@@ -103,6 +107,8 @@ public class Schematic {
      */
     public CuboidSelection paste(Location at) throws IOException {
         if (file != null) {
+            Bukkit.getPluginManager().callEvent(new SchematicPasteEvent(this, at, file));
+
             JsonReader reader = new JsonReader(new FileReader(file.endsWith(".json") ? file : file + ".json"));
             WritableSchematic schematic = gson.fromJson(reader, WritableSchematic.class);
             List<WritableBlock> writableBlocks = schematic.getBlocks();
@@ -141,6 +147,8 @@ public class Schematic {
     public CuboidSelection paste(Location at, int angle) throws IOException {
         if (file != null) {
             if (angle % 90 == 0) {
+                Bukkit.getPluginManager().callEvent(new SchematicPasteEvent(this, at, file));
+
                 JsonReader reader = new JsonReader(new FileReader(file));
                 WritableSchematic schematic = gson.fromJson(reader, WritableSchematic.class);
                 List<WritableBlock> writableBlocks = schematic.getBlocks();
@@ -193,6 +201,14 @@ public class Schematic {
         } else {
             throw new IllegalArgumentException("File can't be null!");
         }
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public CuboidSelection getCuboid() {
+        return cuboid;
     }
 
     public enum Facing {

@@ -1,5 +1,6 @@
 package com.efnilite.redaktor.command;
 
+import com.efnilite.redaktor.command.util.Command;
 import com.efnilite.redaktor.command.util.Commandable;
 import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.selection.CuboidSelection;

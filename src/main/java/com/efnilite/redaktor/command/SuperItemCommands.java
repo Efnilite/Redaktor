@@ -1,33 +1,42 @@
 package com.efnilite.redaktor.command;
 
+import com.efnilite.redaktor.Redaktor;
+import com.efnilite.redaktor.command.util.Command;
 import com.efnilite.redaktor.command.util.Commandable;
+import com.efnilite.redaktor.player.BukkitPlayer;
+import com.efnilite.redaktor.util.Util;
+import com.efnilite.redaktor.util.item.SuperUtil;
+import com.efnilite.redaktor.wrapper.RedaktorPlayer;
+import org.bukkit.Material;
+
+import java.util.StringJoiner;
 
 public class SuperItemCommands implements Commandable {
 
-    /*@Command(
-        permission = "redaktor.supertool"
-    )
-    public void supertool(CommandSender sender, String[] args) {
+    @Command(permission = "redaktor.superitem")
+    public void superitem(RedaktorPlayer<?> sender, String[] args) {
         if (Redaktor.isLatest()) {
-            if (sender instanceof Player) {
+            if (sender.isPlayer()) {
                 if (args[0] != null) {
-                    Player player = (Player) sender;
-                    if (player.getInventory().getItemInMainHand().getType() != Material.AIR) {
+                    BukkitPlayer player = (BukkitPlayer) sender;
+                    if (player.getHoldingItem().getType() != Material.AIR) {
                         StringJoiner joiner = new StringJoiner(" ");
                         for (String arg : args) {
                             joiner.add(arg);
                         }
 
-                        SuperItemBuilder.create(player, joiner.toString());
-                        BukkitPlayer.wrap(player).send("You created a new SuperItem.");
+                        SuperUtil.create(player.getHoldingItem(), "/" + joiner.toString());
+                        sender.send("You turned your held &c" + Util.format(player.getHoldingItem().getType()) + "&7 into a SuperItem!");
+                        sender.send("Now if you right or left-click you will execute &c'" + joiner.toString() + "'");
                     }
+                } else {
+                    sender.send("You need to set a command!");
                 }
+            } else {
+                sender.send("You need to be a player to create SuperItems!");
             }
         } else {
-            if (sender instanceof Player) {
-                Player player = (Player) sender;
-                BukkitPlayer.wrap(player).send("You need to be running 1.14.x to enable this!");
-            }
+            sender.send("You need to be running 1.14 for this to work!");
         }
-    }*/
+    }
 }

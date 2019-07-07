@@ -11,6 +11,7 @@ import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
 import com.efnilite.redaktor.util.getter.AsyncConnectedGetter;
+import com.efnilite.redaktor.util.item.SuperUtil;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -20,12 +21,25 @@ import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * The main API class.
+ * The goal of this class is to make all of Redaktor's features easily usable.
+ * This class will supply the basic methods, if you don't want to dig deep in how to do specific stuff.
+ *
+ * @see com.efnilite.redaktor.selection.Selection
+ * @see Schematic
+ * @see Pattern
+ * @see Editor
+ *
+ * @see com.efnilite.redaktor.event
+ */
 public class RedaktorAPI {
 
     private static Pattern.Parser parser;
@@ -107,18 +121,18 @@ public class RedaktorAPI {
         });
     }
 
-    /*/**
+    /**
      * Convert an ItemStack to a SuperItem.
      *
      * @param   item
-     *          The ItemStack to be converted.
+     *          The instance of ItemStack to be converted.
      *
-     * @param   whatToExecute
+     * @param   command
      *          The command to be executed.
      */
-    /*public static void createSuperItem(ItemStack item, String whatToExecute) {
-        SuperItemCommands.SuperItemBuilder.create(item, whatToExecute);
-    }*/
+    public static void createSuperItem(ItemStack item, String command) {
+        SuperUtil.create(item, command);
+    }
 
     /**
      * Get a default Editor instance for a World.

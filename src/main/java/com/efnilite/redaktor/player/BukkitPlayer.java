@@ -5,7 +5,9 @@ import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 /**
  * A wrapper type for org.bukkit.entity.Player.
@@ -61,6 +63,10 @@ public class BukkitPlayer implements RedaktorPlayer<Player> {
     @Override
     public Editor<Player> getEditor() {
         return editor;
+    }
+
+    public ItemStack getHoldingItem() {
+        return player.getInventory().getItemInMainHand().getType() == Material.AIR ? player.getInventory().getItemInOffHand() : player.getInventory().getItemInMainHand();
     }
 
     public static BukkitPlayer wrap(Player player) {

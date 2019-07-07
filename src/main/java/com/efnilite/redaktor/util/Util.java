@@ -1,6 +1,7 @@
 package com.efnilite.redaktor.util;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 import java.util.Random;
 
@@ -25,10 +26,13 @@ public class Util {
         }
     }
 
+    public static String format(Material material) {
+        return material.name().toLowerCase().replaceAll("_", "");
+    }
+
     public static String toString(Location location) {
         return (location.getX() + ", " + location.getY() + ", " + location.getZ()).replace(".0", "");
     }
-
 
     public static String randomizeBooleans(String string) {
         return string.toLowerCase().replaceAll("(true|false)", Boolean.toString(Booleans.values()[random.nextInt(2) - 1].getValue()).toLowerCase());

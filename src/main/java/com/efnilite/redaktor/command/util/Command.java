@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.command;
+package com.efnilite.redaktor.command.util;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

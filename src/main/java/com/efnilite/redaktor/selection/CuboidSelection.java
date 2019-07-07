@@ -82,7 +82,7 @@ public class CuboidSelection implements Selection {
      * @return a new HistorySelection
      */
     public HistorySelection toHistory() {
-        return new HistorySelection(world, pos1, pos2);
+        return new HistorySelection(pos1, pos2, world);
     }
 
     /**

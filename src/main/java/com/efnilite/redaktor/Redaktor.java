@@ -87,6 +87,10 @@ public class Redaktor extends JavaPlugin {
         }
     }
 
+    public static boolean isLatest() {
+        return isLatest;
+    }
+
     public static ConsolePlayer getConsolePlayer() {
         return console;
     }

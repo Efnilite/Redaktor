@@ -2,7 +2,6 @@ package com.efnilite.redaktor.util.item;
 
 import com.efnilite.redaktor.Redaktor;
 import org.bukkit.NamespacedKey;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -10,31 +9,33 @@ import org.bukkit.persistence.PersistentDataType;
 
 public class SuperUtil {
 
-    public static void create(Player player, String command) {
-        ItemStack item = player.getInventory().getItemInMainHand();
-        ItemMeta meta = item.getItemMeta();
-        PersistentDataContainer container = meta.getPersistentDataContainer();
-        NamespacedKey name = new NamespacedKey(Redaktor.getInstance(), "isSuperItem");
-
-        container.set(name, PersistentDataType.BYTE, (byte) 0);
-        PersistentDataContainer container2 = meta.getPersistentDataContainer();
-        NamespacedKey name2 = new NamespacedKey(Redaktor.getInstance(), "SuperItemCommand");
-
-        container2.set(name2, PersistentDataType.STRING, command);
-        item.setItemMeta(meta);
-        player.getInventory().setItemInMainHand(item);
+    public static void create(ItemStack item, String command) {
+        setPersistentData(item, "issuper", PersistentDataType.BYTE, (byte) 0);
+        setPersistentData(item, "supercommand", PersistentDataType.STRING, command);
     }
 
-    public static void create(ItemStack item, String command) {
-        ItemMeta meta = item.getItemMeta();
+    public static <T> Object getPersistentData(ItemStack itemStack, String key, PersistentDataType<T, T> type) {
+        ItemMeta meta = itemStack.getItemMeta();
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        NamespacedKey name = new NamespacedKey(Redaktor.getInstance(), "isSuperItem");
+        NamespacedKey namespacedKey = new NamespacedKey(Redaktor.getInstance(), key);
 
-        container.set(name, PersistentDataType.BYTE, (byte) 0);
-        PersistentDataContainer container2 = meta.getPersistentDataContainer();
-        NamespacedKey name2 = new NamespacedKey(Redaktor.getInstance(), "SuperItemCommand");
+        return container.get(namespacedKey, type);
+    }
 
-        container2.set(name2, PersistentDataType.STRING, command);
-        item.setItemMeta(meta);
+    public static <T> boolean hasPersistentData(ItemStack itemStack, String key, PersistentDataType<T, T> type) {
+        ItemMeta meta = itemStack.getItemMeta();
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        NamespacedKey namespacedKey = new NamespacedKey(Redaktor.getInstance(), key);
+
+        return container.has(namespacedKey, type);
+    }
+
+    public static <T> void setPersistentData(ItemStack itemStack, String key, PersistentDataType<T, T> type, T t) {
+        ItemMeta meta = itemStack.getItemMeta();
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        NamespacedKey namespacedKey = new NamespacedKey(Redaktor.getInstance(), key);
+
+        container.set(namespacedKey, type, t);
+        itemStack.setItemMeta(meta);
     }
 }

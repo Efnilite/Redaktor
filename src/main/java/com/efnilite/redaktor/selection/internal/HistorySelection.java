@@ -22,7 +22,7 @@ public class HistorySelection implements Selection {
     private Location pos2;
     private List<BlockMap> map;
 
-    public HistorySelection(World world, Location pos1, Location pos2) {
+    public HistorySelection(Location pos1, Location pos2, World world) {
         this.world = world;
         this.pos1 = pos1;
         this.pos2 = pos2;
