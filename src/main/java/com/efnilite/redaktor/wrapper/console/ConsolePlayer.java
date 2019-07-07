@@ -3,10 +3,14 @@ package com.efnilite.redaktor.wrapper.console;
 import com.efnilite.redaktor.Editor;
 import com.efnilite.redaktor.util.Util;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.ConsoleCommandSender;
 
+/**
+ * A wrapper for console
+ */
 public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
 
     private Location pos1;
@@ -16,6 +20,7 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
 
     public ConsolePlayer(ConsoleCommandSender sender) {
         this.sender = sender;
+        this.editor = new Editor<>(Bukkit.getConsoleSender());
     }
 
     @Override

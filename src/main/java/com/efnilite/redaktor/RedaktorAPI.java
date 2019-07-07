@@ -11,11 +11,13 @@ import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
 import com.efnilite.redaktor.util.getter.AsyncConnectedGetter;
+import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
@@ -234,5 +236,17 @@ public class RedaktorAPI {
      */
     public static BukkitPlayer wrap(Player player) {
         return BukkitPlayer.wrap(player);
+    }
+
+    /**
+     * Returns a RedaktorPlayer from a CommandSender.
+     *
+     * @param   sender
+     *          The sender
+     *
+     * @return  a RedaktorPlayer instance
+     */
+    public static RedaktorPlayer<?> wrap(CommandSender sender) {
+        return RedaktorPlayer.wrap(sender);
     }
 }

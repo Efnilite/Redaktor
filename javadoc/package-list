@@ -11,3 +11,5 @@ com.efnilite.redaktor.util
 com.efnilite.redaktor.util.factory
 com.efnilite.redaktor.util.getter
 com.efnilite.redaktor.util.item
+com.efnilite.redaktor.wrapper
+com.efnilite.redaktor.wrapper.console

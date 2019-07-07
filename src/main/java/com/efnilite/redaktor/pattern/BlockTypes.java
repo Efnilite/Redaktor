@@ -7,8 +7,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A class for the # modifier in a {@link Pattern}.
- * Used in {@link Pattern.Parser}.
+ * A class for the # modifier in a {@link Pattern}
+ * Used in {@link Pattern.Parser}
+ *
+ * List of usables:
+ * - beds
+ * - carpets
+ * - glass
+ * - glasspane/glass_pane
+ * - logs
+ * - ores
+ * - planks
+ * - slabs
+ * - stones
+ * - wool
  */
 public enum BlockTypes {
 
