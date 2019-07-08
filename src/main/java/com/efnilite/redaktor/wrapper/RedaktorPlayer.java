@@ -7,6 +7,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * An interface for objects that can use Redaktor commands. In this case those are
+ * {@link com.efnilite.redaktor.wrapper.console.ConsolePlayer} and {@link com.efnilite.redaktor.player.BukkitPlayer}
+ *
+ * @param   <T>
+ *          The instance of who to send messages to if actions are completed.
+ */
 public interface RedaktorPlayer<T extends CommandSender> {
 
     void send(String message);

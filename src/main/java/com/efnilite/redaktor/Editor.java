@@ -4,11 +4,14 @@ import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.queue.types.*;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.selection.internal.HistorySelection;
-import org.bukkit.Bukkit;
+import com.efnilite.redaktor.util.Tasks;
+import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.ChatColor;
-import org.bukkit.World;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,51 +24,65 @@ import java.util.List;
  */
 public class Editor<T extends CommandSender> {
 
+    /**
+     * The instance of who to send messages to if {@link #sendUpdates} is true
+     */
     private T sender;
+
+    /**
+     * The amount of blocks changed
+     */
     private int change;
+
+    /**
+     * The maximal change.
+     */
     private int maxChange;
+
+    /**
+     * If this Editor instance should send updates when actions are completed.
+     */
     private boolean sendUpdates;
-    private World world;
+
+    /**
+     * The list of actions taken so far so that they can be undone.
+     */
     private List<HistorySelection> history;
 
+    /**
+     * A list so for redoing actions
+     */
+    private List<HistorySelection> undos;
+
     public Editor(T sender) {
-        this.change = 0;
-        this.maxChange = -1;
-        this.sendUpdates = false;
-        this.sender = sender;
-        this.history = new ArrayList<>();
-        if (sender instanceof Player) {
-            this.world = ((Player) sender).getWorld();
-        } else {
-            this.world = Bukkit.getWorlds().get(0);
-        }
+        this(sender, -1, true);
     }
 
-    public Editor(T sender, World world) {
-        this.change = 0;
-        this.maxChange = -1;
-        this.sendUpdates = false;
-        this.sender = sender;
-        this.world = world;
-        this.history = new ArrayList<>();
+    public Editor(T sender, int maxChange) {
+        this(sender, maxChange, true);
     }
 
-    public Editor(T sender, World world, int maxChange) {
-        this.change = 0;
-        this.sendUpdates = false;
-        this.world = world;
+    /**
+     * The recommended constructor if you want to specify every option.
+     *
+     * @param   sender
+     *          The instance to who to send messages if {@link #sendUpdates} is true
+     *
+     * @param   maxChange
+     *          The max amount of blocks that can be changed.
+     *
+     * @param   sendUpdates
+     *          If there should be updates sent to the {@link #sender} instance if an action is completed.
+     *
+     *
+     */
+    public Editor(T sender, int maxChange, boolean sendUpdates) {
         this.sender = sender;
-        this.maxChange = maxChange;
-        this.history = new ArrayList<>();
-    }
-
-    public Editor(T sender, World world, int maxChange, boolean sendUpdates) {
         this.change = 0;
-        this.world = world;
-        this.sender = sender;
         this.maxChange = maxChange;
         this.sendUpdates = sendUpdates;
         this.history = new ArrayList<>();
+        this.undos = new ArrayList<>();
     }
 
     /**
@@ -83,9 +100,9 @@ public class Editor<T extends CommandSender> {
             queue.build(cuboid);
 
             this.change += cuboid.getDimensions().getVolume();
-            this.history.add(cuboid.toHistory());
 
-            send("You successfully set " + change + " blocks.");
+            store(cuboid.toHistory());
+            send("You successfully set " + cuboid.getDimensions().getVolume() + " blocks");
         }
     }
 
@@ -107,9 +124,9 @@ public class Editor<T extends CommandSender> {
             queue.build(cuboid);
 
             this.change += cuboid.getDimensions().getVolume();
-            this.history.add(cuboid.toHistory());
 
-            send("You successfully set " + change + " blocks.");
+            store(cuboid.toHistory());
+            send("You successfully set " + cuboid.getDimensions().getVolume() + " blocks");
         }
     }
 
@@ -133,12 +150,12 @@ public class Editor<T extends CommandSender> {
                 Cuboid2DResizeQueue queue = new Cuboid2DResizeQueue(x, z);
                 queue.build(cuboid);
 
-                this.change += cuboid.getDimensions().getVolume();
-                this.history.add(cuboid.toHistory());
+                this.change += cuboid.getDimensions().getVolume() * x * z;
 
-                send("You successfully set " + change + " blocks.");
+                store(cuboid.toHistory());
+                send("You successfully set " + (cuboid.getDimensions().getVolume() * x * z) + " blocks");
             } else {
-                throw new IllegalArgumentException("x and z need to be above 0");
+                send("You need to set the x and z above 1");
             }
         }
     }
@@ -166,14 +183,96 @@ public class Editor<T extends CommandSender> {
                 Cuboid3DResizeQueue queue = new Cuboid3DResizeQueue(x, y, z);
                 queue.build(cuboid);
 
-                this.change += cuboid.getDimensions().getVolume();
-                this.history.add(cuboid.toHistory());
+                this.change += cuboid.getDimensions().getVolume() * x * y * z;
 
-                send("You successfully set " + change + " blocks.");
+                store(cuboid.toHistory());
+                send("You successfully set " + (cuboid.getDimensions().getVolume() * x * y * z) + " blocks");
             } else {
-                throw new IllegalArgumentException("x, y and z need to be above 0");
+                send("You need to set the x, y and z above 1");
             }
         }
+    }
+
+    /**
+     * Replaces all blocks that match the 'find' {@link Pattern} to the 'replace' {@link Pattern}
+     * in a {@link CuboidSelection}
+     *
+     * @param   selection
+     *          The selection of where all blocks will be replaced.
+     *
+     * @param   find
+     *          The BlockDatas that will be checked to match blocks.
+     *
+     * @param   replace
+     *          The {@link Pattern} that it will be replaced by.
+     */
+    public void replace(CuboidSelection selection, List<BlockData> find, Pattern replace) {
+        if (checkLimit()) {
+            new AsyncBlockGetter(selection.getPos1(), selection.getPos2(), t -> {
+                BukkitRunnable runnable = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        for (Block block : t) {
+                            for (BlockData data : find) {
+                                if (block.getBlockData().getAsString().equals(data.getAsString())) {
+                                    block.setBlockData(replace.apply(block));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                };
+                Tasks.task(runnable);
+            });
+        }
+    }
+
+    /**
+     * Replaces all blocks in a certain radius.
+     *
+     * @param   location
+     *          The center of where it will try to find blocks matching the first pattern.
+     *
+     * @param   radius
+     *          The radius in which the code will search for blocks matching the first pattern.
+     *
+     * @param   find
+     *          The BlockDatas it will check to see if it matches.
+     *
+     * @param   replace
+     *          The {@link Pattern} the found blocks will be replaced by.
+     */
+    public void replaceAll(Location location, int radius, List<BlockData> find, Pattern replace) {
+        if (checkLimit()) {
+            double half = radius / 2.0;
+            new AsyncBlockGetter(location.clone().subtract(half, half, half), location.clone().add(half, half, half), t -> {
+                BukkitRunnable runnable = new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        for (Block block : t) {
+                            for (BlockData data : find) {
+                                if (block.getBlockData().getAsString().equals(data.getAsString())) {
+                                    block.setBlockData(replace.apply(block));
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                };
+                Tasks.task(runnable);
+            });
+        }
+    }
+
+    /**
+     * Adds a {@link HistorySelection} to the history.
+     * You can transform {@link CuboidSelection} to a {@link HistorySelection} with {@link CuboidSelection#toHistory()}
+     *
+     * @param   selection
+     *          The {@link HistorySelection} to be added to the history.
+     */
+    public void store(HistorySelection selection) {
+        this.history.add(0, selection);
     }
 
     /**
@@ -191,10 +290,34 @@ public class Editor<T extends CommandSender> {
                 queue.build(selection.getBlockMap());
 
                 this.history.remove(0);
+                this.undos.add(selection);
             } else {
                 return;
             }
         }
+        send("Undone " + amount + " action(s)");
+    }
+
+    /**
+     * Redo a certain amount of undos
+     *
+     * @param   amount
+     *          The amount of undos to be undone
+     */
+    public void redo(int amount) {
+        for (int i = 0; i < amount; i++) {
+            if (this.undos.size() >= 1) {
+                HistorySelection selection = this.undos.get(0);
+
+                CopyQueue queue = new CopyQueue();
+                queue.build(selection.getBlockMap());
+
+                this.undos.remove(0);
+            } else {
+                return;
+            }
+        }
+        send("Redone " + amount + " action(s)");
     }
 
     /**
@@ -202,6 +325,21 @@ public class Editor<T extends CommandSender> {
      */
     public void undo() {
         this.undo(1);
+    }
+
+    /**
+     * Redo the last undo
+     */
+    public void redo() {
+        this.redo(1);
+    }
+
+    /**
+     * Clear the history of this Editor.
+     */
+    public void clearHistory() {
+        this.history.clear();
+        this.undos.clear();
     }
 
     /**
@@ -228,7 +366,42 @@ public class Editor<T extends CommandSender> {
      */
     public void send(String message) {
         if (this.sendUpdates) {
-            this.sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&a&cRedaktor&r&8) &7" + message));
+            this.sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Redaktor.PREFIX + " &7" + message));
         }
+    }
+
+    /**
+     * Gets the instance of the sender to who to send messages if {@link #sendUpdates} is ture.
+     *
+     * @return the sender instance
+     */
+    public T getSender() {
+        return sender;
+    }
+
+    /**
+     * The amount of blocks that have been changed so far by this instance.
+     *
+     * @return the amount of blocks changed.
+     */
+    public int getChange() {
+        return change;
+    }
+
+    /**
+     * Get the max amount of change specified in the constructor.
+     *
+     * @return the max amount of change.
+     */
+    public int getMaxChange() {
+        return maxChange;
+    }
+
+    /**
+     * All the edits that have been executed so far.
+     * @return
+     */
+    public List<HistorySelection> getHistory() {
+        return history;
     }
 }

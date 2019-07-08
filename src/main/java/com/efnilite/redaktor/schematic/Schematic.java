@@ -1,7 +1,7 @@
 package com.efnilite.redaktor.schematic;
 
-import com.efnilite.redaktor.event.SchematicPasteEvent;
-import com.efnilite.redaktor.event.SchematicSaveEvent;
+import com.efnilite.redaktor.event.schematic.SchematicPasteEvent;
+import com.efnilite.redaktor.event.schematic.SchematicSaveEvent;
 import com.efnilite.redaktor.queue.internal.BlockMap;
 import com.efnilite.redaktor.queue.types.CopyQueue;
 import com.efnilite.redaktor.schematic.internal.BlockIndex;

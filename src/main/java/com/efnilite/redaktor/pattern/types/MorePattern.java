@@ -9,34 +9,29 @@ import java.util.List;
 import java.util.Random;
 
 /**
- * A patten consisting of multiple blocks,
- * that are evenly distributed.
+ * A {@link MultiplePattern} for patterns.
  */
 public class MorePattern implements Pattern {
 
     private Random random;
-    private List<BlockData> datas;
+    private List<Pattern> patterns;
 
     public MorePattern() {
         this.random = new Random();
-        this.datas = new ArrayList<>();
+        this.patterns = new ArrayList<>();
     }
 
-    public MorePattern(List<BlockData> materials) {
+    public MorePattern(List<Pattern> patterns) {
         this.random = new Random();
-        this.datas = materials;
+        this.patterns = patterns;
     }
 
     @Override
     public BlockData apply(Block block) {
-        return datas.get(random.nextInt(datas.size() - 1));
+        return patterns.get(random.nextInt(patterns.size() - 1)).apply(block);
     }
 
-    public void add(BlockData material) {
-        this.datas.add(material);
-    }
-
-    public void addAll(List<BlockData> materials) {
-        this.datas.addAll(materials);
+    public void add(Pattern pattern) {
+        this.patterns.add(pattern);
     }
 }

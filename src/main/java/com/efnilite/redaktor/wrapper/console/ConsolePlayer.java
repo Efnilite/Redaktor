@@ -1,6 +1,7 @@
 package com.efnilite.redaktor.wrapper.console;
 
 import com.efnilite.redaktor.Editor;
+import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.util.Util;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.Bukkit;
@@ -9,7 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.command.ConsoleCommandSender;
 
 /**
- * A wrapper for console
+ * A wrapper for Console so that it can also execute Redaktor commands.
  */
 public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
 
@@ -25,7 +26,7 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
 
     @Override
     public void send(String message) {
-        this.sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7" + message));
+        this.sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Redaktor.PREFIX + " &7" + message));
     }
 
     @Override

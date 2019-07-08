@@ -3,12 +3,14 @@ package com.efnilite.redaktor;
 import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.block.server.BlockFactory_v131;
 import com.efnilite.redaktor.block.server.BlockFactory_v141;
+import com.efnilite.redaktor.command.EditorCommands;
 import com.efnilite.redaktor.command.RedaktorCommands;
-import com.efnilite.redaktor.command.SelectionCommands;
+import com.efnilite.redaktor.command.SchematicCommands;
+import com.efnilite.redaktor.command.SuperItemCommands;
 import com.efnilite.redaktor.command.util.CommandFactory;
 import com.efnilite.redaktor.command.util.Commandable;
 import com.efnilite.redaktor.player.PlayerListener;
-import com.efnilite.redaktor.util.ChangeLocator;
+import com.efnilite.redaktor.util.ChangeAllocator;
 import com.efnilite.redaktor.util.factory.PlayerFactory;
 import com.efnilite.redaktor.util.web.Metrics;
 import com.efnilite.redaktor.util.web.UpdateChecker;
@@ -22,7 +24,7 @@ public class Redaktor extends JavaPlugin {
 
     private static Plugin plugin;
     private static Metrics metrics;
-    private static ChangeLocator allocator;
+    private static ChangeAllocator allocator;
     private static UpdateChecker checker;
 
     private static BlockFactory blockFactory;
@@ -32,6 +34,8 @@ public class Redaktor extends JavaPlugin {
     private static ConsolePlayer console;
 
     private static boolean isLatest;
+
+    public static String PREFIX = "&8&l(&c&lRedaktor&8&l)";
 
     @Override
     public void onEnable() {
@@ -50,7 +54,7 @@ public class Redaktor extends JavaPlugin {
             this.getServer().getPluginManager().disablePlugin(this);
         }
 
-        allocator = new ChangeLocator();
+        allocator = new ChangeAllocator();
         checker = new UpdateChecker();
 
         playerFactory = new PlayerFactory();
@@ -70,7 +74,7 @@ public class Redaktor extends JavaPlugin {
             }
         }
 
-        Commandable[] commandables = new Commandable[] { new RedaktorCommands(), new SelectionCommands() };
+        Commandable[] commandables = new Commandable[] { new RedaktorCommands(), new EditorCommands(), new SuperItemCommands(), new SchematicCommands() };
         for (Commandable commandable : commandables) {
             commandFactory.registerClass(commandable);
         }
@@ -107,7 +111,7 @@ public class Redaktor extends JavaPlugin {
         return plugin;
     }
 
-    public static ChangeLocator getAllocator() {
+    public static ChangeAllocator getAllocator() {
         return allocator;
     }
 

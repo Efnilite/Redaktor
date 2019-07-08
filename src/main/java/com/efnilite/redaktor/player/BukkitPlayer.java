@@ -27,7 +27,7 @@ public class BukkitPlayer implements RedaktorPlayer<Player> {
 
     @Override
     public void send(String message) {
-        this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', "&8(&cRedaktor&8) &7" + message));
+        this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Redaktor.PREFIX + " &7" + message));
     }
 
     @Override
@@ -63,6 +63,10 @@ public class BukkitPlayer implements RedaktorPlayer<Player> {
     @Override
     public Editor<Player> getEditor() {
         return editor;
+    }
+
+    public Player getPlayer() {
+        return player;
     }
 
     public ItemStack getHoldingItem() {

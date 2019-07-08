@@ -1,10 +1,11 @@
 package com.efnilite.redaktor.pattern;
 
+import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.pattern.types.BlockPattern;
 import com.efnilite.redaktor.pattern.types.MorePattern;
-import com.efnilite.redaktor.util.Util;
+import com.efnilite.redaktor.pattern.types.MultiplePattern;
+import com.efnilite.redaktor.pattern.types.RandomPattern;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
@@ -26,6 +27,15 @@ public interface Pattern {
      * @return  the BlockData the block needs to be set to.
      */
     BlockData apply(Block block);
+
+    static BlockData parseData(String data) {
+        try {
+            return Bukkit.createBlockData(data);
+        } catch (IllegalArgumentException e) {
+            Redaktor.getInstance().getLogger().info("null");
+            return null;
+        }
+    }
 
     /**
      * A class for parsing patterns
@@ -49,44 +59,62 @@ public interface Pattern {
                 String[] elements = pattern.split(",");
                 MorePattern more = new MorePattern();
                 for (String element : elements) {
-                    if (element.contains("#")) {
+                    if (element.contains("&")) {
+                        String parsed = pattern.replaceAll("&", "");
+                        BlockData data = Pattern.parseData(parsed);
+
+                        if (data == null) {
+                            return null;
+                        }
+
+                        more.add(new RandomPattern(data));
+                        continue;
+                    } else if (element.contains("#")) {
                         String parsed = pattern.replaceAll("#", "");
                         BlockTypes type = BlockTypes.getType(parsed);
-                        more.addAll(type.getMaterials());
-                        continue;
-                    } if (element.contains("&")) {
-                        String parsed = pattern.replaceAll("&", "");
-                        BlockData data = Bukkit.createBlockData(Util.randomizeBooleans(parsed));
-                        more.add(data);
+
+                        if (type == null) {
+                            return null;
+                        }
+
+                        more.add(new MultiplePattern(type.getMaterials()));
                         continue;
                     }
 
-                    Material material = Material.matchMaterial(pattern);
-                    if (material == null) {
-                        return null;
-                    }
-                    more.add(material.createBlockData());
+                    more.add(new BlockPattern(Bukkit.createBlockData(element)));
                 }
                 return more;
             }
 
             Pattern back = null;
-            if (pattern.contains("#")) {
+            if (pattern.contains("&")) {
+                String parsed = pattern.replaceAll("&", "");
+                BlockData data = Pattern.parseData(parsed);
+
+                if (data == null) {
+                    return null;
+                }
+
+                back = new RandomPattern(data);
+            } else if (pattern.contains("#")) {
                 String parsed = pattern.replaceAll("#", "");
                 BlockTypes type = BlockTypes.getType(parsed);
-                back = new MorePattern(type.getMaterials());
-            } if (pattern.contains("&")) {
-                String parsed = pattern.replaceAll("&", "");
-                BlockData data = Bukkit.createBlockData(Util.randomizeBooleans(parsed));
-                back = new BlockPattern(data);
+
+                if (type == null) {
+                    return null;
+                }
+
+                back = new MultiplePattern(type.getMaterials());
             }
 
             if (back == null) {
-                Material material = Material.matchMaterial(pattern);
-                if (material == null) {
+                BlockData parsed = Pattern.parseData(pattern);
+
+                if (parsed == null) {
                     return null;
                 }
-                back = new BlockPattern(material.createBlockData());
+
+                back = new BlockPattern(parsed);
             }
             return back;
         }

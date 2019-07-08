@@ -42,9 +42,9 @@ public class PlayerListener implements Listener {
 
         if (e.getHand() == EquipmentSlot.HAND) {
             if (e.getAction() == Action.LEFT_CLICK_BLOCK) {
-                if (pl.getInventory().getItemInMainHand().getItemMeta() != null) {
-                    if (pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(wand.getItemMeta().getDisplayName())) {
-                        if (pl.getInventory().getItemInMainHand().getType() == wand.getType()) {
+                if (player.getHoldingItem().getItemMeta() != null) {
+                    if (player.getHoldingItem().getItemMeta().getDisplayName().equals(wand.getItemMeta().getDisplayName())) {
+                        if (player.getHoldingItem().getType() == wand.getType()) {
                             if (pl.hasPermission("redaktor.wand")) {
                                 e.setCancelled(true);
                                 player.setPos1(e.getClickedBlock().getLocation().clone());
@@ -56,15 +56,12 @@ public class PlayerListener implements Listener {
                                 }
                             }
                         }
-                    } else if (SuperUtil.hasPersistentData(pl.getInventory().getItemInMainHand(), "issuper", PersistentDataType.STRING)) {
-                        String command = (String) SuperUtil.getPersistentData(pl.getInventory().getItemInMainHand(), "supercommand", PersistentDataType.STRING);
-                        pl.performCommand(command);
                     }
                 }
             } else if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-                if (pl.getInventory().getItemInMainHand().getItemMeta() != null) {
-                    if (pl.getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(wand.getItemMeta().getDisplayName())) {
-                        if (pl.getInventory().getItemInMainHand().getType() == wand.getType()) {
+                if (player.getHoldingItem().getItemMeta() != null) {
+                    if (player.getHoldingItem().getItemMeta().getDisplayName().equals(wand.getItemMeta().getDisplayName())) {
+                        if (player.getHoldingItem().getType() == wand.getType()) {
                             if (pl.hasPermission("redaktor.wand")) {
                                 e.setCancelled(true);
                                 player.setPos2(e.getClickedBlock().getLocation().clone());
@@ -76,11 +73,12 @@ public class PlayerListener implements Listener {
                                 }
                             }
                         }
-                    } else if (SuperUtil.hasPersistentData(pl.getInventory().getItemInMainHand(), "issuper", PersistentDataType.STRING)) {
-                        String command = (String) SuperUtil.getPersistentData(pl.getInventory().getItemInMainHand(), "supercommand", PersistentDataType.STRING);
-                        pl.performCommand(command);
                     }
                 }
+            }
+            if (SuperUtil.hasPersistentData(player.getHoldingItem(), "issuper", PersistentDataType.BYTE)) {
+                String command = (String) SuperUtil.getPersistentData(player.getHoldingItem(), "supercommand", PersistentDataType.STRING);
+                pl.performCommand(command);
             }
         }
     }

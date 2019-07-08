@@ -42,6 +42,11 @@ public class BlockQueue implements EditQueue<CuboidSelection> {
 
                         Block block = queue.poll();
                         BlockData data = pattern.apply(block);
+
+                        if (data == null) {
+                            return;
+                        }
+
                         if (!block.getBlockData().getAsString(true).equals(data.getAsString(true))) {
                             factory.setBlock(block.getLocation(), data);
                         }

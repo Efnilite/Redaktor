@@ -17,7 +17,7 @@ public class SuperItemCommands implements Commandable {
     public void superitem(RedaktorPlayer<?> sender, String[] args) {
         if (Redaktor.isLatest()) {
             if (sender.isPlayer()) {
-                if (args[0] != null) {
+                if (args.length == 1) {
                     BukkitPlayer player = (BukkitPlayer) sender;
                     if (player.getHoldingItem().getType() != Material.AIR) {
                         StringJoiner joiner = new StringJoiner(" ");
@@ -25,7 +25,7 @@ public class SuperItemCommands implements Commandable {
                             joiner.add(arg);
                         }
 
-                        SuperUtil.create(player.getHoldingItem(), "/" + joiner.toString());
+                        SuperUtil.create(player.getHoldingItem(), joiner.toString());
                         sender.send("You turned your held &c" + Util.format(player.getHoldingItem().getType()) + "&7 into a SuperItem");
                         sender.send("Now if you right or left-click you will execute &c'" + joiner.toString() + "'");
                     } else {
@@ -56,7 +56,7 @@ public class SuperItemCommands implements Commandable {
                     sender.send("You can't remove air as a tool!");
                 }
             } else {
-                sender.send("You need to be a player to delet SuperItems!");
+                sender.send("You need to be a player to delete SuperItems!");
             }
         } else {
             sender.send("You need to be running 1.14 for this to work!");

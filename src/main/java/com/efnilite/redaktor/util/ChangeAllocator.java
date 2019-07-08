@@ -3,15 +3,15 @@ package com.efnilite.redaktor.util;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
- * Calculates TPS to get a block/sec change limit.
+ * Calculates TPS to get a block/tick (1/20th of a second) change limit.
  */
-public class ChangeLocator extends BukkitRunnable {
+public class ChangeAllocator extends BukkitRunnable {
 
     private int change;
-    private double locator;
     private long lastNano;
+    private double locator;
 
-    public ChangeLocator() {
+    public ChangeAllocator() {
         this.locator = 1000.0;
         this.change = (int) locator;
         this.lastNano = System.currentTimeMillis();

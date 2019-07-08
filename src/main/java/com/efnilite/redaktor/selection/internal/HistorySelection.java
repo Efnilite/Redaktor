@@ -8,6 +8,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class HistorySelection implements Selection {
         this.world = world;
         this.pos1 = pos1;
         this.pos2 = pos2;
+        this.map = new ArrayList<>();
 
         new AsyncBlockGetter(pos1, pos2, t -> {
             for (Block block : t) {

@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.event;
+package com.efnilite.redaktor.event.schematic;
 
 import com.efnilite.redaktor.schematic.Schematic;
 import com.efnilite.redaktor.wrapper.EventWrapper;
@@ -8,8 +8,13 @@ import com.efnilite.redaktor.wrapper.EventWrapper;
  */
 public class SchematicSaveEvent extends EventWrapper {
 
-    private boolean cancelled;
+    /**
+     * The schematic that's saved.
+     */
     private Schematic schematic;
+    /**
+     * The directory it's saved to.
+     */
     private String to;
 
     public SchematicSaveEvent(Schematic schematic, String to) {

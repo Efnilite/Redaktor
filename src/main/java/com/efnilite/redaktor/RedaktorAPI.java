@@ -2,7 +2,7 @@ package com.efnilite.redaktor;
 
 import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.pattern.types.BlockPattern;
-import com.efnilite.redaktor.pattern.types.MorePattern;
+import com.efnilite.redaktor.pattern.types.MultiplePattern;
 import com.efnilite.redaktor.player.BukkitPlayer;
 import com.efnilite.redaktor.schematic.Schematic;
 import com.efnilite.redaktor.schematic.internal.BlockIndex;
@@ -16,7 +16,6 @@ import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -43,15 +42,11 @@ import java.util.function.Consumer;
 public class RedaktorAPI {
 
     private static Pattern.Parser parser;
-    private static HashMap<World, Editor<ConsoleCommandSender>> worldEditors;
+    private static Editor<ConsoleCommandSender> defaultEditor;
 
     RedaktorAPI() {
         parser = new Pattern.Parser();
-        worldEditors = new HashMap<>();
-
-        for (World world : Bukkit.getWorlds()) {
-            worldEditors.put(world, new Editor<>(Bukkit.getConsoleSender()));
-        }
+        defaultEditor = new Editor<>(Bukkit.getConsoleSender(), -1, false);
     }
 
     /**
@@ -70,7 +65,7 @@ public class RedaktorAPI {
         if (materials.length == 1) {
             return new BlockPattern(materials[0].createBlockData());
         } else {
-            MorePattern pattern = new MorePattern();
+            MultiplePattern pattern = new MultiplePattern();
             for (Material material : materials) {
                 pattern.add(material.createBlockData());
             }
@@ -135,24 +130,28 @@ public class RedaktorAPI {
     }
 
     /**
-     * Get a default Editor instance for a World.
+     * Get a default Editor instance.
      * This is a way to use Editor methods in an API
      * without using players.
      * <p>
      * The Editor returned has an unlimited max change and does not
      * log chances to the sender (in this case console)
+     * <p>
+     * Please note that using this method can cause conflict issues with other
+     * plugins using this method, as it will return one specific {@link Editor} instance.
+     * For example: If you make a lot of changes another plugin can undo them even if you
+     * don't want to.
+     * That's why you can also just create a new instance of an {@link Editor} to avoid
+     * conflicts.
      *
-     * @param   world
-     *          The world the Editor is based in.
-     *
-     * @return  The Editor for that world.
+     * @return  The main Editor.
      */
-    public static Editor<ConsoleCommandSender> getDefaultEditor(World world) {
-        return worldEditors.get(world);
+    public static Editor<ConsoleCommandSender> getDefaultEditor() {
+        return defaultEditor;
     }
 
     /**
-     * Creates a new Schematic instance from a .json file.
+     * Loads a {@link Schematic} from a file.
      *
      * @param   file
      *          The file path of the Schematic.
@@ -164,7 +163,7 @@ public class RedaktorAPI {
     }
 
     /**
-     * Creates a new Schematic instance from a CuboidSelection.
+     * Turns a {@link CuboidSelection} into a {@link Schematic}
      *
      * @param   cuboid
      *          The cuboid that needs to be saved.
@@ -213,6 +212,7 @@ public class RedaktorAPI {
 
     /**
      * Creates a new AsyncConnectedGetter.
+     * <p>
      * This is used for asynchronously getting connected
      * blocks from the same type at a location.
      *
@@ -227,8 +227,7 @@ public class RedaktorAPI {
     }
 
     /**
-     * A way to parse a Pattern from a string.
-     * Note: this isn't tested yet
+     * A way to parse a Pattern from a String.
      *
      * @param   string
      *          The string of the Pattern.

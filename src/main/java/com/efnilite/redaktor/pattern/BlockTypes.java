@@ -84,6 +84,10 @@ public enum BlockTypes {
     }
 
     public static BlockTypes getType(String name) {
-        return BlockTypes.valueOf(name.toLowerCase().replaceAll(" ", "_"));
-    }
+        try {
+            return BlockTypes.valueOf(name.toUpperCase().replaceAll(" ", "_"));
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
+     }
 }

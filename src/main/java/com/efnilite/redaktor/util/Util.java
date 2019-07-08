@@ -8,9 +8,13 @@ import java.util.Random;
 public class Util {
 
     private static Random random;
+    private static String[] halfs;
+    private static String[] facings;
 
     static {
         random = new Random();
+        halfs = new String[] { "bottom", "top" };
+        facings = new String[] { "north", "east", "south", "west" };
     }
 
     public static Location zero() {
@@ -27,15 +31,27 @@ public class Util {
     }
 
     public static String format(Material material) {
-        return material.name().toLowerCase().replaceAll("_", "");
+        return material.name().toLowerCase().replaceAll("_", " ");
     }
 
     public static String toString(Location location) {
         return (location.getX() + ", " + location.getY() + ", " + location.getZ()).replace(".0", "");
     }
 
+    public static String randomizeData(String string) {
+        return randomizeHalfs(randomizeFacings(randomizeBooleans(string)));
+    }
+
+    public static String randomizeHalfs(String string) {
+        return string.toLowerCase().replaceAll("(bottom|top)", facings[random.nextInt(facings.length - 1)]);
+    }
+
+    public static String randomizeFacings(String string) {
+        return string.toLowerCase().replaceAll("(north|east|south|west)", facings[random.nextInt(facings.length - 1)]);
+    }
+
     public static String randomizeBooleans(String string) {
-        return string.toLowerCase().replaceAll("(true|false)", Boolean.toString(Booleans.values()[random.nextInt(2) - 1].getValue()).toLowerCase());
+        return string.toLowerCase().replaceAll("(true|false)", Boolean.toString(Booleans.values()[random.nextInt(1)].getValue()).toLowerCase());
     }
 
     private enum Booleans {
