@@ -155,7 +155,7 @@ public class Editor<T extends CommandSender> {
                 store(cuboid.toHistory());
                 send("You successfully set " + (cuboid.getDimensions().getVolume() * x * z) + " blocks");
             } else {
-                send("You need to set the x and z above 1");
+                send("You need to set the x and z above 0");
             }
         }
     }
@@ -188,7 +188,7 @@ public class Editor<T extends CommandSender> {
                 store(cuboid.toHistory());
                 send("You successfully set " + (cuboid.getDimensions().getVolume() * x * y * z) + " blocks");
             } else {
-                send("You need to set the x, y and z above 1");
+                send("You need to set the x, y and z above 0");
             }
         }
     }

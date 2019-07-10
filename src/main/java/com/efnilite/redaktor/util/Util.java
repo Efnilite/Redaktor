@@ -1,5 +1,6 @@
 package com.efnilite.redaktor.util;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -15,6 +16,22 @@ public class Util {
         random = new Random();
         halfs = new String[] { "bottom", "top" };
         facings = new String[] { "north", "east", "south", "west" };
+    }
+
+    public static boolean isInArea(Location pos, Location max, Location location2) {
+        boolean x = pos.getBlockX() > Math.min(max.getBlockX(), location2.getBlockX()) && pos.getBlockX() < Math.max(max.getBlockX(), location2.getBlockX());
+        boolean y = pos.getBlockY() > Math.min(max.getBlockY(), location2.getBlockY()) && pos.getBlockY() < Math.max(max.getBlockY(), location2.getBlockY());
+        boolean z = pos.getBlockZ() > Math.min(max.getBlockZ(), location2.getBlockZ()) && pos.getBlockZ() < Math.max(max.getBlockZ(), location2.getBlockZ());
+        return x && y && z;
+    }
+
+    public static String toDeserializableString(Location location) {
+        return (location.getX() + ", " + location.getY() + ", " + location.getZ() + ", " + location.getWorld().getName()).replace(".0", "");
+    }
+
+    public static Location fromDeserializableString(String string) {
+        String[] elements = string.split(",");
+        return new Location(Bukkit.getWorld(elements[3]), Integer.parseInt(elements[0]), Integer.parseInt(elements[1]), Integer.parseInt(elements[2]));
     }
 
     public static Location zero() {
@@ -43,7 +60,7 @@ public class Util {
     }
 
     public static String randomizeHalfs(String string) {
-        return string.toLowerCase().replaceAll("(bottom|top)", facings[random.nextInt(facings.length - 1)]);
+        return string.toLowerCase().replaceAll("(bottom|top)", halfs[random.nextInt(halfs.length - 1)]);
     }
 
     public static String randomizeFacings(String string) {

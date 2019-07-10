@@ -193,4 +193,13 @@ public class EditorCommands implements Commandable {
             sender.getEditor().undo();
         }
     }
+
+    @Command(permission = "redaktor.undo", usage = "/redo [amount]")
+    public void redo(RedaktorPlayer<?> sender, String[] args) {
+        if (args.length == 1) {
+            sender.getEditor().redo(Integer.parseInt(args[0]));
+        } else {
+            sender.getEditor().redo();
+        }
+    }
 }

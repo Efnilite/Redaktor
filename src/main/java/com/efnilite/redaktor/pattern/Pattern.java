@@ -1,6 +1,5 @@
 package com.efnilite.redaktor.pattern;
 
-import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.pattern.types.BlockPattern;
 import com.efnilite.redaktor.pattern.types.MorePattern;
 import com.efnilite.redaktor.pattern.types.MultiplePattern;
@@ -32,7 +31,6 @@ public interface Pattern {
         try {
             return Bukkit.createBlockData(data);
         } catch (IllegalArgumentException e) {
-            Redaktor.getInstance().getLogger().info("null");
             return null;
         }
     }
@@ -109,6 +107,7 @@ public interface Pattern {
 
             if (back == null) {
                 BlockData parsed = Pattern.parseData(pattern);
+
 
                 if (parsed == null) {
                     return null;

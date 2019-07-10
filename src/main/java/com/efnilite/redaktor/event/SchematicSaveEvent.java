@@ -1,4 +1,4 @@
-package com.efnilite.redaktor.event.schematic;
+package com.efnilite.redaktor.event;
 
 import com.efnilite.redaktor.schematic.Schematic;
 import com.efnilite.redaktor.wrapper.EventWrapper;

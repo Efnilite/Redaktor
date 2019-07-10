@@ -1,12 +1,13 @@
 package com.efnilite.redaktor.schematic;
 
-import com.efnilite.redaktor.event.schematic.SchematicPasteEvent;
-import com.efnilite.redaktor.event.schematic.SchematicSaveEvent;
+import com.efnilite.redaktor.event.SchematicPasteEvent;
+import com.efnilite.redaktor.event.SchematicSaveEvent;
 import com.efnilite.redaktor.queue.internal.BlockMap;
 import com.efnilite.redaktor.queue.types.CopyQueue;
 import com.efnilite.redaktor.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.selection.Dimensions;
+import com.efnilite.redaktor.util.Util;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -16,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.EntityType;
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -31,7 +33,7 @@ public class Schematic {
     private CuboidSelection cuboid;
     private String file;
     @Expose
-    private Dimensions dimensions;
+    private WritableDimensions dimensions;
 
     public Schematic(String file) {
         this.cuboid = null;
@@ -47,7 +49,7 @@ public class Schematic {
     public Schematic(CuboidSelection cuboid) {
         this.cuboid = cuboid;
         this.file = null;
-        this.dimensions = cuboid.getDimensions();
+        this.dimensions = this.fromStandardDimensions(cuboid.getDimensions());
         this.gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
                 .disableHtmlEscaping()
@@ -72,14 +74,12 @@ public class Schematic {
 
             FileWriter writer = new FileWriter(file.endsWith(".json") ? file : file + ".json");
             new AsyncBlockIndexGetter(cuboid.getPos1(), cuboid.getPos2(), l -> {
-                List<WritableBlock> map = new ArrayList<>();
+                List<WritableBlock> blocks = new ArrayList<>();
                 for (Block block : l.keySet()) {
-                    BlockIndex index = l.get(block
-                    );
-                    map.add(new WritableBlock(block, index.getX(), index.getY(), index.getZ()));
+                    BlockIndex index = l.get(block);
+                    blocks.add(new WritableBlock(block.getBlockData().getAsString(), index.getX(), index.getY(), index.getZ()));
                 }
-                WritableSchematic schematic = new WritableSchematic(map);
-                gson.toJson(dimensions, writer);
+                WritableSchematic schematic = new WritableSchematic(blocks, null, dimensions);
                 gson.toJson(schematic, writer);
                 try {
                     writer.close();
@@ -91,6 +91,62 @@ public class Schematic {
             throw new IllegalArgumentException("Cuboid can't be null to save!");
         }
     }
+
+    /*
+    /**
+     * Saves a Schematic to a file using a String.
+     *
+     * @param   file
+     *          The file path where the Schematic should be saved.
+     *
+     * @param   options
+     *          The options for saving.
+     *
+     * @throws  IOException
+     *          For any exceptions during the saving,
+     *          this is targeted to the user so they can choose what to do
+     *          with the error.
+     */
+    /*
+    public void save(String file, SaveOptions... options) throws IOException {
+        if (cuboid != null) {
+            Bukkit.getPluginManager().callEvent(new SchematicSaveEvent(this, file));
+
+            List<SaveOptions> saveOptions = Arrays.asList(options);
+            FileWriter writer = new FileWriter(file.endsWith(".json") ? file : file + ".json");
+            new AsyncBlockIndexGetter(cuboid.getPos1(), cuboid.getPos2(), l -> {
+                List<WritableBlock> blocks = new ArrayList<>();
+                for (Block block : l.keySet()) {
+                    BlockIndex index = l.get(block);
+                    if (saveOptions.contains(SaveOptions.DONT_SAVE_AIR)) {
+                        if (block.getType() != Material.AIR) {
+                            blocks.add(new WritableBlock(block.getBlockData().getAsString(), index.getX(), index.getY(), index.getZ()));
+                        }
+                    } else {
+                        blocks.add(new WritableBlock(block.getBlockData().getAsString(), index.getX(), index.getY(), index.getZ()));
+                    }
+                }
+
+                List<WritableEntity> entities = new ArrayList<>();
+                for (Entity entity : cuboid.getWorld().getEntities()) {
+                    if (Util.isInArea(entity.getLocation(), cuboid.getPos1(), cuboid.getPos2())) {
+                        Location location = entity.getLocation().subtract(cuboid.getMaximumPoint());
+                        entities.add(new WritableEntity(entity.getType(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
+                    }
+                }
+
+                WritableSchematic schematic = new WritableSchematic(blocks, entities, dimensions);
+                gson.toJson(schematic, writer);
+                try {
+                    writer.close();
+                } catch (IOException | StackOverflowError e) {
+                    e.printStackTrace();
+                }
+            });
+        } else {
+            throw new IllegalArgumentException("Cuboid can't be null to save!");
+        }
+    }*/
 
     /**
      * Pastes a Schematic at a location.
@@ -111,6 +167,7 @@ public class Schematic {
 
             JsonReader reader = new JsonReader(new FileReader(file.endsWith(".json") ? file : file + ".json"));
             WritableSchematic schematic = gson.fromJson(reader, WritableSchematic.class);
+            Dimensions dimensions = toStandardDimensions(schematic.getDimensions());
             List<WritableBlock> writableBlocks = schematic.getBlocks();
             List<BlockMap> blocks = new ArrayList<>();
             for (WritableBlock block : writableBlocks) {
@@ -120,7 +177,6 @@ public class Schematic {
             }
             CopyQueue blockQueue = new CopyQueue();
             blockQueue.build(blocks);
-            Dimensions dimensions = gson.fromJson(reader, Dimensions.class);
             return new CuboidSelection(dimensions.getMaximumPoint(), dimensions.getMinimumPoint());
         } else {
             throw new IllegalArgumentException("File can't be null to save!");
@@ -151,6 +207,7 @@ public class Schematic {
 
                 JsonReader reader = new JsonReader(new FileReader(file));
                 WritableSchematic schematic = gson.fromJson(reader, WritableSchematic.class);
+                Dimensions dimensions = toStandardDimensions(schematic.getDimensions());
                 List<WritableBlock> writableBlocks = schematic.getBlocks();
                 List<BlockMap> blocks = new ArrayList<>();
                 for (WritableBlock block : writableBlocks) {
@@ -162,7 +219,10 @@ public class Schematic {
 
                     Facing facing;
                     Matcher matcher = pattern.matcher(data);
-                    matcher.find();
+                    if (!matcher.find()) {
+                        blocks.add(new BlockMap(current.getBlock(), Bukkit.createBlockData(data)));
+                        continue;
+                    }
                     String group = matcher.group().replaceAll("facing=", "");
                     facing = Facing.getFromBlockFace(BlockFace.valueOf(group.toUpperCase())).getFaceFromAngle(angle);
 
@@ -172,13 +232,34 @@ public class Schematic {
                 }
                 CopyQueue blockQueue = new CopyQueue();
                 blockQueue.build(blocks);
-                Dimensions dimensions = gson.fromJson(reader, Dimensions.class);
                 return new CuboidSelection(dimensions.getMaximumPoint(), dimensions.getMinimumPoint());
             } else {
                 throw new IllegalArgumentException("Angle must be divisible by 90!");
             }
         } else {
             throw new IllegalArgumentException("File can't be null to save!");
+        }
+    }
+
+    /**
+     * Returns the CuboidSelection of a Schematic
+     *
+     * @see     CuboidSelection
+     *
+     * @return  The CuboidSelection of a Schematic
+     *
+     * @throws  IOException
+     *          For any exceptions during the reading,
+     *          this is targeted to the user so they can choose what to do
+     *          with the error.
+     */
+    public CuboidSelection getCuboidSelection() throws IOException {
+        if (file != null) {
+            FileReader reader = new FileReader(file);
+            Dimensions dimensions = toStandardDimensions(gson.fromJson(reader, WritableSchematic.class).getDimensions());
+            return new CuboidSelection(dimensions.getMaximumPoint(), dimensions.getMinimumPoint());
+        } else {
+            throw new IllegalArgumentException("File can't be null!");
         }
     }
 
@@ -197,18 +278,43 @@ public class Schematic {
     public Dimensions getDimensions() throws IOException {
         if (file != null) {
             FileReader reader = new FileReader(file);
-            return gson.fromJson(reader, Dimensions.class);
+            return toStandardDimensions(gson.fromJson(reader, WritableSchematic.class).getDimensions());
         } else {
             throw new IllegalArgumentException("File can't be null!");
         }
     }
 
+    /**
+     * Gets the file
+     *
+     * @return the file
+     */
     public String getFile() {
         return file;
     }
 
-    public CuboidSelection getCuboid() {
-        return cuboid;
+    private Dimensions toStandardDimensions(WritableDimensions dimensions) {
+        return new Dimensions(new CuboidSelection(Util.fromDeserializableString(dimensions.getMaximum()),
+                Util.fromDeserializableString(dimensions.getMinumum())));
+    }
+
+    private WritableDimensions fromStandardDimensions(Dimensions dimensions) {
+        return new WritableDimensions(Util.toDeserializableString(dimensions.getMaximumPoint()),
+                Util.toDeserializableString(dimensions.getMinimumPoint()), dimensions.getWidth(),
+                dimensions.getHeight(), dimensions.getLength());
+    }
+
+    public enum SaveOptions {
+
+        /**
+         * If the schematic should save entities.
+         */
+        SAVE_ENTITIES,
+        /**
+         * If the schematic should not save air.
+         */
+        DONT_SAVE_AIR,
+
     }
 
     public enum Facing {
@@ -301,13 +407,139 @@ public class Schematic {
         }
     }
 
-    public class WritableSchematic {
+    private class WritableDimensions {
 
         @Expose
-        private List<WritableBlock> blocks;
+        private int width;
+        @Expose
+        private int height;
+        @Expose
+        private int length;
+        @Expose
+        private String maximum;
+        @Expose
+        private String minumum;
 
-        public WritableSchematic(List<WritableBlock> blocks) {
+        public WritableDimensions(String maximum, String minumum, int width, int height, int length) {
+            this.width = width;
+            this.height = height;
+            this.length = length;
+            this.maximum = maximum;
+            this.minumum = minumum;
+        }
+
+        public int getWidth() {
+            return width;
+        }
+
+        public int getHeight() {
+            return height;
+        }
+
+        public int getLength() {
+            return length;
+        }
+
+        public String getMaximum() {
+            return maximum;
+        }
+
+        public String getMinumum() {
+            return minumum;
+        }
+    }
+
+    private class WritableBlock {
+
+        @Expose
+        private String data;
+        @Expose
+        private int offsetX;
+        @Expose
+        private int offsetY;
+        @Expose
+        private int offsetZ;
+
+        public WritableBlock(String data, int offsetX, int offsetY, int offsetZ) {
+            this.data = data;
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+            this.offsetZ = offsetZ;
+        }
+
+        public String getData() {
+            return data;
+        }
+
+        public int getOffsetX() {
+            return offsetX;
+        }
+
+        public int getOffsetY() {
+            return offsetY;
+        }
+
+        public int getOffsetZ() {
+            return offsetZ;
+        }
+    }
+
+    private class WritableEntity {
+
+        @Expose
+        private EntityType type;
+        @Expose
+        private int offsetX;
+        @Expose
+        private int offsetY;
+        @Expose
+        private int offsetZ;
+
+        public WritableEntity(EntityType type, int offsetX, int offsetY, int offsetZ) {
+            this.type = type;
+            this.offsetX = offsetX;
+            this.offsetY = offsetY;
+            this.offsetZ = offsetZ;
+        }
+
+        public EntityType getType() {
+            return type;
+        }
+
+        public int getOffsetX() {
+            return offsetX;
+        }
+
+        public int getOffsetY() {
+            return offsetY;
+        }
+
+        public int getOffsetZ() {
+            return offsetZ;
+        }
+    }
+
+    private class WritableSchematic {
+
+        @Expose
+        private WritableDimensions dimensions;
+        @Expose
+        private List<WritableBlock> blocks;
+        @Expose
+        private List<WritableEntity> entities;
+
+        public WritableSchematic(List<WritableBlock> blocks, List<WritableEntity> entities, WritableDimensions dimensions) {
+            this.dimensions = dimensions;
             this.blocks = blocks;
+            this.entities = entities;
+        }
+
+        public List<WritableEntity> getEntities() {
+            return entities;
+        }
+
+        public WritableDimensions getDimensions() {
+            return dimensions;
         }
 
         public List<WritableBlock> getBlocks() {
