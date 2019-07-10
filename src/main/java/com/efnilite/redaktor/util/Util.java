@@ -30,7 +30,7 @@ public class Util {
     }
 
     public static Location fromDeserializableString(String string) {
-        String[] elements = string.split(",");
+        String[] elements = string.replaceAll(" ", "").split(",");
         return new Location(Bukkit.getWorld(elements[3]), Integer.parseInt(elements[0]), Integer.parseInt(elements[1]), Integer.parseInt(elements[2]));
     }
 
@@ -52,7 +52,7 @@ public class Util {
     }
 
     public static String toString(Location location) {
-        return (location.getX() + ", " + location.getY() + ", " + location.getZ()).replace(".0", "");
+        return (location.getX() + ", " + location.getY() + ", " + location.getZ()).replaceAll("(\\.\\d+)", "");
     }
 
     public static String randomizeData(String string) {

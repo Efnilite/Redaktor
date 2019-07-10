@@ -15,6 +15,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.stream.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
@@ -23,6 +24,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -30,9 +32,8 @@ import java.util.regex.Pattern;
 public class Schematic {
 
     private Gson gson;
-    private CuboidSelection cuboid;
     private String file;
-    @Expose
+    private CuboidSelection cuboid;
     private WritableDimensions dimensions;
 
     public Schematic(String file) {
@@ -47,8 +48,8 @@ public class Schematic {
     }
 
     public Schematic(CuboidSelection cuboid) {
-        this.cuboid = cuboid;
         this.file = null;
+        this.cuboid = cuboid;
         this.dimensions = this.fromStandardDimensions(cuboid.getDimensions());
         this.gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
@@ -79,7 +80,7 @@ public class Schematic {
                     BlockIndex index = l.get(block);
                     blocks.add(new WritableBlock(block.getBlockData().getAsString(), index.getX(), index.getY(), index.getZ()));
                 }
-                WritableSchematic schematic = new WritableSchematic(blocks, null, dimensions);
+                WritableSchematic schematic = new WritableSchematic(blocks, dimensions);
                 gson.toJson(schematic, writer);
                 try {
                     writer.close();
@@ -92,7 +93,7 @@ public class Schematic {
         }
     }
 
-    /*
+
     /**
      * Saves a Schematic to a file using a String.
      *
@@ -107,7 +108,6 @@ public class Schematic {
      *          this is targeted to the user so they can choose what to do
      *          with the error.
      */
-    /*
     public void save(String file, SaveOptions... options) throws IOException {
         if (cuboid != null) {
             Bukkit.getPluginManager().callEvent(new SchematicSaveEvent(this, file));
@@ -118,7 +118,7 @@ public class Schematic {
                 List<WritableBlock> blocks = new ArrayList<>();
                 for (Block block : l.keySet()) {
                     BlockIndex index = l.get(block);
-                    if (saveOptions.contains(SaveOptions.DONT_SAVE_AIR)) {
+                    if (saveOptions.contains(SaveOptions.SKIP_AIR)) {
                         if (block.getType() != Material.AIR) {
                             blocks.add(new WritableBlock(block.getBlockData().getAsString(), index.getX(), index.getY(), index.getZ()));
                         }
@@ -127,15 +127,7 @@ public class Schematic {
                     }
                 }
 
-                List<WritableEntity> entities = new ArrayList<>();
-                for (Entity entity : cuboid.getWorld().getEntities()) {
-                    if (Util.isInArea(entity.getLocation(), cuboid.getPos1(), cuboid.getPos2())) {
-                        Location location = entity.getLocation().subtract(cuboid.getMaximumPoint());
-                        entities.add(new WritableEntity(entity.getType(), location.getBlockX(), location.getBlockY(), location.getBlockZ()));
-                    }
-                }
-
-                WritableSchematic schematic = new WritableSchematic(blocks, entities, dimensions);
+                WritableSchematic schematic = new WritableSchematic(blocks, dimensions);
                 gson.toJson(schematic, writer);
                 try {
                     writer.close();
@@ -146,7 +138,7 @@ public class Schematic {
         } else {
             throw new IllegalArgumentException("Cuboid can't be null to save!");
         }
-    }*/
+    }
 
     /**
      * Pastes a Schematic at a location.
@@ -307,13 +299,13 @@ public class Schematic {
     public enum SaveOptions {
 
         /**
-         * If the schematic should save entities.
-         */
-        SAVE_ENTITIES,
-        /**
          * If the schematic should not save air.
+         * <p>
+         * This means that only solid blocks will be placed in the area where the schematic will be placed,
+         * so if there's an air block in the schematic and there's a normal block in the current world the
+         * block in the current world will not be set to air.
          */
-        DONT_SAVE_AIR,
+        SKIP_AIR,
 
     }
 
@@ -525,17 +517,10 @@ public class Schematic {
         private WritableDimensions dimensions;
         @Expose
         private List<WritableBlock> blocks;
-        @Expose
-        private List<WritableEntity> entities;
 
-        public WritableSchematic(List<WritableBlock> blocks, List<WritableEntity> entities, WritableDimensions dimensions) {
+        public WritableSchematic(List<WritableBlock> blocks, WritableDimensions dimensions) {
             this.dimensions = dimensions;
             this.blocks = blocks;
-            this.entities = entities;
-        }
-
-        public List<WritableEntity> getEntities() {
-            return entities;
         }
 
         public WritableDimensions getDimensions() {

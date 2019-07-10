@@ -86,6 +86,15 @@ public class CuboidSelection implements Selection {
     }
 
     /**
+     * Gets the center of this CuboidSelection
+     *
+     * @return the center location
+     */
+    public Location getCenter() {
+        return this.getMaximumPoint().subtract(dimensions.getLength() / 2.0, dimensions.getHeight() / 2.0, dimensions.getWidth() / 2.0);
+    }
+
+    /**
      * Calculate the maximal point
      *
      * @return the maximal point
