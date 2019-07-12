@@ -13,14 +13,14 @@ public class BlockFactory_v131 implements BlockFactory {
 
     @Override
     public void setBlock(Location location, BlockData data) {
-        IBlockData newData = ((CraftBlockData) data).getState();
+        IBlockData blockData = ((CraftBlockData) data).getState();
         World world = ((CraftWorld) location.getWorld()).getHandle();
         BlockPosition position = new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
 
         IBlockData old = world.getType(position);
-        boolean success = world.setTypeUpdate(position, newData);
+        boolean success = world.setTypeUpdate(position, blockData);
         if (success) {
-            world.notify(position, old, newData, 3);
+            world.notify(position, old, blockData, 3);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.efnilite.redaktor.wrapper;
 
 import com.efnilite.redaktor.Editor;
 import com.efnilite.redaktor.Redaktor;
+import com.efnilite.redaktor.selection.CuboidSelection;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
@@ -22,6 +23,8 @@ public interface RedaktorPlayer<T extends CommandSender> {
 
     void setPos2(Location location);
 
+    void setSelection(CuboidSelection selection);
+
     boolean isPlayer();
 
     Location getLocation();
@@ -31,6 +34,8 @@ public interface RedaktorPlayer<T extends CommandSender> {
     Location getPos2();
 
     Editor<T> getEditor();
+
+    CuboidSelection getSelection();
 
     static RedaktorPlayer<?> wrap(CommandSender sender) {
         if (sender instanceof Player) {

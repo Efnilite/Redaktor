@@ -399,9 +399,19 @@ public class Editor<T extends CommandSender> {
 
     /**
      * All the edits that have been executed so far.
-     * @return
+     *
+     * @return the history
      */
     public List<HistorySelection> getHistory() {
         return history;
+    }
+
+    /**
+     * Gets the list of all actions that were undone.
+     *
+     * @return the actions that were undone
+     */
+    public List<HistorySelection> getUndos() {
+        return undos;
     }
 }

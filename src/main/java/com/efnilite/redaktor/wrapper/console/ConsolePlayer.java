@@ -2,6 +2,7 @@ package com.efnilite.redaktor.wrapper.console;
 
 import com.efnilite.redaktor.Editor;
 import com.efnilite.redaktor.Redaktor;
+import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.Util;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.Bukkit;
@@ -14,10 +15,11 @@ import org.bukkit.command.ConsoleCommandSender;
  */
 public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
 
+    private Editor<ConsoleCommandSender> editor;
+    private ConsoleCommandSender sender;
+    private CuboidSelection selection;
     private Location pos1;
     private Location pos2;
-    private ConsoleCommandSender sender;
-    private Editor<ConsoleCommandSender> editor;
 
     public ConsolePlayer(ConsoleCommandSender sender) {
         this.sender = sender;
@@ -40,6 +42,11 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
     }
 
     @Override
+    public CuboidSelection getSelection() {
+        return selection;
+    }
+
+    @Override
     public boolean isPlayer() {
         return false;
     }
@@ -57,6 +64,11 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
     @Override
     public Location getPos2() {
         return pos2;
+    }
+
+    @Override
+    public void setSelection(CuboidSelection selection) {
+        this.selection = selection;
     }
 
     @Override

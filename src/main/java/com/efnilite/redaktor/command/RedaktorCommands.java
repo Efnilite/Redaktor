@@ -49,8 +49,17 @@ public class RedaktorCommands implements Commandable {
     }
 
     @Command
-    public void test(RedaktorPlayer<?> sender, String[] args) {
-        CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
-        sender.send(selection.getCenter().toString());
+    public void copy(RedaktorPlayer<?> sender, String[] args) {
+        if (sender.getPos1() != null || sender.getPos2() != null) {
+            CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
+            sender.setSelection(selection);
+        }
+    }
+
+    @Command
+    public void paste(RedaktorPlayer<?> sender, String[] args) {
+        if (sender.getSelection() != null) {
+
+        }
     }
 }

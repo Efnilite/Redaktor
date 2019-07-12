@@ -309,7 +309,7 @@ public class Schematic {
 
     }
 
-    public enum Facing {
+    private enum Facing {
 
         NORTH {
             @Override
