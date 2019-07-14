@@ -1,5 +1,6 @@
 package com.efnilite.redaktor;
 
+import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.queue.types.*;
 import com.efnilite.redaktor.selection.CuboidSelection;
@@ -54,6 +55,11 @@ public class Editor<T extends CommandSender> {
      */
     private List<HistorySelection> undos;
 
+    /**
+     * The fast block editor
+     */
+    private BlockFactory factory;
+
     public Editor(T sender) {
         this(sender, -1, true);
     }
@@ -83,6 +89,7 @@ public class Editor<T extends CommandSender> {
         this.sendUpdates = sendUpdates;
         this.history = new ArrayList<>();
         this.undos = new ArrayList<>();
+        this.factory = Redaktor.getBlockFactory();
     }
 
     /**
@@ -368,6 +375,19 @@ public class Editor<T extends CommandSender> {
         if (this.sendUpdates) {
             this.sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Redaktor.PREFIX + " &7" + message));
         }
+    }
+
+    /**
+     * Sets a block at a location using the {@link BlockFactory}
+     *
+     * @param   location
+     *          The location.
+     *
+     * @param   pattern
+     *          The pattern.
+     */
+    public void setBlock(Location location, Pattern pattern) {
+        this.factory.setBlock(location, pattern.apply(location.getBlock()));
     }
 
     /**

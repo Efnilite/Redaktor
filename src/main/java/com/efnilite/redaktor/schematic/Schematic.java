@@ -304,6 +304,9 @@ public class Schematic {
          * This means that only solid blocks will be placed in the area where the schematic will be placed,
          * so if there's an air block in the schematic and there's a normal block in the current world the
          * block in the current world will not be set to air.
+         * <p>
+         * This option also saves a lot of storage space, since in a lot of schematics, most blocks are
+         * air.
          */
         SKIP_AIR,
 

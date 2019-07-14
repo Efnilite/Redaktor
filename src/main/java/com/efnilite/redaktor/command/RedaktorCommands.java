@@ -4,7 +4,6 @@ import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.command.util.Command;
 import com.efnilite.redaktor.command.util.Commandable;
 import com.efnilite.redaktor.player.BukkitPlayer;
-import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.item.ItemBuilder;
 import com.efnilite.redaktor.util.web.UpdateChecker;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
@@ -45,21 +44,6 @@ public class RedaktorCommands implements Commandable {
         if (sender.isPlayer()) {
             BukkitPlayer player = (BukkitPlayer) sender;
             player.getPlayer().getInventory().addItem(new ItemBuilder(Material.WOODEN_AXE, "&cWand").build());
-        }
-    }
-
-    @Command
-    public void copy(RedaktorPlayer<?> sender, String[] args) {
-        if (sender.getPos1() != null || sender.getPos2() != null) {
-            CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
-            sender.setSelection(selection);
-        }
-    }
-
-    @Command
-    public void paste(RedaktorPlayer<?> sender, String[] args) {
-        if (sender.getSelection() != null) {
-
         }
     }
 }
