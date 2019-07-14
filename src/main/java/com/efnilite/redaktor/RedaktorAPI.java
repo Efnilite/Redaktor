@@ -227,6 +227,24 @@ public class RedaktorAPI {
     }
 
     /**
+     * Get the tps of the server calculated by {@link com.efnilite.redaktor.util.ChangeAllocator}
+     *
+     * @return the tps
+     */
+    public static double getTps() {
+        return Redaktor.getAllocator().getTps();
+    }
+
+    /**
+     * Checks if the server is running the latest version (1.14.x)
+     *
+     * @return true if the server is using 1.14.x
+     */
+    public static boolean isLastest() {
+        return Redaktor.isLatest();
+    }
+
+    /**
      * A way to parse a Pattern from a String.
      *
      * @param   string

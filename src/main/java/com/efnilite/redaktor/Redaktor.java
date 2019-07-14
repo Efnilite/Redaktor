@@ -26,8 +26,8 @@ public class Redaktor extends JavaPlugin {
 
     private static Plugin plugin;
     private static Metrics metrics;
-    private static ChangeAllocator allocator;
     private static UpdateChecker checker;
+    private static ChangeAllocator allocator;
 
     private static BlockFactory blockFactory;
     private static PlayerFactory playerFactory;

@@ -34,7 +34,6 @@ public class SlowBlockQueue implements EditQueue<CuboidSelection> {
         BlockFactory factory = Redaktor.getBlockFactory();
         new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), t -> {
             Queue<Block> queue = new LinkedList<>(t);
-            int count = queue.size();
 
             BukkitRunnable runnable = new BukkitRunnable() {
                 @Override

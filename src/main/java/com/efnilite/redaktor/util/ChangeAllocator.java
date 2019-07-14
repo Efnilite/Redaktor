@@ -10,9 +10,10 @@ public class ChangeAllocator extends BukkitRunnable {
     private int change;
     private long lastNano;
     private double locator;
+    private double tps;
 
     public ChangeAllocator() {
-        this.locator = 1000.0;
+        this.locator = 2000;
         this.change = (int) locator;
         this.lastNano = System.currentTimeMillis();
 
@@ -24,7 +25,7 @@ public class ChangeAllocator extends BukkitRunnable {
         long diff = System.currentTimeMillis() - lastNano;
         lastNano = System.currentTimeMillis();
 
-        double tps = (locator / diff) * 20.00;
+        tps = (locator / diff) * 20.00;
         tps = (tps > 20.00) ? 20.00 : tps;
 
         if (tps > 0 && tps < 18) {
@@ -36,5 +37,9 @@ public class ChangeAllocator extends BukkitRunnable {
 
     public int getChanger() {
         return change;
+    }
+
+    public double getTps() {
+        return tps;
     }
 }
