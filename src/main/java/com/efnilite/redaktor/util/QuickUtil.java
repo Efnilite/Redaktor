@@ -30,6 +30,13 @@ public class QuickUtil {
             case IRON_BARS:
             case COBBLESTONE_WALL:
             case MOSSY_COBBLESTONE_WALL:
+            case ACACIA_FENCE:
+            case BIRCH_FENCE:
+            case DARK_OAK_FENCE:
+            case JUNGLE_FENCE:
+            case NETHER_BRICK_FENCE:
+            case OAK_FENCE:
+            case SPRUCE_FENCE:
                 return true;
             default:
                 return false;
