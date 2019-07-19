@@ -2,11 +2,6 @@ package com.efnilite.redaktor.command.util;
 
 import java.lang.reflect.Method;
 
-/**
- * A class for storing commandables and their methods
- *
- * @author Efnilite
- */
 public class CommandInstanceMap {
 
     private Method method;

@@ -46,13 +46,16 @@ public class PlayerListener implements Listener {
                     if (player.getHoldingItem().getItemMeta().getDisplayName().equals(wand.getItemMeta().getDisplayName())) {
                         if (player.getHoldingItem().getType() == wand.getType()) {
                             if (pl.hasPermission("redaktor.wand")) {
+
                                 e.setCancelled(true);
                                 player.setPos1(e.getClickedBlock().getLocation().clone());
+
                                 if (player.getPos1() != null && player.getPos2() != null) {
                                     CuboidSelection selection = new CuboidSelection(player.getPos1(), player.getPos2());
-                                    player.send("&7Position 1 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (" + selection.getDimensions().getVolume() + " blocks)");
+
+                                    player.sendLang("set-position-1", Util.toString(e.getClickedBlock().getLocation()), Integer.toString(selection.getDimensions().getVolume()));
                                 } else {
-                                    player.send("&7Position 1 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (0 blocks)");
+                                    player.sendLang("set-position-1", Util.toString(e.getClickedBlock().getLocation()), Integer.toString(0));
                                 }
                             }
                         }
@@ -63,13 +66,16 @@ public class PlayerListener implements Listener {
                     if (player.getHoldingItem().getItemMeta().getDisplayName().equals(wand.getItemMeta().getDisplayName())) {
                         if (player.getHoldingItem().getType() == wand.getType()) {
                             if (pl.hasPermission("redaktor.wand")) {
+
                                 e.setCancelled(true);
                                 player.setPos2(e.getClickedBlock().getLocation().clone());
+
                                 if (player.getPos1() != null && player.getPos2() != null) {
                                     CuboidSelection selection = new CuboidSelection(player.getPos1(), player.getPos2());
-                                    player.send("&7Position 2 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (" + selection.getDimensions().getVolume() + " blocks)");
+
+                                    player.sendLang("set-position-2", Util.toString(e.getClickedBlock().getLocation()), Integer.toString(selection.getDimensions().getVolume()));
                                 } else {
-                                    player.send("&7Position 2 set to " + Util.toString(e.getClickedBlock().getLocation()) + " (0 blocks)");
+                                    player.sendLang("set-position-2", Util.toString(e.getClickedBlock().getLocation()), Integer.toString(0));
                                 }
                             }
                         }

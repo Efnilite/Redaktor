@@ -25,10 +25,10 @@ public class SchematicCommands implements Commandable {
                         }
                     } catch (IOException e) {
                         e.printStackTrace();
-                        sender.send("There was an error trying to save your schematic! Maybe the file doesn't exist?");
+                        sender.sendLang("invalid-schematic");
                     }
                 } else {
-                    sender.send("You need to set position 1 and 2 to be able to do that!");
+                    sender.sendLang("set-positions");
                 }
             } else if (args[0].equalsIgnoreCase("paste")) {
                 Schematic schematic;
@@ -46,13 +46,13 @@ public class SchematicCommands implements Commandable {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    sender.send("There was an error trying to save your schematic! Maybe the file doesn't exist?");
+                    sender.sendLang("invalid-schematic");
                 }
             } else {
-                sender.send("You need to set a schematic name!");
+                sender.sendLang("set-schematic");
             }
         } else {
-            sender.send("You need to set if you want to paste or save the schematic (/schematic (save|paste) <file> [angle]) and the schematic name itself!");
+            sender.sendLang("set-schematic-args");
         }
     }
 }

@@ -164,7 +164,7 @@ public class Schematic {
             List<BlockMap> blocks = new ArrayList<>();
             for (WritableBlock block : writableBlocks) {
                 Location current = at.clone();
-                current.add(block.getOffsetX(), block.getOffsetY(), block.getOffsetZ()); // to offset from original point
+                current.add(block.getX(), block.getY(), block.getZ()); // to offset from original point
                 blocks.add(new BlockMap(current.getBlock(), Bukkit.createBlockData(block.getData())));
             }
             CopyQueue blockQueue = new CopyQueue();
@@ -204,7 +204,7 @@ public class Schematic {
                 List<BlockMap> blocks = new ArrayList<>();
                 for (WritableBlock block : writableBlocks) {
                     Location current = at.clone();
-                    current.add(block.getOffsetX(), block.getOffsetY(), block.getOffsetZ()); // to offset from original point
+                    current.add(block.getX(), block.getY(), block.getZ()); // to offset from original point
 
                     String data = block.getData();
                     Pattern pattern = Pattern.compile("facing=(\\w+)");
@@ -449,33 +449,33 @@ public class Schematic {
         @Expose
         private String data;
         @Expose
-        private int offsetX;
+        private int x;
         @Expose
-        private int offsetY;
+        private int y;
         @Expose
-        private int offsetZ;
+        private int z;
 
-        public WritableBlock(String data, int offsetX, int offsetY, int offsetZ) {
-            this.data = data;
-            this.offsetX = offsetX;
-            this.offsetY = offsetY;
-            this.offsetZ = offsetZ;
+        public WritableBlock(String data, int x, int y, int z) {
+            this.data = data.replaceAll("minecraft:", "");
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
 
         public String getData() {
             return data;
         }
 
-        public int getOffsetX() {
-            return offsetX;
+        public int getX() {
+            return x;
         }
 
-        public int getOffsetY() {
-            return offsetY;
+        public int getY() {
+            return y;
         }
 
-        public int getOffsetZ() {
-            return offsetZ;
+        public int getZ() {
+            return z;
         }
     }
 
@@ -484,33 +484,33 @@ public class Schematic {
         @Expose
         private EntityType type;
         @Expose
-        private int offsetX;
+        private double x;
         @Expose
-        private int offsetY;
+        private double y;
         @Expose
-        private int offsetZ;
+        private double z;
 
-        public WritableEntity(EntityType type, int offsetX, int offsetY, int offsetZ) {
+        public WritableEntity(EntityType type, double x, double y, double z) {
             this.type = type;
-            this.offsetX = offsetX;
-            this.offsetY = offsetY;
-            this.offsetZ = offsetZ;
+            this.x = x;
+            this.y = y;
+            this.z = z;
         }
 
         public EntityType getType() {
             return type;
         }
 
-        public int getOffsetX() {
-            return offsetX;
+        public double getX() {
+            return x;
         }
 
-        public int getOffsetY() {
-            return offsetY;
+        public double getY() {
+            return y;
         }
 
-        public int getOffsetZ() {
-            return offsetZ;
+        public double getZ() {
+            return z;
         }
     }
 

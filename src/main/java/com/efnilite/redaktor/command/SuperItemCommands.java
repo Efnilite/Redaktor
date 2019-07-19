@@ -29,16 +29,16 @@ public class SuperItemCommands implements Commandable {
                         sender.send("You turned your held &c" + Util.format(player.getHoldingItem().getType()) + "&7 into a SuperItem");
                         sender.send("Now if you right or left-click you will execute &c'" + joiner.toString() + "'");
                     } else {
-                        sender.send("You can't set air as a SuperItem!");
+                        sender.sendLang("set-item");
                     }
                 } else {
-                    sender.send("You need to set a command!");
+                    sender.sendLang("set-command");
                 }
             } else {
-                sender.send("You need to be a player to create SuperItems!");
+                sender.sendLang("only-players");
             }
         } else {
-            sender.send("You need to be running 1.14 for this to work!");
+            sender.sendLang("run-latest");
         }
     }
 
@@ -53,13 +53,13 @@ public class SuperItemCommands implements Commandable {
 
                     sender.send("You deleted your held &c" + Util.format(player.getHoldingItem().getType()) + "&7 as a SuperItem");
                 } else {
-                    sender.send("You can't remove air as a tool!");
+                    sender.sendLang("set-item");
                 }
             } else {
-                sender.send("You need to be a player to delete SuperItems!");
+                sender.sendLang("only-players");
             }
         } else {
-            sender.send("You need to be running 1.14 for this to work!");
+            sender.sendLang("run-latest");
         }
     }
 }

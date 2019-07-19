@@ -33,7 +33,7 @@ public class EditorCommands implements Commandable {
                     BlockData current = Pattern.parseData(pattern);
 
                     if (current == null) {
-                        sender.send("&cInvalid pattern! Please check if you typed every correctly.");
+                        sender.sendLang("invalid-pattern");
                         return;
                     }
 
@@ -43,16 +43,16 @@ public class EditorCommands implements Commandable {
                 Pattern replace = parser.parse(args[1]);
 
                 if (replace == null) {
-                    sender.send("&cInvalid pattern! Please check if you typed every correctly.");
+                    sender.sendLang("invalid-pattern");
                     return;
                 }
 
                 sender.getEditor().replace(selection, data, replace);
             } else {
-                sender.send("You need to set position 1 and 2 to be able to do that!");
+                sender.sendLang("set-positions");
             }
         } else {
-            sender.send("You need to set a target and a replacement pattern!");
+            sender.sendLang("set-target");
         }
     }
 
@@ -67,7 +67,7 @@ public class EditorCommands implements Commandable {
                     BlockData current = Pattern.parseData(pattern);
 
                     if (current == null) {
-                        sender.send("&cInvalid pattern! Please check if you typed every correctly.");
+                        sender.sendLang("invalid-pattern");
                         return;
                     }
 
@@ -77,16 +77,16 @@ public class EditorCommands implements Commandable {
                 Pattern replace = parser.parse(args[2]);
 
                 if (replace == null) {
-                    sender.send("&cInvalid pattern! Please check if you typed every correctly.");
+                    sender.sendLang("invalid-pattern");
                     return;
                 }
 
                 sender.getEditor().replaceAll(sender.getLocation(), Integer.parseInt(args[0]), data, replace);
             } else {
-                sender.send("Only players can use this command.");
+                sender.sendLang("only-players");
             }
         } else {
-            sender.send("You need to set a target, a radius and a replacement pattern!");
+            sender.sendLang("set-target");
         }
     }
 
@@ -102,9 +102,10 @@ public class EditorCommands implements Commandable {
         sender.setPos1(location);
         if (sender.getPos1() != null && sender.getPos2() != null) {
             CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
-            sender.send("&7Position 1 set to " + Util.toString(location) + " (" + selection.getDimensions().getVolume() + " blocks)");
+
+            sender.sendLang("set-position-1", Util.toString(location), Integer.toString(selection.getDimensions().getVolume()));
         } else {
-            sender.send("&7Position 1 set to " + Util.toString(location) + " (0 blocks)");
+            sender.sendLang("set-position-1", Util.toString(location), Integer.toString(0));
         }
     }
 
@@ -120,9 +121,10 @@ public class EditorCommands implements Commandable {
         sender.setPos2(location);
         if (sender.getPos1() != null && sender.getPos2() != null) {
             CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
-            sender.send("&7Position 2 set to " + Util.toString(location) + " (" + selection.getDimensions().getVolume() + " blocks)");
+
+            sender.sendLang("set-position-2", Util.toString(location), Integer.toString(selection.getDimensions().getVolume()));
         } else {
-            sender.send("&7Position 2 set to " + Util.toString(location) + " (0 blocks)");
+            sender.sendLang("set-position-2", Util.toString(location), Integer.toString(0));
         }
     }
 
@@ -134,16 +136,16 @@ public class EditorCommands implements Commandable {
                 Pattern pattern = parser.parse(args[0]);
 
                 if (pattern == null) {
-                    sender.send("&cInvalid pattern! Please check if you typed every correctly.");
+                    sender.sendLang("invalid-pattern");
                     return;
                 }
 
                 sender.getEditor().setBlocks(selection, pattern);
             } else {
-                sender.send("You need to set position 1 and 2 to be able to do that!");
+                sender.sendLang("set-positions");
             }
         } else {
-            sender.send("You need to set a pattern!");
+            sender.sendLang("set-pattern");
         }
     }
 
@@ -155,16 +157,16 @@ public class EditorCommands implements Commandable {
                 Pattern pattern = parser.parse(args[0]);
 
                 if (pattern == null) {
-                    sender.send("&cInvalid pattern! Please check if you typed every correctly.");
+                    sender.sendLang("invalid-pattern");
                     return;
                 }
 
                 sender.getEditor().setSlowBlocks(selection, pattern, Integer.parseInt(args[1]));
             } else {
-                sender.send("You need to set position 1 and 2 to be able to do that!");
+                sender.sendLang("set-positions");
             }
         } else {
-            sender.send("You need to set a pattern!");
+            sender.sendLang("set-pattern");
         }
     }
 
@@ -183,13 +185,16 @@ public class EditorCommands implements Commandable {
     @Command(permission = "redaktor.ch", usage = "/ch", aliases = { "ch" })
     public void clearhistory(RedaktorPlayer<?> sender, String[] args) {
         sender.getEditor().clearHistory();
+        sender.sendLang("clear-history");
     }
 
     @Command(permission = "redaktor.undo", usage = "/undo [amount]")
     public void undo(RedaktorPlayer<?> sender, String[] args) {
         if (args.length == 1) {
+            sender.sendLang("undo", args[0]);
             sender.getEditor().undo(Integer.parseInt(args[0]));
         } else {
+            sender.sendLang("undo", Integer.toString(1));
             sender.getEditor().undo();
         }
     }
@@ -197,8 +202,10 @@ public class EditorCommands implements Commandable {
     @Command(permission = "redaktor.undo", usage = "/redo [amount]")
     public void redo(RedaktorPlayer<?> sender, String[] args) {
         if (args.length == 1) {
+            sender.sendLang("redo", args[0]);
             sender.getEditor().redo(Integer.parseInt(args[0]));
         } else {
+            sender.sendLang("redo", Integer.toString(1));
             sender.getEditor().redo();
         }
     }

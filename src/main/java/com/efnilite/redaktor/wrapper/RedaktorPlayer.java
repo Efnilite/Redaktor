@@ -19,6 +19,8 @@ public interface RedaktorPlayer<T extends CommandSender> {
 
     void send(String message);
 
+    void sendLang(String message, String... replacements);
+
     void setPos1(Location location);
 
     void setPos2(Location location);
@@ -36,6 +38,8 @@ public interface RedaktorPlayer<T extends CommandSender> {
     Editor<T> getEditor();
 
     CuboidSelection getSelection();
+
+    T getSender();
 
     static RedaktorPlayer<?> wrap(CommandSender sender) {
         if (sender instanceof Player) {

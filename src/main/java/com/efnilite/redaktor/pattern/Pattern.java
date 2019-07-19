@@ -79,7 +79,7 @@ public interface Pattern {
                         continue;
                     }
 
-                    more.add(new BlockPattern(Bukkit.createBlockData(element)));
+                    more.add(new BlockPattern(Pattern.parseData(element)));
                 }
                 return more;
             }

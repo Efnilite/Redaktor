@@ -19,7 +19,7 @@ public class RedaktorCommands implements Commandable {
             } else if (args[0].equalsIgnoreCase("update")) {
                 UpdateChecker checker = Redaktor.getChecker();
                 if (checker.check()) {
-                    sender.send("&7Redaktor can be updated to version " + checker.getLatestVersion() + "!");
+                    sender.send("&7Redaktor can be updated to version " + checker.getLatestVersion() + "! (https://github.com/Efnilite/Redaktor/releases)");
                 } else {
                     sender.send("&7Redaktor is currently up-to-date!");
                 }

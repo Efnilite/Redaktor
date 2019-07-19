@@ -1,5 +1,6 @@
 package com.efnilite.redaktor.command.util;
 
+import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,26 +14,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
-/**
- * The main reference class for registering commands
- * using methods.
- *
- * @author Efnilite
- */
 public class CommandFactory implements CommandExecutor {
 
     private Plugin plugin;
     private CommandMap map;
     private HashMap<String, CommandInstanceMap> methods;
 
-    /**
-     * Creates a new CommandFactory
-     *
-     * @param   plugin
-     *          The plugin using this.
-     */
-    public CommandFactory(Plugin plugin) {
-        this.plugin = plugin;
+    public CommandFactory() {
+        this.plugin = Redaktor.getInstance();
         this.methods = new HashMap<>();
         try {
             Field field = Bukkit.getServer().getClass().getDeclaredField("commandMap");
@@ -43,16 +32,6 @@ public class CommandFactory implements CommandExecutor {
         }
     }
 
-    /**
-     * Register a Commandable class in which all methods will
-     * be scanned for the 'Command' annotation.
-     * <p>
-     * If one of the methods contains one of those annotations it will register
-     * using the method name as the main command name.
-     *
-     * @param   commandable
-     *          The commandable instance.
-     */
     public void registerClass(Commandable commandable) {
         Class<?> clazz = commandable.getClass();
         for (Method method : clazz.getMethods()) {

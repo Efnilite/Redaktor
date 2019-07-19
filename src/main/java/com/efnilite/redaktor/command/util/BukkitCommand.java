@@ -4,11 +4,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
-/**
- * A custom command wrapper
- *
- * @author Efnilite
- */
 public class BukkitCommand extends Command {
 
     private CommandExecutor executor;

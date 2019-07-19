@@ -23,12 +23,23 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
 
     public ConsolePlayer(ConsoleCommandSender sender) {
         this.sender = sender;
-        this.editor = new Editor<>(Bukkit.getConsoleSender());
+        this.editor = new Editor<>(Bukkit.getConsoleSender(), -1, false);
     }
 
     @Override
     public void send(String message) {
         this.sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Redaktor.PREFIX + " &7" + message));
+    }
+
+    @Override
+    public void sendLang(String message, String... replacements) {
+        String string = Redaktor.getConfiguration().getString("lang", "languages." + Redaktor.getConfiguration().getLanguage() + "." + message);
+        if (replacements.length != 0) {
+            for (String replacement : replacements) {
+                string = string.replaceFirst("(%\\w+%)", replacement);
+            }
+        }
+        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', Redaktor.PREFIX + " &7" + string));
     }
 
     @Override
@@ -74,5 +85,10 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
     @Override
     public Editor<ConsoleCommandSender> getEditor() {
         return editor;
+    }
+
+    @Override
+    public ConsoleCommandSender getSender() {
+        return sender;
     }
 }

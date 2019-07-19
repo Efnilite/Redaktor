@@ -104,11 +104,13 @@ public class Editor<T extends CommandSender> {
     public void setBlocks(CuboidSelection cuboid, Pattern pattern) {
         if (checkLimit()) {
             BlockQueue queue = new BlockQueue(pattern);
+
+            store(cuboid.toHistory());
+
             queue.build(cuboid);
 
             this.change += cuboid.getDimensions().getVolume();
 
-            store(cuboid.toHistory());
             send("You successfully set " + cuboid.getDimensions().getVolume() + " blocks");
         }
     }
@@ -128,11 +130,13 @@ public class Editor<T extends CommandSender> {
     public void setSlowBlocks(CuboidSelection cuboid, Pattern pattern, int perTick) {
         if (checkLimit()) {
             SlowBlockQueue queue = new SlowBlockQueue(pattern, perTick);
+
+            store(cuboid.toHistory());
+
             queue.build(cuboid);
 
             this.change += cuboid.getDimensions().getVolume();
 
-            store(cuboid.toHistory());
             send("You successfully set " + cuboid.getDimensions().getVolume() + " blocks");
         }
     }
@@ -155,11 +159,13 @@ public class Editor<T extends CommandSender> {
         if (checkLimit()) {
             if (x > 0 && z > 0) {
                 Cuboid2DResizeQueue queue = new Cuboid2DResizeQueue(x, z);
+
+                store(cuboid.toHistory());
+
                 queue.build(cuboid);
 
                 this.change += cuboid.getDimensions().getVolume() * x * z;
 
-                store(cuboid.toHistory());
                 send("You successfully set " + (cuboid.getDimensions().getVolume() * x * z) + " blocks");
             } else {
                 send("You need to set the x and z above 0");
@@ -188,11 +194,13 @@ public class Editor<T extends CommandSender> {
         if (checkLimit()) {
             if (x > 0 && y > 0 && z > 0) {
                 Cuboid3DResizeQueue queue = new Cuboid3DResizeQueue(x, y, z);
+
+                store(cuboid.toHistory());
+
                 queue.build(cuboid);
 
                 this.change += cuboid.getDimensions().getVolume() * x * y * z;
 
-                store(cuboid.toHistory());
                 send("You successfully set " + (cuboid.getDimensions().getVolume() * x * y * z) + " blocks");
             } else {
                 send("You need to set the x, y and z above 0");
@@ -289,7 +297,7 @@ public class Editor<T extends CommandSender> {
      *          The amount of undos.
      */
     public void undo(int amount) {
-        for (int i = 0; i < amount; i++) {
+        for (int i = 1; i < amount; i++) {
             if (this.history.size() >= 1) {
                 HistorySelection selection = this.history.get(0);
 
@@ -312,7 +320,7 @@ public class Editor<T extends CommandSender> {
      *          The amount of undos to be undone
      */
     public void redo(int amount) {
-        for (int i = 0; i < amount; i++) {
+        for (int i = 1; i < amount; i++) {
             if (this.undos.size() >= 1) {
                 HistorySelection selection = this.undos.get(0);
 

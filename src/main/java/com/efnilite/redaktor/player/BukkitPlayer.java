@@ -24,12 +24,23 @@ public class BukkitPlayer implements RedaktorPlayer<Player> {
 
     public BukkitPlayer(Player player) {
         this.player = player;
-        this.editor = new Editor<>(player);
+        this.editor = new Editor<>(player, -1, false);
     }
 
     @Override
     public void send(String message) {
         this.player.sendMessage(ChatColor.translateAlternateColorCodes('&', Redaktor.PREFIX + " &7" + message));
+    }
+
+    @Override
+    public void sendLang(String message, String... replacements) {
+        String string = Redaktor.getConfiguration().getString("lang", "languages." + Redaktor.getConfiguration().getLanguage() + "." + message);
+        if (replacements.length != 0) {
+            for (String replacement : replacements) {
+                string = string.replaceFirst("(%\\w+%)", replacement);
+            }
+        }
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', Redaktor.PREFIX + " &7" + string));
     }
 
     @Override
@@ -75,6 +86,11 @@ public class BukkitPlayer implements RedaktorPlayer<Player> {
     @Override
     public CuboidSelection getSelection() {
         return selection;
+    }
+
+    @Override
+    public Player getSender() {
+        return player;
     }
 
     public Player getPlayer() {

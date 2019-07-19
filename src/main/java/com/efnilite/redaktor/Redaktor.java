@@ -11,6 +11,7 @@ import com.efnilite.redaktor.command.util.CommandFactory;
 import com.efnilite.redaktor.command.util.Commandable;
 import com.efnilite.redaktor.player.PlayerListener;
 import com.efnilite.redaktor.util.ChangeAllocator;
+import com.efnilite.redaktor.util.Configuration;
 import com.efnilite.redaktor.util.factory.PlayerFactory;
 import com.efnilite.redaktor.util.web.Metrics;
 import com.efnilite.redaktor.util.web.UpdateChecker;
@@ -28,6 +29,7 @@ public class Redaktor extends JavaPlugin {
     private static Metrics metrics;
     private static UpdateChecker checker;
     private static ChangeAllocator allocator;
+    private static Configuration configuration;
 
     private static BlockFactory blockFactory;
     private static PlayerFactory playerFactory;
@@ -54,16 +56,17 @@ public class Redaktor extends JavaPlugin {
         } else {
             this.getLogger().severe("Redaktor only works on 1.14.x and 1.13.x (not 1.13)");
             this.getServer().getPluginManager().disablePlugin(this);
+            return;
         }
+        this.getLogger().info("Registered under server version " + version);
 
+        configuration = new Configuration();
         allocator = new ChangeAllocator();
         checker = new UpdateChecker();
-
         playerFactory = new PlayerFactory();
-        commandFactory = new CommandFactory(this);
+        commandFactory = new CommandFactory();
 
         metrics = new Metrics(this);
-
         console = new ConsolePlayer(this.getServer().getConsoleSender());
 
         new RedaktorAPI();
@@ -91,6 +94,8 @@ public class Redaktor extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.getServer().getScheduler().cancelTasks(this);
+
         if (Bukkit.getOnlinePlayers().size() > 0) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 playerFactory.unregister(player);
@@ -100,6 +105,10 @@ public class Redaktor extends JavaPlugin {
 
     public static boolean isLatest() {
         return isLatest;
+    }
+
+    public static Configuration getConfiguration() {
+        return configuration;
     }
 
     public static ConsolePlayer getConsolePlayer() {
