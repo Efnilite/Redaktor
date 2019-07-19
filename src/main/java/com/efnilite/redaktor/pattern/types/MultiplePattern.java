@@ -29,7 +29,7 @@ public class MultiplePattern implements Pattern {
 
     @Override
     public BlockData apply(Block block) {
-        return datas.get(random.nextInt(datas.size() - 1));
+        return datas.get(random.nextInt(datas.size()));
     }
 
     public void add(BlockData material) {

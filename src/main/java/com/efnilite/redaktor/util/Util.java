@@ -6,6 +6,10 @@ import org.bukkit.Material;
 
 import java.util.Random;
 
+/**
+ * Main utils
+ * Will be documented soon
+ */
 public class Util {
 
     private static Random random;

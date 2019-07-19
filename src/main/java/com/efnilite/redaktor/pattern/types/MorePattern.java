@@ -28,7 +28,7 @@ public class MorePattern implements Pattern {
 
     @Override
     public BlockData apply(Block block) {
-        return patterns.get(random.nextInt(patterns.size() - 1)).apply(block);
+        return patterns.get(random.nextInt(patterns.size())).apply(block);
     }
 
     public void add(Pattern pattern) {

@@ -297,7 +297,7 @@ public class Editor<T extends CommandSender> {
      *          The amount of undos.
      */
     public void undo(int amount) {
-        for (int i = 1; i < amount; i++) {
+        for (int i = 0; i < amount; i++) {
             if (this.history.size() >= 1) {
                 HistorySelection selection = this.history.get(0);
 
@@ -320,7 +320,7 @@ public class Editor<T extends CommandSender> {
      *          The amount of undos to be undone
      */
     public void redo(int amount) {
-        for (int i = 1; i < amount; i++) {
+        for (int i = 0; i < amount; i++) {
             if (this.undos.size() >= 1) {
                 HistorySelection selection = this.undos.get(0);
 

@@ -7,7 +7,6 @@ import com.efnilite.redaktor.player.BukkitPlayer;
 import com.efnilite.redaktor.schematic.Schematic;
 import com.efnilite.redaktor.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.selection.CuboidSelection;
-import com.efnilite.redaktor.util.AsyncFuture;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
 import com.efnilite.redaktor.util.getter.AsyncConnectedGetter;
@@ -71,30 +70,6 @@ public class RedaktorAPI {
             }
             return pattern;
         }
-    }
-
-    /**
-     * Checks if 2 Cuboids are the same.
-     *
-     * Idea by https://gitlab.com/Moderocky
-     *
-     * @param   cuboid
-     *          The original cuboid.
-     *
-     * @param   possibleCopy
-     *          The cuboid which might be a copy.
-     *
-     * @return  true if the cuboids have the same blocks.
-     *          false if not.
-     */
-    public static boolean isCopy(CuboidSelection cuboid, CuboidSelection possibleCopy) {
-        AsyncFuture<Boolean> future = new AsyncFuture<>();
-        newBlockGetter(cuboid, t -> {
-            newBlockGetter(possibleCopy, b -> {
-                future.complete(t.containsAll(b));
-            });
-        });
-        return future.get();
     }
 
     /**

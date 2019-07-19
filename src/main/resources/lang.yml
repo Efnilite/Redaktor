@@ -1,7 +1,7 @@
 languages:
     en:
         invalid-schematic: "There was an error trying to save your schematic! Maybe the file doesn't exist?"
-        invalid-pattern: "&cInvalid pattern! Please check if you typed every correctly."
+        invalid-pattern: "&cInvalid pattern! Please check if you typed everything correctly."
         set-item: "You can't use air in SuperItems."
         set-target: "You need to set a target!"
         set-pattern: "You need to set a pattern!"
