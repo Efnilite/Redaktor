@@ -1,6 +1,5 @@
 package com.efnilite.redaktor.selection;
 
-import com.efnilite.redaktor.selection.internal.HistorySelection;
 import org.bukkit.Location;
 import org.bukkit.World;
 

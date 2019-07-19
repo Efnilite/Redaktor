@@ -29,7 +29,7 @@ public class ChangeAllocator extends BukkitRunnable {
      * <p>
      * The TPS is calculated by the difference between the milliseconds of now and 4 seconds ago.
      * If the difference is small, this means that the server is operating at ~20 tps.
-     * If the difference is bigger, this means that the server is operating at <20 tps.
+     * If the difference is bigger, this means that the server is operating at below 20 tps.
      * <p>
      * With the current code, it calculates the TPS by dividing the {@link #locator} var and the difference.
      */
