@@ -30,6 +30,9 @@ public class Configuration {
             this.plugin.getDataFolder().mkdir();
             this.plugin.saveResource("config.yml", false);
             this.plugin.saveResource("lang.yml", false);
+
+            File schematics = new File(plugin.getDataFolder().toString() + "/schematics/");
+            schematics.mkdir();
         }
 
         this.files.put("config", this.getFile("config.yml"));

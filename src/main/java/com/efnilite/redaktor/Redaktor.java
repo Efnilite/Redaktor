@@ -21,8 +21,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-
 /**
  * The main plugin class
  */
@@ -75,11 +73,6 @@ public class Redaktor extends JavaPlugin {
         new RedaktorAPI();
 
         this.getServer().getPluginManager().registerEvents(new PlayerListener(), this);
-
-        if (!this.getDataFolder().exists()) {
-            File schematics = new File(this.getDataFolder().toString() + "/schematics/");
-            schematics.mkdirs();
-        }
 
         if (Bukkit.getOnlinePlayers().size() > 0) {
             for (Player player : Bukkit.getOnlinePlayers()) {
