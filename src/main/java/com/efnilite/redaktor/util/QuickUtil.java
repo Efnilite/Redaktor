@@ -3,11 +3,26 @@ package com.efnilite.redaktor.util;
 import org.bukkit.Material;
 
 /**
- * A class for storing stuff
- * Will be documented soon
+ * A class for storing data
  */
 public class QuickUtil {
 
+    /**
+     * Avoid instances
+     */
+    private QuickUtil() {
+
+    }
+
+    /**
+     * Checks if a material should be updated when placed.
+     * If, for example, stained glass panes weren't updated they wouldn't connect making it look weird.
+     *
+     * @param   material
+     *          The material.
+     *
+     * @return  true if it should be updated
+     */
     public static boolean shouldUpdateOnPlace(Material material) {
         switch (material) {
             case BLACK_STAINED_GLASS_PANE:

@@ -21,9 +21,25 @@ import java.util.Queue;
  */
 public class SlowBlockQueue implements EditQueue<CuboidSelection> {
 
+    /**
+     * The blocks/tick amount
+     */
     private int tick;
+
+    /**
+     * The pattern
+     */
     private Pattern pattern;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   pattern
+     *          The pattern
+     *
+     * @param   tick
+     *          The blocks/tick amount
+     */
     public SlowBlockQueue(Pattern pattern, int tick) {
         this.tick = tick;
         this.pattern = pattern;

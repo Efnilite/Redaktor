@@ -27,6 +27,15 @@ public interface Pattern {
      */
     BlockData apply(Block block);
 
+    /**
+     * A method for parsing data without causing errors, returning null if a pattern
+     * is invalid.
+     *
+     * @param   data
+     *          The string of data to be parsed
+     *
+     * @return  a BlockData instance or null
+     */
     static BlockData parseData(String data) {
         try {
             return Bukkit.createBlockData(data);
@@ -40,12 +49,15 @@ public interface Pattern {
      */
     class Parser {
 
+        /**
+         * Creates a new instance
+         */
         public Parser() {
 
         }
 
         /**
-         * Parse a {@link Pattern} from a string.
+         * Creates a new {@link Pattern} instance from a String
          *
          * @param   pattern
          *          The string of the pattern.

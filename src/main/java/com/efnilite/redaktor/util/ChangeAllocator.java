@@ -8,9 +8,24 @@ import org.bukkit.scheduler.BukkitRunnable;
  */
 public class ChangeAllocator extends BukkitRunnable {
 
+    /**
+     * The amount of blocks that can be changed per tick
+     */
     private int change;
+
+    /**
+     * The last call to {@link System#currentTimeMillis()}
+     */
     private long lastNano;
+
+    /**
+     * The locator (amount of blocks that can be changed in the config)
+     */
     private double locator;
+
+    /**
+     * The calculated tps
+     */
     private double tps;
 
     /**

@@ -15,12 +15,37 @@ import org.bukkit.command.ConsoleCommandSender;
  */
 public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
 
+    /**
+     * The Editor for this instance
+     */
     private Editor<ConsoleCommandSender> editor;
+
+    /**
+     *  The sender instance
+     */
     private ConsoleCommandSender sender;
+
+    /**
+     * The selection
+     */
     private CuboidSelection selection;
+
+    /**
+     * The first position of the selection
+     */
     private Location pos1;
+
+    /**
+     * The second position of the selection
+     */
     private Location pos2;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   sender
+     *          The CommandSender instance
+     */
     public ConsolePlayer(ConsoleCommandSender sender) {
         this.sender = sender;
         this.editor = new Editor<>(Bukkit.getConsoleSender(), -1, false);
@@ -85,10 +110,5 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
     @Override
     public Editor<ConsoleCommandSender> getEditor() {
         return editor;
-    }
-
-    @Override
-    public ConsoleCommandSender getSender() {
-        return sender;
     }
 }

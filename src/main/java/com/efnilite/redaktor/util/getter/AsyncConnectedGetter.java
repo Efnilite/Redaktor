@@ -19,10 +19,30 @@ import java.util.function.Consumer;
  */
 public class AsyncConnectedGetter extends BukkitRunnable implements AsyncGetter<List<Block>> {
 
+    /**
+     * The original position
+     */
     private Location pos;
+
+    /**
+     * A list of all block directions, used for getting the relative blocks.
+     */
     private BlockFace[] directions;
+
+    /**
+     * The consumer -> what to do when the blocks have been collected
+     */
     private Consumer<List<Block>> consumer;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   pos
+     *          The position from where the connected blocks will be counted
+     *
+     * @param   consumer
+     *          What to do when all the blocks have been gathered
+     */
     public AsyncConnectedGetter(Location pos, Consumer<List<Block>> consumer) {
         this.pos = pos;
         this.consumer = consumer;

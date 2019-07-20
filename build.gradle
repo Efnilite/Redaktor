@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group 'com.efnilite:redaktor-api'
-version '1.0'
+group 'com.efnilite'
+version '1.0s'
 
 sourceCompatibility = 1.8
 

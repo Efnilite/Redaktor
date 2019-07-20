@@ -14,17 +14,33 @@ import java.util.Random;
  */
 public class MultiplePattern implements Pattern {
 
+    /**
+     * The random instance for getting a random element
+     */
     private Random random;
+
+    /**
+     * The datas
+     */
     private List<BlockData> datas;
 
+    /**
+     * Creates a new instance
+     */
     public MultiplePattern() {
         this.random = new Random();
         this.datas = new ArrayList<>();
     }
 
-    public MultiplePattern(List<BlockData> materials) {
+    /**
+     * Creates a new instance
+     *
+     * @param   datas
+     *          The datas
+     */
+    public MultiplePattern(List<BlockData> datas) {
         this.random = new Random();
-        this.datas = materials;
+        this.datas = datas;
     }
 
     @Override
@@ -32,7 +48,13 @@ public class MultiplePattern implements Pattern {
         return datas.get(random.nextInt(datas.size()));
     }
 
-    public void add(BlockData material) {
-        this.datas.add(material);
+    /**
+     * Adds a BlockData
+     *
+     * @param   data
+     *          The data
+     */
+    public void add(BlockData data) {
+        this.datas.add(data);
     }
 }

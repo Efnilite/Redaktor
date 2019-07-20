@@ -69,12 +69,26 @@ public enum BlockTypes {
             Material.LIME_WOOL, Material.MAGENTA_WOOL, Material.ORANGE_WOOL, Material.PINK_WOOL, Material.PURPLE_WOOL, Material.RED_WOOL,  Material.WHITE_WOOL, Material.YELLOW_WOOL
     );
 
+    /**
+     * The materials
+     */
     private Material[] materials;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   materials
+     *          The materials
+     */
     BlockTypes(Material... materials) {
         this.materials = materials;
     }
 
+    /**
+     * Gets the associated materials
+     *
+     * @return the materials
+     */
     public List<BlockData> getMaterials() {
         List<BlockData> back = new ArrayList<>();
         for (Material material : materials) {
@@ -83,6 +97,14 @@ public enum BlockTypes {
         return back;
     }
 
+    /**
+     * Gets a BlockTypes instance from a name
+     *
+     * @param   name
+     *          The name
+     *
+     * @return  a BlockTypes instance
+     */
     public static BlockTypes getType(String name) {
         try {
             return BlockTypes.valueOf(name.toUpperCase().replaceAll(" ", "_"));

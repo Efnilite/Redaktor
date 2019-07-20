@@ -19,8 +19,17 @@ import java.util.Queue;
  */
 public class BlockQueue implements EditQueue<CuboidSelection> {
 
+    /**
+     * The pattern
+     */
     private Pattern pattern;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   pattern
+     *          The pattern the blocks are going to be set to
+     */
     public BlockQueue(Pattern pattern) {
         this.pattern = pattern;
     }

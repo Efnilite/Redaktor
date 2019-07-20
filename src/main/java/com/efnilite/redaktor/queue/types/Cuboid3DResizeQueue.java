@@ -17,10 +17,33 @@ import java.util.Queue;
  */
 public class Cuboid3DResizeQueue implements EditQueue<CuboidSelection> {
 
+    /**
+     * The x modifier
+     */
     private int x;
+
+    /**
+     * The y modifier
+     */
     private int y;
+
+    /**
+     * The z modifier
+     */
     private int z;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   x
+     *          The x modifier
+     *
+     * @param   y
+     *          The y modifier
+     *
+     * @param   z
+     *          The z modifier
+     */
     public Cuboid3DResizeQueue(int x, int y, int z) {
         this.x = x;
         this.y = y;

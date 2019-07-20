@@ -11,6 +11,12 @@ package com.efnilite.redaktor.util.getter;
  */
 public interface AsyncGetter<T> {
 
+    /**
+     * When the async retrieving is done this method gets called.
+     *
+     * @param   value
+     *          What the async retrieving gathered.
+     */
     void asyncDone(T value);
 
 }

@@ -2,8 +2,8 @@ package com.efnilite.redaktor.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.BlockFactory;
+import com.efnilite.redaktor.queue.BlockMap;
 import com.efnilite.redaktor.queue.EditQueue;
-import com.efnilite.redaktor.queue.internal.BlockMap;
 import com.efnilite.redaktor.util.Tasks;
 import org.bukkit.scheduler.BukkitRunnable;
 

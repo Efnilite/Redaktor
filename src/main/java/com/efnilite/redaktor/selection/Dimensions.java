@@ -9,12 +9,37 @@ import org.bukkit.Location;
  */
 public class Dimensions {
 
+    /**
+     * The width
+     */
     private int width;
+
+    /**
+     * The height
+     */
     private int height;
+
+    /**
+     * The length
+     */
     private int length;
+
+    /**
+     * The max location
+     */
     private Location maximum;
+
+    /**
+     * The min location
+     */
     private Location minumum;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   cuboid
+     *          The cuboid
+     */
     public Dimensions(CuboidSelection cuboid) {
         this.maximum = cuboid.getMaximumPoint();
         this.minumum = cuboid.getMinimumPoint();
@@ -27,26 +52,55 @@ public class Dimensions {
         this.length = max.getBlockZ() - min.getBlockZ() + 1;
     }
 
+    /**
+     * Calculates the volume
+     *
+     * @return the volume
+     */
     public int getVolume() {
         return width * height * length;
     }
 
+    /**
+     * Gets the width
+     *
+     * @return the width
+     */
     public int getWidth() {
         return width;
     }
 
+    /**
+     * Gets the height
+     *
+     * @return the height
+     */
     public int getHeight() {
         return height;
     }
 
+    /**
+     * Gets the length
+     *
+     * @return the length
+     */
     public int getLength() {
         return length;
     }
 
+    /**
+     * Gets the maximum point
+     *
+     * @return the max point
+     */
     public Location getMaximumPoint() {
         return maximum;
     }
 
+    /**
+     * Gets the minimal point
+     * @return the minimal point
+     */
     public Location getMinimumPoint() {
         return minumum;
     }

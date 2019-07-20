@@ -10,8 +10,17 @@ import org.bukkit.block.data.BlockData;
  */
 public class RandomPattern implements Pattern {
 
+    /**
+     * The data
+     */
     private BlockData data;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   data
+     *          The data
+     */
     public RandomPattern(BlockData data) {
         this.data = data;
     }

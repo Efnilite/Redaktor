@@ -13,14 +13,30 @@ import java.util.Random;
  */
 public class MorePattern implements Pattern {
 
+    /**
+     * A random instance for getting a random element
+     */
     private Random random;
+
+    /**
+     * The patterns
+     */
     private List<Pattern> patterns;
 
+    /**
+     * Creates a new instance
+     */
     public MorePattern() {
         this.random = new Random();
         this.patterns = new ArrayList<>();
     }
 
+    /**
+     * Creates a new instance
+     *
+     * @param   patterns
+     *          The list of patterns
+     */
     public MorePattern(List<Pattern> patterns) {
         this.random = new Random();
         this.patterns = patterns;
@@ -31,6 +47,12 @@ public class MorePattern implements Pattern {
         return patterns.get(random.nextInt(patterns.size())).apply(block);
     }
 
+    /**
+     * Add a pattern
+     *
+     * @param   pattern
+     *          The pattern
+     */
     public void add(Pattern pattern) {
         this.patterns.add(pattern);
     }

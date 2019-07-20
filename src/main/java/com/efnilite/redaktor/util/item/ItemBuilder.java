@@ -14,23 +14,60 @@ import java.util.List;
  */
 public class ItemBuilder {
 
+    /**
+     * The amount of the item
+     */
     private int amount = 1;
+
+    /**
+     * The name of the item
+     */
     private String name;
+
+    /**
+     * The lore
+     */
     private List<String> lore;
+
+    /**
+     * The type
+     */
     private Material type;
 
+    /**
+     * Creates a new instance
+     */
     public ItemBuilder() {
-        this.name = "";
-        this.lore = new ArrayList<>();
-        this.type = null;
+        this(null, null);
     }
 
+    /**
+     * Creates a new instance
+     *
+     * @param   material
+     *          The material
+     *
+     * @param   name
+     *          The name of the item
+     */
     public ItemBuilder(Material material, String name) {
         this.name = name;
         this.lore = new ArrayList<>();
         this.type = material;
     }
 
+    /**
+     * Creates a new instance
+     *
+     * @param   material
+     *          The material
+     *
+     * @param   amount
+     *          The amount of the item
+     *
+     * @param   name
+     *          The name of the item
+     */
     public ItemBuilder(Material material, int amount, String name) {
         this.amount = amount;
         this.name = name;
@@ -52,38 +89,90 @@ public class ItemBuilder {
         return item;
     }
 
+    /**
+     * Sets the item amount
+     *
+     * @param   amount
+     *          The item amount
+     *
+     * @return  the instance
+     */
     public ItemBuilder setAmount(int amount) {
         this.amount = amount;
         return this;
     }
 
+    /**
+     * Sets the lore
+     *
+     * @param   lore
+     *          The lore
+     *
+     * @return  the instance
+     */
     public ItemBuilder setLore(List<String> lore) {
         this.lore = lore;
         return this;
     }
 
+    /**
+     * Sets the name
+     *
+     * @param   name
+     *          The name
+     *
+     * @return  the instance
+     */
     public ItemBuilder setName(String name) {
         this.name = name;
         return this;
     }
 
+    /**
+     * Sets the type
+     *
+     * @param   type
+     *          The type
+     *
+     * @return  the instance
+     */
     public ItemBuilder setType(Material type) {
         this.type = type;
         return this;
     }
 
+    /**
+     * Gets the amount
+     *
+     * @return the amount
+     */
     public int getAmount() {
         return amount;
     }
 
+    /**
+     * Gets the lore
+     *
+     * @return the lore
+     */
     public List<String> getLore() {
         return lore;
     }
 
+    /**
+     * Gets the item type
+     *
+     * @return the type
+     */
     public Material getType() {
         return type;
     }
 
+    /**
+     * Gets the name
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }

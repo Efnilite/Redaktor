@@ -10,14 +10,28 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.stream.Collectors;
 
+/**
+ * Checks for updates.
+ */
 public class UpdateChecker {
 
+    /**
+     * The plugin instance
+     */
     private Plugin plugin;
 
+    /**
+     * Creates a new instance
+     */
     public UpdateChecker() {
         this.plugin = Redaktor.getInstance();
     }
 
+    /**
+     * Checks the version
+     *
+     * @return true if it can be updated
+     */
     public boolean check() {
         String latest = this.getLatestVersion();
         if (!plugin.getDescription().getVersion().equals(latest)) {
@@ -30,6 +44,11 @@ public class UpdateChecker {
         }
     }
 
+    /**
+     * Gets the latest version from github
+     *
+     * @return the latest version
+     */
     public String getLatestVersion() {
         InputStream stream;
 
@@ -41,10 +60,6 @@ public class UpdateChecker {
         }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-        return reader.lines()
-                .filter(s -> s.contains("version: "))
-                .collect(Collectors.toList())
-                .get(0)
-                .replace("version: ", "");
+        return reader.lines().filter(s -> s.contains("version: ")).collect(Collectors.toList()).get(0).replace("version: ", "");
     }
 }

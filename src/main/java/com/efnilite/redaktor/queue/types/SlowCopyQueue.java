@@ -2,8 +2,8 @@ package com.efnilite.redaktor.queue.types;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.BlockFactory;
+import com.efnilite.redaktor.queue.BlockMap;
 import com.efnilite.redaktor.queue.EditQueue;
-import com.efnilite.redaktor.queue.internal.BlockMap;
 import com.efnilite.redaktor.util.Tasks;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -18,8 +18,17 @@ import java.util.Queue;
  */
 public class SlowCopyQueue implements EditQueue<List<BlockMap>> {
 
+    /**
+     * The blocks/tick
+     */
     private int tick;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   tick
+     *          The blocks/tick
+     */
     public SlowCopyQueue(int tick) {
         this.tick = tick;
     }

@@ -7,14 +7,23 @@ import org.bukkit.Material;
 import java.util.Random;
 
 /**
- * Main utils
- * Will be documented soon
+ * Main utilities
  */
 public class Util {
 
+    /**
+     *
+     */
     private static Random random;
     private static String[] halfs;
     private static String[] facings;
+
+    /**
+     * Avoid instances
+     */
+    private Util() {
+
+    }
 
     static {
         random = new Random();
@@ -22,26 +31,48 @@ public class Util {
         facings = new String[] { "north", "east", "south", "west" };
     }
 
-    public static boolean isInArea(Location pos, Location max, Location location2) {
-        boolean x = pos.getBlockX() > Math.min(max.getBlockX(), location2.getBlockX()) && pos.getBlockX() < Math.max(max.getBlockX(), location2.getBlockX());
-        boolean y = pos.getBlockY() > Math.min(max.getBlockY(), location2.getBlockY()) && pos.getBlockY() < Math.max(max.getBlockY(), location2.getBlockY());
-        boolean z = pos.getBlockZ() > Math.min(max.getBlockZ(), location2.getBlockZ()) && pos.getBlockZ() < Math.max(max.getBlockZ(), location2.getBlockZ());
-        return x && y && z;
-    }
-
+    /**
+     * Turns a Location into a String used by {@link com.efnilite.redaktor.schematic.Schematic}
+     *
+     * @param   location
+     *          The location to be turned into a string
+     *
+     * @return  the location in string form
+     */
     public static String toDeserializableString(Location location) {
         return (location.getX() + ", " + location.getY() + ", " + location.getZ() + ", " + location.getWorld().getName()).replace(".0", "");
     }
 
+    /**
+     * Turns a String into a Location used by {@link com.efnilite.redaktor.schematic.Schematic}
+     *
+     * @param   string
+     *          The string
+     *
+     * @return  The location from the string
+     */
     public static Location fromDeserializableString(String string) {
         String[] elements = string.replaceAll(" ", "").split(",");
         return new Location(Bukkit.getWorld(elements[3]), Integer.parseInt(elements[0]), Integer.parseInt(elements[1]), Integer.parseInt(elements[2]));
     }
 
+    /**
+     * Returns a zero'd location.
+     *
+     * @return a location where everything is 0
+     */
     public static Location zero() {
         return new Location(null, 0, 0, 0);
     }
 
+    /**
+     * Turns a String into a location
+     *
+     * @param   string
+     *          The string (looks like x,y,z)
+     *
+     * @return  the Location from the String
+     */
     public static Location fromString(String string) {
         String[] elements = string.split(",");
         if (elements.length == 3) {
@@ -51,30 +82,81 @@ public class Util {
         }
     }
 
+    /**
+     * Formats a material to be more readable
+     *
+     * @param   material
+     *          The material
+     *
+     * @return  a readable version of the material
+     */
     public static String format(Material material) {
         return material.name().toLowerCase().replaceAll("_", " ");
     }
 
+    /**
+     * Turns a location into a readable string
+     *
+     * @param   location
+     *          The location
+     *
+     * @return  an easy to read string
+     */
     public static String toString(Location location) {
         return (location.getX() + ", " + location.getY() + ", " + location.getZ()).replaceAll("(\\.\\d+)", "");
     }
 
+    /**
+     * Randomize blockdata
+     *
+     * @param   string
+     *          The blockdata
+     *
+     * @return  the blockdata with random data
+     */
     public static String randomizeData(String string) {
         return randomizeHalfs(randomizeFacings(randomizeBooleans(string)));
     }
 
+    /**
+     * Randomizes halfs in a String, used for the '&' operator in patterns
+     *
+     * @param   string
+     *          The string
+     *
+     * @return  the string with random halfs
+     */
     public static String randomizeHalfs(String string) {
         return string.toLowerCase().replaceAll("(bottom|top)", halfs[random.nextInt(halfs.length - 1)]);
     }
 
+    /**
+     * Randomizes facings in a String, used for the '&' operator in patterns
+     *
+     * @param   string
+     *          The string
+     *
+     * @return  the string with random facings
+     */
     public static String randomizeFacings(String string) {
         return string.toLowerCase().replaceAll("(north|east|south|west)", facings[random.nextInt(facings.length - 1)]);
     }
 
+    /**
+     * Randomizes booleans in a String, used for the '&' operator in patterns
+     *
+     * @param   string
+     *          The string
+     *
+     * @return  the string with random booleans
+     */
     public static String randomizeBooleans(String string) {
         return string.toLowerCase().replaceAll("(true|false)", Boolean.toString(Booleans.values()[random.nextInt(1)].getValue()).toLowerCase());
     }
 
+    /**
+     * An enum for randomizing booleans
+     */
     private enum Booleans {
         TRUE(true),
         FALSE(false);

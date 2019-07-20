@@ -1,17 +1,12 @@
 com.efnilite.redaktor
 com.efnilite.redaktor.block
-com.efnilite.redaktor.block.server
-com.efnilite.redaktor.command
-com.efnilite.redaktor.command.util
 com.efnilite.redaktor.event
 com.efnilite.redaktor.pattern
 com.efnilite.redaktor.pattern.types
 com.efnilite.redaktor.player
 com.efnilite.redaktor.queue
-com.efnilite.redaktor.queue.internal
 com.efnilite.redaktor.queue.types
 com.efnilite.redaktor.schematic
-com.efnilite.redaktor.schematic.internal
 com.efnilite.redaktor.selection
 com.efnilite.redaktor.util
 com.efnilite.redaktor.util.factory

@@ -13,7 +13,7 @@ import org.bukkit.block.data.BlockData;
 public interface BlockFactory {
 
     /**
-     * Set a block without updating the surroudings or the block.
+     * Set a block without updating the surroundings or the block.
      *
      * @param   location
      *          The location.

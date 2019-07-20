@@ -17,10 +17,16 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
+/**
+ * A class for handling player events
+ */
 public class PlayerListener implements Listener {
 
+    /**
+     * The wand item
+     */
     private ItemStack wand;
-
+    
     public PlayerListener() {
         this.wand = new ItemBuilder(Material.WOODEN_AXE, "&cWand").build();
     }

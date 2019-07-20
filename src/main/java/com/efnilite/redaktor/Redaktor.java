@@ -23,6 +23,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 
+/**
+ * The main plugin class
+ */
 public class Redaktor extends JavaPlugin {
 
     private static Plugin plugin;
@@ -103,38 +106,83 @@ public class Redaktor extends JavaPlugin {
         }
     }
 
+    /**
+     * Checks if the server is running latest
+     *
+     * @return true if the server is running 1.14.x
+     */
     public static boolean isLatest() {
         return isLatest;
     }
 
+    /**
+     * Gets the {@link Configuration}
+     *
+     * @return the {@link Configuration}
+     */
     public static Configuration getConfiguration() {
         return configuration;
     }
 
+    /**
+     * Gets the default {@link ConsolePlayer} instance
+     *
+     * @return the default {@link ConsolePlayer}
+     */
     public static ConsolePlayer getConsolePlayer() {
         return console;
     }
 
+    /**
+     * Gets the {@link UpdateChecker}
+     *
+     * @return the {@link UpdateChecker}
+     */
     public static UpdateChecker getChecker() {
         return checker;
     }
 
+    /**
+     * Gets the {@link BlockFactory}
+     *
+     * @return the {@link BlockFactory}
+     */
     public static BlockFactory getBlockFactory() {
         return blockFactory;
     }
 
+    /**
+     * Gets the Plugin instance
+     *
+     * @return the instance
+     */
     public static Plugin getInstance() {
         return plugin;
     }
 
+    /**
+     * Gets the {@link ChangeAllocator}
+     *
+     * @return the {@link ChangeAllocator}
+     */
     public static ChangeAllocator getAllocator() {
         return allocator;
     }
 
+    /**
+     * Gets the {@link PlayerFactory}
+     *
+     * @return the {@link PlayerFactory}
+     */
     public static PlayerFactory getPlayerFactory() {
         return playerFactory;
     }
 
+    /**
+     * Get the net.minecraft.server version
+     *
+     * @return the version
+     */
     private String getVersion() {
         return Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
     }

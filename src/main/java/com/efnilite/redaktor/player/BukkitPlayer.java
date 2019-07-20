@@ -16,12 +16,37 @@ import org.bukkit.inventory.ItemStack;
  */
 public class BukkitPlayer implements RedaktorPlayer<Player> {
 
+    /**
+     * The selection
+     */
     private CuboidSelection selection;
+
+    /**
+     * The editor
+     */
     private Editor<Player> editor;
+
+    /**
+     * The first position
+     */
     private Location pos1;
+
+    /**
+     * The second position
+     */
     private Location pos2;
+
+    /**
+     * The player instance
+     */
     private Player player;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   player
+     *          The player
+     */
     public BukkitPlayer(Player player) {
         this.player = player;
         this.editor = new Editor<>(player, -1, false);
@@ -86,11 +111,6 @@ public class BukkitPlayer implements RedaktorPlayer<Player> {
     @Override
     public CuboidSelection getSelection() {
         return selection;
-    }
-
-    @Override
-    public Player getSender() {
-        return player;
     }
 
     public Player getPlayer() {

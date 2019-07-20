@@ -19,6 +19,9 @@ public class Configuration {
     private Plugin plugin;
     private HashMap<String, FileConfiguration> files;
 
+    /**
+     * Create a new instance
+     */
     public Configuration() {
         this.plugin = Redaktor.getInstance();
         this.files = new HashMap<>();
@@ -90,6 +93,13 @@ public class Configuration {
         return this.files.get("config").getString("language").toLowerCase();
     }
 
+    /**
+     * Get a file
+     * @param   file
+     *          The file name
+     *
+     * @return  the FileConfiguration form of that file.
+     */
     public FileConfiguration getFile(String file) {
         return YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder() + "/" + file));
     }

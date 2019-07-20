@@ -4,8 +4,8 @@ import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.pattern.types.BlockPattern;
 import com.efnilite.redaktor.pattern.types.MultiplePattern;
 import com.efnilite.redaktor.player.BukkitPlayer;
+import com.efnilite.redaktor.schematic.BlockIndex;
 import com.efnilite.redaktor.schematic.Schematic;
-import com.efnilite.redaktor.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
@@ -40,9 +40,19 @@ import java.util.function.Consumer;
  */
 public class RedaktorAPI {
 
+    /**
+     * The pattern parser
+     */
     private static Pattern.Parser parser;
+
+    /**
+     * The default editor instance
+     */
     private static Editor<ConsoleCommandSender> defaultEditor;
 
+    /**
+     * Package-private to avoid new instances
+     */
     RedaktorAPI() {
         parser = new Pattern.Parser();
         defaultEditor = new Editor<>(Bukkit.getConsoleSender(), -1, false);

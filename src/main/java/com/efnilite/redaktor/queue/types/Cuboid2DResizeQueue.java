@@ -17,9 +17,25 @@ import java.util.Queue;
  */
 public class Cuboid2DResizeQueue implements EditQueue<CuboidSelection> {
 
+    /**
+     * The x modifier
+     */
     private int x;
+
+    /**
+     * The z modifier
+     */
     private int z;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   x
+     *          The x modifier
+     *
+     * @param   z
+     *          The z modifier
+     */
     public Cuboid2DResizeQueue(int x, int z) {
         this.x = x;
         this.z = z;

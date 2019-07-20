@@ -9,14 +9,23 @@ import org.bukkit.block.data.BlockData;
  */
 public class BlockPattern implements Pattern {
 
-    private BlockData material;
+    /**
+     * The data
+     */
+    private BlockData data;
 
-    public BlockPattern(BlockData material) {
-        this.material = material;
+    /**
+     * Creates a new instance
+     *
+     * @param   data
+     *          The data
+     */
+    public BlockPattern(BlockData data) {
+        this.data = data;
     }
 
     @Override
     public BlockData apply(Block block) {
-        return material;
+        return data;
     }
 }

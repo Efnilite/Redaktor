@@ -1,6 +1,6 @@
 package com.efnilite.redaktor.util.getter;
 
-import com.efnilite.redaktor.schematic.internal.BlockIndex;
+import com.efnilite.redaktor.schematic.BlockIndex;
 import com.efnilite.redaktor.util.Tasks;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -19,10 +19,33 @@ import java.util.function.Consumer;
  */
 public class AsyncBlockIndexGetter extends BukkitRunnable implements AsyncGetter<HashMap<Block, BlockIndex>> {
 
+    /**
+     * The first position
+     */
     private Location pos1;
+
+    /**
+     * The second position
+     */
     private Location pos2;
+
+    /**
+     * The consumer -> what to do when the blocks have been gathered
+     */
     private Consumer<HashMap<Block, BlockIndex>> consumer;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   pos1
+     *          The first position
+     *
+     * @param   pos2
+     *          The second position
+     *
+     * @param   consumer
+     *          What to do when the blocks have been gathered
+     */
     public AsyncBlockIndexGetter(Location pos1, Location pos2, Consumer<HashMap<Block, BlockIndex>> consumer) {
         this.pos1 = pos1;
         this.pos2 = pos2;

@@ -2,9 +2,8 @@ package com.efnilite.redaktor.schematic;
 
 import com.efnilite.redaktor.event.SchematicPasteEvent;
 import com.efnilite.redaktor.event.SchematicSaveEvent;
-import com.efnilite.redaktor.queue.internal.BlockMap;
+import com.efnilite.redaktor.queue.BlockMap;
 import com.efnilite.redaktor.queue.types.CopyQueue;
-import com.efnilite.redaktor.schematic.internal.BlockIndex;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.selection.Dimensions;
 import com.efnilite.redaktor.util.Util;
@@ -29,13 +28,37 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * The class that handles everything with schematics
+ */
 public class Schematic {
 
+    /**
+     * The gson instance used for reading/writing to JSON files
+     */
     private Gson gson;
+
+    /**
+     * The file
+     */
     private String file;
+
+    /**
+     * The CuboidSelection
+     */
     private CuboidSelection cuboid;
+
+    /**
+     * The dimensions
+     */
     private WritableDimensions dimensions;
 
+    /**
+     * Creates a new instance from a file
+     *
+     * @param   file
+     *          The file
+     */
     public Schematic(String file) {
         this.cuboid = null;
         this.file = file.endsWith(".json") ? file : file + ".json";
@@ -47,6 +70,12 @@ public class Schematic {
                 .create();
     }
 
+    /**
+     * Creates a new instance from a {@link CuboidSelection}
+     *
+     * @param   cuboid
+     *          The CuboidSelection
+     */
     public Schematic(CuboidSelection cuboid) {
         this.file = null;
         this.cuboid = cuboid;
@@ -285,17 +314,36 @@ public class Schematic {
         return file;
     }
 
+    /**
+     * Turns WritableDimensions to normal Dimensions
+     *
+     * @param   dimensions
+     *          The {@link WritableDimensions}
+     *
+     * @return  a standard {@link Dimensions} instance
+     */
     private Dimensions toStandardDimensions(WritableDimensions dimensions) {
         return new Dimensions(new CuboidSelection(Util.fromDeserializableString(dimensions.getMaximum()),
                 Util.fromDeserializableString(dimensions.getMinumum())));
     }
 
+    /**
+     * Turns Dimensions into WritableDimensions usable for saving
+     *
+     * @param   dimensions
+     *          The {@link Dimensions}
+     *
+     * @return  a new {@link WritableDimensions} instance
+     */
     private WritableDimensions fromStandardDimensions(Dimensions dimensions) {
         return new WritableDimensions(Util.toDeserializableString(dimensions.getMaximumPoint()),
                 Util.toDeserializableString(dimensions.getMinimumPoint()), dimensions.getWidth(),
                 dimensions.getHeight(), dimensions.getLength());
     }
 
+    /**
+     * An enum for saving options
+     */
     public enum SaveOptions {
 
         /**
@@ -312,6 +360,12 @@ public class Schematic {
 
     }
 
+    /**
+     * A class for calculating faces and angles
+     *
+     * All classes below this one are used for writing data to json files using gson, and they have
+     * no user value.
+     */
     private enum Facing {
 
         NORTH {

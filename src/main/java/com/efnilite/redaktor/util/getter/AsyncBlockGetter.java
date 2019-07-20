@@ -15,10 +15,33 @@ import java.util.function.Consumer;
  */
 public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List<Block>> {
 
+    /**
+     * The first poosition
+     */
     private Location pos1;
+
+    /**
+     * The second position
+     */
     private Location pos2;
+
+    /**
+     * The consumer -> what to do when the blocks have been collected
+     */
     private Consumer<List<Block>> consumer;
 
+    /**
+     * Creates a new instance
+     *
+     * @param   pos1
+     *          The first position
+     *
+     * @param   pos2
+     *          The second position
+     *
+     * @param   consumer
+     *          What to do when the blocks have been gathered
+     */
     public AsyncBlockGetter(Location pos1, Location pos2, Consumer<List<Block>> consumer) {
         this.pos1 = pos1;
         this.pos2 = pos2;
