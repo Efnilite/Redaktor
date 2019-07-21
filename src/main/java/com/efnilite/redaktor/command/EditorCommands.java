@@ -141,6 +141,7 @@ public class EditorCommands implements Commandable {
                 }
 
                 sender.getEditor().setBlocks(selection, pattern);
+                sender.sendLang("set-blocks", Integer.toString(selection.getDimensions().getVolume()));
             } else {
                 sender.sendLang("set-positions");
             }
@@ -162,6 +163,7 @@ public class EditorCommands implements Commandable {
                 }
 
                 sender.getEditor().setSlowBlocks(selection, pattern, Integer.parseInt(args[1]));
+                sender.sendLang("set-blocks", Integer.toString(selection.getDimensions().getVolume()));
             } else {
                 sender.sendLang("set-positions");
             }
@@ -175,9 +177,18 @@ public class EditorCommands implements Commandable {
         if (args.length == 3 || args.length == 2) {
             CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
             if (args.length == 3) {
-                sender.getEditor().copyCuboid(selection, Integer.parseInt(args[0]), Integer.parseInt(args[1]), Integer.parseInt(args[2]));
+                int x = Integer.parseInt(args[0]);
+                int y = Integer.parseInt(args[1]);
+                int z = Integer.parseInt(args[2]);
+
+                sender.sendLang("set-blocks", Integer.toString(selection.getDimensions().getVolume() * x * y * z));
+                sender.getEditor().copyCuboid(selection, x, y, z);
             } else {
-                sender.getEditor().copyCuboid(selection, Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+                int x = Integer.parseInt(args[0]);
+                int z = Integer.parseInt(args[1]);
+
+                sender.sendLang("set-blocks", Integer.toString(selection.getDimensions().getVolume() * x * z));
+                sender.getEditor().copyCuboid(selection, x, z);
             }
         }
     }
