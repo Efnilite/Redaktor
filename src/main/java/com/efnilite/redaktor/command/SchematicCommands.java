@@ -23,6 +23,7 @@ public class SchematicCommands implements Commandable {
                         } else {
                             schematic.save("plugins/Redaktor/schematics/" + args[1]);
                         }
+                        sender.sendLang("saved-schematic", args[1]);
                     } catch (IOException e) {
                         e.printStackTrace();
                         sender.sendLang("invalid-schematic");
@@ -44,6 +45,7 @@ public class SchematicCommands implements Commandable {
                     } else {
                         schematic.paste(sender.getLocation());
                     }
+                    sender.sendLang("set-blocks", Integer.toString(schematic.getDimensions().getVolume()));
                 } catch (IOException e) {
                     e.printStackTrace();
                     sender.sendLang("invalid-schematic");

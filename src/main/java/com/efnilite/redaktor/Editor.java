@@ -305,7 +305,7 @@ public class Editor<T extends CommandSender> {
                 queue.build(selection.getBlockMap());
 
                 this.history.remove(0);
-                this.undos.add(selection);
+                this.undos.add(0, selection);
             } else {
                 return;
             }
