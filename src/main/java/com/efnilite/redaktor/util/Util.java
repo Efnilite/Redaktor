@@ -11,9 +11,6 @@ import java.util.Random;
  */
 public class Util {
 
-    /**
-     *
-     */
     private static Random random;
     private static String[] halfs;
     private static String[] facings;

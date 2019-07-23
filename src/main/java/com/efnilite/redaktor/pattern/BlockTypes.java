@@ -14,7 +14,7 @@ import java.util.List;
  * - beds
  * - carpets
  * - glass
- * - glasspane/glass_pane
+ * - glass_panes/glass panes
  * - logs
  * - ores
  * - planks
@@ -39,7 +39,7 @@ public enum BlockTypes {
             Material.LIGHT_BLUE_STAINED_GLASS, Material.LIGHT_GRAY_STAINED_GLASS, Material.LIME_STAINED_GLASS, Material.MAGENTA_STAINED_GLASS, Material.ORANGE_STAINED_GLASS,
             Material.PINK_STAINED_GLASS, Material.PURPLE_STAINED_GLASS, Material.RED_STAINED_GLASS, Material.WHITE_STAINED_GLASS, Material.YELLOW_STAINED_GLASS
     ),
-    GLASS_PANE(
+    GLASS_PANES(
             Material.BLACK_STAINED_GLASS_PANE, Material.BLUE_STAINED_GLASS_PANE, Material.BROWN_STAINED_GLASS_PANE, Material.CYAN_STAINED_GLASS_PANE, Material.GRAY_STAINED_GLASS_PANE,
             Material.GREEN_STAINED_GLASS_PANE, Material.LIGHT_BLUE_STAINED_GLASS_PANE, Material.LIGHT_GRAY_STAINED_GLASS_PANE, Material.LIME_STAINED_GLASS_PANE, Material.MAGENTA_STAINED_GLASS_PANE,
             Material.ORANGE_STAINED_GLASS_PANE, Material.PINK_STAINED_GLASS_PANE, Material.PURPLE_STAINED_GLASS_PANE, Material.RED_STAINED_GLASS_PANE, Material.WHITE_STAINED_GLASS_PANE,
@@ -115,7 +115,7 @@ public enum BlockTypes {
      */
     public static BlockTypes getType(String name) {
         try {
-            return BlockTypes.valueOf(name.toUpperCase().replaceAll(" ", "_"));
+            return BlockTypes.valueOf(name.toUpperCase().replaceAll(" ", ""));
         } catch (IllegalArgumentException e) {
             return null;
         }

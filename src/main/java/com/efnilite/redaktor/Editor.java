@@ -302,10 +302,12 @@ public class Editor<T extends CommandSender> {
                 HistorySelection selection = this.history.get(0);
 
                 CopyQueue queue = new CopyQueue();
+
+                this.undos.add(0, new HistorySelection(selection.getPos1(), selection.getPos2(), selection.getWorld()));
+
                 queue.build(selection.getBlockMap());
 
                 this.history.remove(0);
-                this.undos.add(0, selection);
             } else {
                 return;
             }

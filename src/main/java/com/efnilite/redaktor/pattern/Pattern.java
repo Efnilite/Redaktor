@@ -70,7 +70,7 @@ public interface Pattern {
                 MorePattern more = new MorePattern();
                 for (String element : elements) {
                     if (element.contains("&")) {
-                        String parsed = pattern.replaceAll("&", "");
+                        String parsed = element.replaceAll("&", "");
                         BlockData data = Pattern.parseData(parsed);
 
                         if (data == null) {
@@ -80,7 +80,7 @@ public interface Pattern {
                         more.add(new RandomPattern(data));
                         continue;
                     } else if (element.contains("#")) {
-                        String parsed = pattern.replaceAll("#", "");
+                        String parsed = element.replaceAll("#", "");
                         BlockTypes type = BlockTypes.getType(parsed);
 
                         if (type == null) {
