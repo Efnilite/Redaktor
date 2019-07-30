@@ -109,6 +109,7 @@ public interface Pattern {
                 return more;
             }
 
+            // TODO - Single chances
             Pattern back = null;
             if (pattern.contains("&")) {
                 String parsed = pattern.replaceAll("&", "");
@@ -132,7 +133,7 @@ public interface Pattern {
 
             if (back == null) {
                 BlockData parsed = Pattern.parseData(pattern);
-                
+
                 if (parsed == null) {
                     return null;
                 }

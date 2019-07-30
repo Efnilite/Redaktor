@@ -7,12 +7,30 @@ import org.bukkit.block.data.BlockData;
 import java.util.HashMap;
 import java.util.Random;
 
+/**
+ * A class for chances
+ */
+// TODO - Single chances to only be x% of the time, not 100%
 public class ChancePattern implements Pattern {
 
+    /**
+     * The sum of all chances
+     */
     private int sum;
+
+    /**
+     * The random
+     */
     private Random random;
+
+    /**
+     * The chances
+     */
     private HashMap<Integer, BlockData> chances;
 
+    /**
+     * Creates a new instance
+     */
     public ChancePattern() {
         this.sum = 0;
         this.random = new Random();
