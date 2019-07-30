@@ -39,4 +39,13 @@ public class ChancePattern implements Pattern {
             sum++;
         }
     }
+
+    /**
+     * Gets the sum
+     *
+     * @return the sum
+     */
+    public int getSum() {
+        return sum;
+    }
 }

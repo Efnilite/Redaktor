@@ -1,9 +1,6 @@
 package com.efnilite.redaktor.pattern;
 
-import com.efnilite.redaktor.pattern.types.BlockPattern;
-import com.efnilite.redaktor.pattern.types.MorePattern;
-import com.efnilite.redaktor.pattern.types.MultiplePattern;
-import com.efnilite.redaktor.pattern.types.RandomPattern;
+import com.efnilite.redaktor.pattern.types.*;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
@@ -68,6 +65,7 @@ public interface Pattern {
             if (pattern.contains(",")) {
                 String[] elements = pattern.split(",");
                 MorePattern more = new MorePattern();
+                ChancePattern chance = new ChancePattern();
                 for (String element : elements) {
                     if (element.contains("&")) {
                         String parsed = element.replaceAll("&", "");
@@ -89,9 +87,24 @@ public interface Pattern {
 
                         more.add(new MultiplePattern(type.getMaterials()));
                         continue;
+                    } else if (element.contains("%")) {
+                        String[] split = element.split("%");
+                        int parsedChance = Integer.parseInt(split[0]);
+                        String parsed = split[1];
+
+                        BlockData data = Pattern.parseData(parsed);
+
+                        if (data == null) {
+                            return null;
+                        }
+
+                        chance.add(data, parsedChance);
                     }
 
                     more.add(new BlockPattern(Pattern.parseData(element)));
+                }
+                if (chance.getSum() != 0) {
+                    more.add(chance);
                 }
                 return more;
             }
@@ -119,8 +132,7 @@ public interface Pattern {
 
             if (back == null) {
                 BlockData parsed = Pattern.parseData(pattern);
-
-
+                
                 if (parsed == null) {
                     return null;
                 }
