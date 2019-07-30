@@ -81,6 +81,8 @@ public class BukkitPlayer implements RedaktorPlayer<Player> {
     @Override
     public void setSelection(CuboidSelection selection) {
         this.selection = selection;
+        this.pos1 = selection.getPos1();
+        this.pos2 = selection.getPos2();
     }
 
     @Override

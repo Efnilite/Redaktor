@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Random;
 
 /**
@@ -26,6 +28,31 @@ public class Util {
         random = new Random();
         halfs = new String[] { "bottom", "top" };
         facings = new String[] { "north", "east", "south", "west" };
+    }
+
+    /**
+     * Set a final field to a value
+     *
+     * @param   field
+     *          The field
+     *
+     * @param   value
+     *          The value to what it's going to be set to
+     *
+     * @throws  NoSuchFieldException
+     *          When there is no such field
+     *
+     * @throws  IllegalAccessException
+     *          If something else goes wrong
+     */
+    public static void setFinal(Field field, Object value) throws NoSuchFieldException, IllegalAccessException {
+        field.setAccessible(true);
+
+        Field modifiersField = Field.class.getDeclaredField("modifiers");
+        modifiersField.setAccessible(true);
+        modifiersField.setInt(field, field.getModifiers() & ~Modifier.FINAL);
+
+        field.set(null, value);
     }
 
     /**

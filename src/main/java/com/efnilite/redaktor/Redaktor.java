@@ -1,8 +1,8 @@
 package com.efnilite.redaktor;
 
 import com.efnilite.redaktor.block.BlockFactory;
-import com.efnilite.redaktor.block.server.BlockFactory_v131;
-import com.efnilite.redaktor.block.server.BlockFactory_v141;
+import com.efnilite.redaktor.block.server.BlockFactory_v1_13_R1;
+import com.efnilite.redaktor.block.server.BlockFactory_v1_14_R1;
 import com.efnilite.redaktor.command.EditorCommands;
 import com.efnilite.redaktor.command.RedaktorCommands;
 import com.efnilite.redaktor.command.SchematicCommands;
@@ -49,10 +49,10 @@ public class Redaktor extends JavaPlugin {
         String version = this.getVersion();
 
         if (version.equals("v1_14_R1")) {
-            blockFactory = new BlockFactory_v141();
+            blockFactory = new BlockFactory_v1_14_R1();
             isLatest = true;
         } else if (!version.equals("v1_13_R2")) {
-            blockFactory = new BlockFactory_v131();
+            blockFactory = new BlockFactory_v1_13_R1();
             isLatest = false;
         } else {
             this.getLogger().severe("Redaktor only works on 1.14.x and 1.13.x (not 1.13)");

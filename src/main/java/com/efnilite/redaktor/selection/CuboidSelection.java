@@ -115,6 +115,16 @@ public class CuboidSelection implements Selection {
     }
 
     /**
+     * Turns this CuboidSelection into a selection of the chunk the center block is in.
+     *
+     * @return the chunk of the center
+     */
+    public CuboidSelection toChunk() {
+        return new CuboidSelection(new Location(world, this.getCenter().getChunk().getX() * 16, 0, this.getCenter().getChunk().getZ() * 16),
+                new Location(world, (this.getCenter().getChunk().getX() * 16) + 16, world.getMaxHeight(), (this.getCenter().getChunk().getZ() * 16) + 16));
+    }
+
+    /**
      * Creates a new {@link HistorySelection}
      *
      * @return a new HistorySelection
