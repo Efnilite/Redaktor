@@ -38,6 +38,7 @@ public class Redaktor extends JavaPlugin {
     private static boolean isLatest;
 
     public static String PREFIX = "&8&l(&c&lRedaktor&8&l)";
+    public static String SCHEMATIC_VERSION = "1.0";
 
     @Override
     public void onEnable() {

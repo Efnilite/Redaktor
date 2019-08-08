@@ -4,6 +4,7 @@ import com.efnilite.redaktor.command.util.Command;
 import com.efnilite.redaktor.command.util.Commandable;
 import com.efnilite.redaktor.player.BukkitPlayer;
 import com.efnilite.redaktor.schematic.Schematic;
+import com.efnilite.redaktor.schematic.io.SchematicReader;
 import com.efnilite.redaktor.schematic.io.SchematicWriter;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
@@ -23,6 +24,16 @@ public class CuboidCommands implements Commandable {
                 e.printStackTrace();
             }
         });
+    }
+
+    @Command
+    public void test1(RedaktorPlayer<?> sender, String[] args) {
+        SchematicReader reader = new SchematicReader("plugins/lol");
+        try {
+            reader.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Command(permission = "redaktor.chunk")

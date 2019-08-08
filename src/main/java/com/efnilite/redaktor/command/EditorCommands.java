@@ -103,6 +103,7 @@ public class EditorCommands implements Commandable {
         sender.setPos1(location);
         if (sender.getPos1() != null && sender.getPos2() != null) {
             CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
+            sender.setSelection(selection);
 
             sender.sendLang("set-position-1", Util.toString(location), Integer.toString(selection.getDimensions().getVolume()));
         } else {
@@ -122,6 +123,7 @@ public class EditorCommands implements Commandable {
         sender.setPos2(location);
         if (sender.getPos1() != null && sender.getPos2() != null) {
             CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
+            sender.setSelection(selection);
 
             sender.sendLang("set-position-2", Util.toString(location), Integer.toString(selection.getDimensions().getVolume()));
         } else {
