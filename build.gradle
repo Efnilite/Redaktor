@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'com.efnilite'
-version '1.0c'
+version '1.1'
 
 sourceCompatibility = 1.8
 

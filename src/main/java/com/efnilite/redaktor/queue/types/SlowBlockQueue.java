@@ -4,7 +4,7 @@ import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.queue.EditQueue;
-import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.selection.Selection;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.block.Block;
@@ -19,7 +19,7 @@ import java.util.Queue;
  *
  * @see BlockQueue
  */
-public class SlowBlockQueue implements EditQueue<CuboidSelection> {
+public class SlowBlockQueue implements EditQueue<Selection> {
 
     /**
      * The blocks/tick amount
@@ -46,9 +46,9 @@ public class SlowBlockQueue implements EditQueue<CuboidSelection> {
     }
 
     @Override
-    public void build(CuboidSelection cuboid) {
+    public void build(Selection selection) {
         BlockFactory factory = Redaktor.getBlockFactory();
-        new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), t -> {
+        new AsyncBlockGetter(selection, t -> {
             Queue<Block> queue = new LinkedList<>(t);
 
             BukkitRunnable runnable = new BukkitRunnable() {

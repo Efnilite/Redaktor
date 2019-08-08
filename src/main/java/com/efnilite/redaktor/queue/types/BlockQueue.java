@@ -4,7 +4,7 @@ import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.queue.EditQueue;
-import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.selection.Selection;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.block.Block;
@@ -17,7 +17,7 @@ import java.util.Queue;
 /**
  * A queue for setting a lot of blocks to the same material.
  */
-public class BlockQueue implements EditQueue<CuboidSelection> {
+public class BlockQueue implements EditQueue<Selection> {
 
     /**
      * The pattern
@@ -35,9 +35,9 @@ public class BlockQueue implements EditQueue<CuboidSelection> {
     }
 
     @Override
-    public void build(CuboidSelection cuboid) {
+    public void build(Selection selection) {
         BlockFactory factory = Redaktor.getBlockFactory();
-        new AsyncBlockGetter(cuboid.getMaximumPoint(), cuboid.getMinimumPoint(), t -> {
+        new AsyncBlockGetter(selection, t -> {
             Queue<Block> queue = new LinkedList<>(t);
 
             BukkitRunnable runnable = new BukkitRunnable() {

@@ -1,29 +1,23 @@
 package com.efnilite.redaktor.schematic;
 
 import com.efnilite.redaktor.event.SchematicPasteEvent;
-import com.efnilite.redaktor.event.SchematicSaveEvent;
 import com.efnilite.redaktor.queue.BlockMap;
 import com.efnilite.redaktor.queue.types.CopyQueue;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.selection.Dimensions;
 import com.efnilite.redaktor.util.Util;
-import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
 import com.google.gson.stream.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.EntityType;
 
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -99,7 +93,7 @@ public class Schematic {
      *          with the error.
      */
     public void save(String file) throws IOException {
-        if (cuboid != null) {
+        /*if (cuboid != null) {
             Bukkit.getPluginManager().callEvent(new SchematicSaveEvent(this, file));
 
             FileWriter writer = new FileWriter(file.endsWith(".json") ? file : file + ".json");
@@ -119,7 +113,7 @@ public class Schematic {
             });
         } else {
             throw new IllegalArgumentException("Cuboid can't be null to save!");
-        }
+        }*/
     }
 
 
@@ -138,7 +132,7 @@ public class Schematic {
      *          with the error.
      */
     public void save(String file, SaveOptions... options) throws IOException {
-        if (cuboid != null) {
+        /*if (cuboid != null) {
             Bukkit.getPluginManager().callEvent(new SchematicSaveEvent(this, file));
 
             List<SaveOptions> saveOptions = Arrays.asList(options);
@@ -166,7 +160,7 @@ public class Schematic {
             });
         } else {
             throw new IllegalArgumentException("Cuboid can't be null to save!");
-        }
+        }*/
     }
 
     /**

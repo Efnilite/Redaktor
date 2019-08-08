@@ -1,8 +1,11 @@
 package com.efnilite.redaktor.util.getter;
 
+import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.selection.Selection;
+import com.efnilite.redaktor.selection.SquareSelection;
 import com.efnilite.redaktor.util.Tasks;
+import com.efnilite.redaktor.util.Util;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -16,14 +19,9 @@ import java.util.function.Consumer;
 public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List<Block>> {
 
     /**
-     * The first poosition
+     * The selection
      */
-    private Location pos1;
-
-    /**
-     * The second position
-     */
-    private Location pos2;
+    private Selection selection;
 
     /**
      * The consumer -> what to do when the blocks have been collected
@@ -33,18 +31,14 @@ public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List
     /**
      * Creates a new instance
      *
-     * @param   pos1
-     *          The first position
-     *
-     * @param   pos2
-     *          The second position
+     * @param   selection
+     *          The selection
      *
      * @param   consumer
      *          What to do when the blocks have been gathered
      */
-    public AsyncBlockGetter(Location pos1, Location pos2, Consumer<List<Block>> consumer) {
-        this.pos1 = pos1;
-        this.pos2 = pos2;
+    public AsyncBlockGetter(Selection selection, Consumer<List<Block>> consumer) {
+        this.selection = selection;
         this.consumer = consumer;
 
         Tasks.async(this);
@@ -52,27 +46,49 @@ public class AsyncBlockGetter extends BukkitRunnable implements AsyncGetter<List
 
     @Override
     public void run() {
-        World w = pos1.getWorld();
-        List<Block> blocks = new ArrayList<>();
-        int maxX = Math.max(pos1.getBlockX(), pos2.getBlockX());
-        int minX = Math.min(pos1.getBlockX(), pos2.getBlockX());
-        int maxY = Math.max(pos1.getBlockY(), pos2.getBlockY());
-        int minY = Math.min(pos1.getBlockY(), pos2.getBlockY());
-        int maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
-        int minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
-        Location loc = new Location(w, 0, 0, 0);
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    loc.setX(x);
-                    loc.setY(y);
-                    loc.setZ(z);
+        if (selection instanceof CuboidSelection) {
+            CuboidSelection cuboid = (CuboidSelection) selection;
+            List<Block> blocks = new ArrayList<>();
+            Location max = cuboid.getMaximumPoint();
+            Location min = cuboid.getMinimumPoint();
+            Location loc = Util.zero();
+            loc.setWorld(selection.getWorld());
+            for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
+                for (int y = min.getBlockY(); y <= max.getBlockY(); y++) {
+                    for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++) {
+                        loc.setX(x);
+                        loc.setY(y);
+                        loc.setZ(z);
 
-                    blocks.add(loc.getBlock());
+                        blocks.add(loc.getBlock());
+                    }
                 }
             }
+            asyncDone(blocks);
+        } else if (selection instanceof SquareSelection) {
+            SquareSelection square = (SquareSelection) selection;
+            List<Block> blocks = new ArrayList<>();
+            Location loc = Util.zero();
+            loc.setWorld(selection.getWorld());
+            for (CuboidSelection cuboid : square.getCuboids()) {
+                Location max = cuboid.getMaximumPoint();
+                Location min = cuboid.getMinimumPoint();
+                for (int x = min.getBlockX(); x <= max.getBlockX(); x++) {
+                    for (int y = min.getBlockY(); y <= max.getBlockY(); y++) {
+                        for (int z = min.getBlockZ(); z <= max.getBlockZ(); z++) {
+                            loc.setX(x);
+                            loc.setY(y);
+                            loc.setZ(z);
+
+                            blocks.add(loc.getBlock());
+                        }
+                    }
+                }
+            }
+            asyncDone(blocks);
+        } else {
+            throw new IllegalArgumentException("Selection needs to be instance of CuboidSelection or SquareSelection");
         }
-        asyncDone(blocks);
     }
 
     @Override

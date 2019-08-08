@@ -5,6 +5,7 @@ import com.efnilite.redaktor.command.util.Commandable;
 import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.player.BukkitPlayer;
 import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.selection.Selection;
 import com.efnilite.redaktor.util.Util;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.Location;
@@ -132,7 +133,7 @@ public class EditorCommands implements Commandable {
     public void set(RedaktorPlayer<?> sender, String[] args) {
         if (args.length == 1) {
             if (sender.getPos1() != null && sender.getPos2() != null) {
-                CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
+                Selection selection = sender.getSelection();
                 Pattern pattern = parser.parse(args[0]);
 
                 if (pattern == null) {
@@ -169,27 +170,6 @@ public class EditorCommands implements Commandable {
             }
         } else {
             sender.sendLang("set-pattern");
-        }
-    }
-
-    @Command(permission = "redaktor.copy", usage = "/copy <x> [y] <z>")
-    public void copy(RedaktorPlayer<?> sender, String[] args) {
-        if (args.length == 3 || args.length == 2) {
-            CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
-            if (args.length == 3) {
-                int x = Integer.parseInt(args[0]);
-                int y = Integer.parseInt(args[1]);
-                int z = Integer.parseInt(args[2]);
-
-                sender.sendLang("set-blocks", Integer.toString(selection.getDimensions().getVolume() * x * y * z));
-                sender.getEditor().copyCuboid(selection, x, y, z);
-            } else {
-                int x = Integer.parseInt(args[0]);
-                int z = Integer.parseInt(args[1]);
-
-                sender.sendLang("set-blocks", Integer.toString(selection.getDimensions().getVolume() * x * z));
-                sender.getEditor().copyCuboid(selection, x, z);
-            }
         }
     }
 

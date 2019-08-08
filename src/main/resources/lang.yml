@@ -18,6 +18,8 @@ languages:
         redo: "Redone %amount% action(s)"
         clear-history: "You successfully cleared your undo history."
         run-latest: "The server needs to be 1.14.x for this to work!"
+        selected-walls: "You selected the walls of your selection"
+        selected-edges: "You selected the edges of your selection"
     ne:
         invalid-schematic: "Er is een error gebeurt tijdens het opslaan! Misschien bestaat het bestand niet?"
         invalid-pattern: "&cOngeldig patroon! Check eventjes of je alles goed hebt getypt."
@@ -37,3 +39,5 @@ languages:
         redo: "%amount% actie(s) opnieuw gedaan"
         clear-history: "Je hebt je ongedaan-maak-geschiedenis verwijderd."
         run-latest: "Deze server moet 1.14.x gebruiken om dit te kunnen doen!"
+        selected-walls: "Je hebt de muren van je selectie geselecteerd"
+        selected-edges: "Je hebt de randen van je selectie geselecteerd"

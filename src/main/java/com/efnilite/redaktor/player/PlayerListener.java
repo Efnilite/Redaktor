@@ -54,10 +54,11 @@ public class PlayerListener implements Listener {
                             if (pl.hasPermission("redaktor.wand")) {
 
                                 e.setCancelled(true);
-                                player.setPos1(e.getClickedBlock().getLocation().clone());
+                                player.setPos1(e.getClickedBlock().getLocation());
 
                                 if (player.getPos1() != null && player.getPos2() != null) {
                                     CuboidSelection selection = new CuboidSelection(player.getPos1(), player.getPos2());
+                                    player.setSelection(selection);
 
                                     player.sendLang("set-position-1", Util.toString(e.getClickedBlock().getLocation()), Integer.toString(selection.getDimensions().getVolume()));
                                 } else {
@@ -74,10 +75,11 @@ public class PlayerListener implements Listener {
                             if (pl.hasPermission("redaktor.wand")) {
 
                                 e.setCancelled(true);
-                                player.setPos2(e.getClickedBlock().getLocation().clone());
+                                player.setPos2(e.getClickedBlock().getLocation());
 
                                 if (player.getPos1() != null && player.getPos2() != null) {
                                     CuboidSelection selection = new CuboidSelection(player.getPos1(), player.getPos2());
+                                    player.setSelection(selection);
 
                                     player.sendLang("set-position-2", Util.toString(e.getClickedBlock().getLocation()), Integer.toString(selection.getDimensions().getVolume()));
                                 } else {

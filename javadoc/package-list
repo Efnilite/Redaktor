@@ -7,11 +7,10 @@ com.efnilite.redaktor.player
 com.efnilite.redaktor.queue
 com.efnilite.redaktor.queue.types
 com.efnilite.redaktor.schematic
-com.efnilite.redaktor.selection
+com.efnilite.redaktor.schematic.io
 com.efnilite.redaktor.util
-com.efnilite.redaktor.util.factory
 com.efnilite.redaktor.util.getter
 com.efnilite.redaktor.util.item
-com.efnilite.redaktor.util.web
+com.efnilite.redaktor.util.thread
 com.efnilite.redaktor.wrapper
 com.efnilite.redaktor.wrapper.console

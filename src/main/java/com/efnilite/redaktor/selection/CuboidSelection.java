@@ -130,7 +130,8 @@ public class CuboidSelection implements Selection {
      * @return a new HistorySelection
      */
     public HistorySelection toHistory() {
-        return new HistorySelection(pos1, pos2, world);
+        CuboidSelection selection = new CuboidSelection(pos1, pos2, world);
+        return new HistorySelection(selection);
     }
 
     /**
@@ -160,29 +161,17 @@ public class CuboidSelection implements Selection {
         return new Location(world, Math.min(pos1.getBlockX(), pos2.getBlockX()), Math.min(pos1.getBlockY(), pos2.getBlockY()), Math.min(pos1.getBlockZ(), pos2.getBlockZ()));
     }
 
-    /**
-     * Get position 1 of this selection
-     *
-     * @return position 1
-     */
+    @Override
     public Location getPos1() {
         return pos1;
     }
 
-    /**
-     * Get position 2 of this selection
-     *
-     * @return position 2
-     */
+    @Override
     public Location getPos2() {
         return pos2;
     }
 
-    /**
-     * The world of this selection
-     *
-     * @return the world
-     */
+    @Override
     public World getWorld() {
         return world;
     }

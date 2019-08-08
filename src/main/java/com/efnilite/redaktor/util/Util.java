@@ -16,6 +16,7 @@ public class Util {
     private static Random random;
     private static String[] halfs;
     private static String[] facings;
+    private static Thread thread;
 
     /**
      * Avoid instances
@@ -25,9 +26,19 @@ public class Util {
     }
 
     static {
+        thread = Thread.currentThread();
         random = new Random();
         halfs = new String[] { "bottom", "top" };
         facings = new String[] { "north", "east", "south", "west" };
+    }
+
+    /**
+     * Checks if the code currently running is in the main thread
+     *
+     * @return true if the code is in the main thread
+     */
+    public static boolean isMainThread() {
+        return Thread.currentThread() == thread;
     }
 
     /**

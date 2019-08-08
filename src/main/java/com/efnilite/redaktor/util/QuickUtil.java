@@ -3,7 +3,7 @@ package com.efnilite.redaktor.util;
 import org.bukkit.Material;
 
 /**
- * A class for storing data
+ * A class for storing data that's always the same
  */
 public class QuickUtil {
 

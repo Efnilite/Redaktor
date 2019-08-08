@@ -5,7 +5,7 @@ import com.efnilite.redaktor.util.QuickUtil;
 import org.bukkit.Location;
 import org.bukkit.block.data.BlockData;
 
-public class BlockFactory_v1_13_R1 implements BlockFactory {
+public class BlockFactory_v1_13_R2 implements BlockFactory {
 
     @Override
     public void setBlock(Location location, BlockData data) {

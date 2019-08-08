@@ -5,8 +5,10 @@ import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.queue.types.*;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.selection.HistorySelection;
+import com.efnilite.redaktor.selection.Selection;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
+import com.efnilite.redaktor.util.thread.QueueThread;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -60,6 +62,11 @@ public class Editor<T extends CommandSender> {
      */
     private BlockFactory factory;
 
+    /**
+     * The private thread
+     */
+    private QueueThread thread;
+
     public Editor(T sender) {
         this(sender, -1, true);
     }
@@ -90,6 +97,7 @@ public class Editor<T extends CommandSender> {
         this.history = new ArrayList<>();
         this.undos = new ArrayList<>();
         this.factory = Redaktor.getBlockFactory();
+        this.thread = new QueueThread();
     }
 
     /**
@@ -101,7 +109,7 @@ public class Editor<T extends CommandSender> {
      * @param   pattern
      *          The pattern the blocks need to be changed to.
      */
-    public void setBlocks(CuboidSelection cuboid, Pattern pattern) {
+    public void setBlocks(Selection cuboid, Pattern pattern) {
         if (checkLimit()) {
             BlockQueue queue = new BlockQueue(pattern);
 
@@ -223,7 +231,7 @@ public class Editor<T extends CommandSender> {
      */
     public void replace(CuboidSelection selection, List<BlockData> find, Pattern replace) {
         if (checkLimit()) {
-            new AsyncBlockGetter(selection.getPos1(), selection.getPos2(), t -> {
+            new AsyncBlockGetter(selection, t -> {
                 BukkitRunnable runnable = new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -260,7 +268,8 @@ public class Editor<T extends CommandSender> {
     public void replaceAll(Location location, int radius, List<BlockData> find, Pattern replace) {
         if (checkLimit()) {
             double half = radius / 2.0;
-            new AsyncBlockGetter(location.clone().subtract(half, half, half), location.clone().add(half, half, half), t -> {
+            CuboidSelection selection = new CuboidSelection(location.clone().subtract(half, half, half), location.clone().add(half, half, half));
+            new AsyncBlockGetter(selection, t -> {
                 BukkitRunnable runnable = new BukkitRunnable() {
                     @Override
                     public void run() {
@@ -303,7 +312,7 @@ public class Editor<T extends CommandSender> {
 
                 CopyQueue queue = new CopyQueue();
 
-                this.undos.add(0, new HistorySelection(selection.getPos1(), selection.getPos2(), selection.getWorld()));
+                this.undos.add(0, new HistorySelection(selection));
 
                 queue.build(selection.getBlockMap());
 

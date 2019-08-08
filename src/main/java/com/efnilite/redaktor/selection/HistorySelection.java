@@ -22,14 +22,9 @@ public class HistorySelection implements Selection {
     private World world;
 
     /**
-     * The first position
+     * The selection
      */
-    private Location pos1;
-
-    /**
-     * The second position
-     */
-    private Location pos2;
+    private Selection selection;
 
     /**
      * The map
@@ -39,22 +34,15 @@ public class HistorySelection implements Selection {
     /**
      * Creates a new instance
      *
-     * @param   pos1
+     * @param   selection
      *          The first position
-     *
-     * @param   pos2
-     *          The second position
-     *
-     * @param   world
-     *          The world
      */
-    public HistorySelection(Location pos1, Location pos2, World world) {
-        this.world = world;
-        this.pos1 = pos1;
-        this.pos2 = pos2;
+    public HistorySelection(Selection selection) {
+        this.world = selection.getWorld();
+        this.selection = selection;
         this.map = new ArrayList<>();
 
-        new AsyncBlockGetter(pos1, pos2, t -> {
+        new AsyncBlockGetter(selection, t -> {
             for (Block block : t) {
                 map.add(new BlockMap(block, block.getBlockData()));
             }
@@ -67,7 +55,7 @@ public class HistorySelection implements Selection {
      * @return a new CuboidSelection instance
      */
     public CuboidSelection toCuboid() {
-        return new CuboidSelection(pos1, pos2, world);
+        return new CuboidSelection(selection.getPos1(), selection.getPos2(), world);
     }
 
     /**
@@ -79,30 +67,28 @@ public class HistorySelection implements Selection {
         return map;
     }
 
-    /**
-     * Gets the first position
-     *
-     * @return the first position
-     */
+    @Override
+    public HistorySelection toHistory() {
+        return this;
+    }
+
+    @Override
     public Location getPos1() {
-        return pos1;
+        return selection.getPos1();
     }
 
-    /**
-     * Gets the second position
-     *
-     * @return the second position
-     */
+    @Override
     public Location getPos2() {
-        return pos2;
+        return selection.getPos2();
     }
 
-    /**
-     * Gets the world
-     *
-     * @return the world
-     */
+    @Override
     public World getWorld() {
         return world;
+    }
+
+    @Override
+    public Dimensions getDimensions() {
+        return this.toCuboid().getDimensions();
     }
 }

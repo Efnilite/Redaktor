@@ -11,7 +11,8 @@ public interface EditQueue<T> {
     /**
      * Builds whatever the EditQueue does.
      *
-     * @param cuboid The data it needs to build whatever the EditQueue does.
+     * @param selection
+     *        The data it needs to build whatever the EditQueue does.
      */
-    void build(T cuboid);
+    void build(T selection);
 }

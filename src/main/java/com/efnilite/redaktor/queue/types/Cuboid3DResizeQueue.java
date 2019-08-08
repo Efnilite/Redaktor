@@ -3,7 +3,7 @@ package com.efnilite.redaktor.queue.types;
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.queue.EditQueue;
-import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.selection.Selection;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import org.bukkit.block.Block;
@@ -15,7 +15,7 @@ import java.util.Queue;
 /**
  * A queue for copying cuboids in a 3D way
  */
-public class Cuboid3DResizeQueue implements EditQueue<CuboidSelection> {
+public class Cuboid3DResizeQueue implements EditQueue<Selection> {
 
     /**
      * The x modifier
@@ -51,12 +51,12 @@ public class Cuboid3DResizeQueue implements EditQueue<CuboidSelection> {
     }
 
     @Override
-    public void build(CuboidSelection cuboid) {
+    public void build(Selection selection) {
         BlockFactory factory = Redaktor.getBlockFactory();
-        int x = cuboid.getDimensions().getWidth();
-        int z = cuboid.getDimensions().getLength();
+        int x = selection.getDimensions().getWidth();
+        int z = selection.getDimensions().getLength();
 
-        new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), t -> {
+        new AsyncBlockGetter(selection, t -> {
             Queue<Block> queue = new LinkedList<>();
             Queue<Block> original = new LinkedList<>();
             BukkitRunnable runnable = new BukkitRunnable() {
@@ -82,7 +82,7 @@ public class Cuboid3DResizeQueue implements EditQueue<CuboidSelection> {
                     }
                 }
             };
-            Tasks.async(runnable);
+            Tasks. async(runnable);
 
             BukkitRunnable runnable1 = new BukkitRunnable() {
                 @Override

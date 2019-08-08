@@ -2,7 +2,7 @@ package com.efnilite.redaktor.wrapper.console;
 
 import com.efnilite.redaktor.Editor;
 import com.efnilite.redaktor.Redaktor;
-import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.selection.Selection;
 import com.efnilite.redaktor.util.Util;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import org.bukkit.Bukkit;
@@ -28,7 +28,7 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
     /**
      * The selection
      */
-    private CuboidSelection selection;
+    private Selection selection;
 
     /**
      * The first position of the selection
@@ -78,7 +78,7 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
     }
 
     @Override
-    public CuboidSelection getSelection() {
+    public Selection getSelection() {
         return selection;
     }
 
@@ -103,7 +103,7 @@ public class ConsolePlayer implements RedaktorPlayer<ConsoleCommandSender> {
     }
 
     @Override
-    public void setSelection(CuboidSelection selection) {
+    public void setSelection(Selection selection) {
         this.selection = selection;
     }
 

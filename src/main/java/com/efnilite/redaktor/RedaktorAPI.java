@@ -4,11 +4,10 @@ import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.pattern.types.BlockPattern;
 import com.efnilite.redaktor.pattern.types.MultiplePattern;
 import com.efnilite.redaktor.player.BukkitPlayer;
-import com.efnilite.redaktor.schematic.BlockIndex;
 import com.efnilite.redaktor.schematic.Schematic;
 import com.efnilite.redaktor.selection.CuboidSelection;
+import com.efnilite.redaktor.selection.Selection;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
-import com.efnilite.redaktor.util.getter.AsyncBlockIndexGetter;
 import com.efnilite.redaktor.util.getter.AsyncConnectedGetter;
 import com.efnilite.redaktor.util.item.SuperUtil;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
@@ -22,7 +21,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -163,36 +161,15 @@ public class RedaktorAPI {
      * Creates a new AsyncBlockGetter.
      * This is to get a lot of blocks asynchronously.
      *
-     * @param   cuboid
-     *          The cuboid.
+     * @param   selection
+     *          The selection.
      *
      * @param   consumer
      *          What to do when the blocks have been retrieved.
      *          Since this is an async thread, this is needed.
      */
-    public static void newBlockGetter(CuboidSelection cuboid, Consumer<List<Block>> consumer) {
-        new AsyncBlockGetter(cuboid.getPos1(), cuboid.getPos2(), consumer);
-    }
-
-    /**
-     * Creates a new AsyncIndexBlockGetter
-     * <p>
-     * This is used for getting a lot of blocks asynchronously,
-     * including the index from position 1.
-     * <p>
-     * Example:
-     * If the second block of the list of blocks is returned,
-     * the BlockIndex is 1, 0, 0. If it's the 10th block, it's 10, 0, 0.
-     *
-     * @param   cuboid
-     *          The cuboid.
-     *
-     * @param   consumer
-     *          What to do when the blocks have been retrieved.
-     *          Since this is an async thread, this is needed.
-     */
-    public static void newBlockIndexGetter(CuboidSelection cuboid, Consumer<HashMap<Block, BlockIndex>> consumer) {
-        new AsyncBlockIndexGetter(cuboid.getPos1(), cuboid.getPos2(), consumer);
+    public static void newBlockGetter(Selection selection, Consumer<List<Block>> consumer) {
+        new AsyncBlockGetter(selection, consumer);
     }
 
     /**
