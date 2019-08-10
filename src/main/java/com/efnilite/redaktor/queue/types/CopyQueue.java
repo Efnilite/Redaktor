@@ -5,6 +5,7 @@ import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.queue.BlockMap;
 import com.efnilite.redaktor.queue.EditQueue;
 import com.efnilite.redaktor.util.Tasks;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.LinkedList;
@@ -18,7 +19,7 @@ public class CopyQueue implements EditQueue<List<BlockMap>> {
 
     @Override
     public void build(List<BlockMap> map) {
-        BlockFactory factory = Redaktor.getBlockFactory();;
+        BlockFactory factory = Redaktor.getBlockFactory();
         Queue<BlockMap> queue = new LinkedList<>(map);
 
         BukkitRunnable runnable = new BukkitRunnable() {
@@ -31,7 +32,7 @@ public class CopyQueue implements EditQueue<List<BlockMap>> {
                     }
 
                     BlockMap map = queue.poll();
-                    if (!map.getData().getAsString(true).equals(map.getBlock().getBlockData().getAsString(true))) {
+                    if (!map.getData().getAsString().equals(map.getBlock().getBlockData().getAsString())) {
                         factory.setBlock(map.getBlock().getLocation(), map.getData());
                     }
                 }

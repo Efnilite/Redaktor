@@ -17,17 +17,12 @@ public class SchematicCommands implements Commandable {
                 if (sender.getPos1() != null && sender.getPos2() != null) {
                     CuboidSelection selection = new CuboidSelection(sender.getPos1(), sender.getPos2());
                     Schematic schematic = new Schematic(selection);
-                    try {
-                        if (args[0].contains("/")) {
-                            schematic.save(args[1]);
-                        } else {
-                            schematic.save("plugins/Redaktor/schematics/" + args[1]);
-                        }
-                        sender.sendLang("saved-schematic", args[1]);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        sender.sendLang("invalid-schematic");
+                    if (args[0].contains("/")) {
+                        schematic.save(args[1]);
+                    } else {
+                        schematic.save("plugins/Redaktor/schematics/" + args[1]);
                     }
+                    sender.sendLang("saved-schematic", args[1]);
                 } else {
                     sender.sendLang("set-positions");
                 }

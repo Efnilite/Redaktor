@@ -1,8 +1,8 @@
 package com.efnilite.redaktor;
 
 import com.efnilite.redaktor.block.BlockFactory;
-import com.efnilite.redaktor.block.server.BlockFactory_v1_13_R2;
-import com.efnilite.redaktor.block.server.BlockFactory_v1_14_R1;
+import com.efnilite.redaktor.block.server.v1_13_R2.BlockFactory_v1_13_R2;
+import com.efnilite.redaktor.block.server.v1_14_R1.BlockFactory_v1_14_R1;
 import com.efnilite.redaktor.command.*;
 import com.efnilite.redaktor.command.util.CommandFactory;
 import com.efnilite.redaktor.command.util.Commandable;

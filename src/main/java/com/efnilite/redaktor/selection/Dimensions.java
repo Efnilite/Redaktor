@@ -1,5 +1,6 @@
 package com.efnilite.redaktor.selection;
 
+import com.efnilite.redaktor.util.Util;
 import org.bukkit.Location;
 
 /**
@@ -103,5 +104,10 @@ public class Dimensions {
      */
     public Location getMinimumPoint() {
         return minumum;
+    }
+
+    @Override
+    public String toString() {
+        return Util.toDeserializableString(maximum) + "," + Util.toDeserializableString(minumum);
     }
 }

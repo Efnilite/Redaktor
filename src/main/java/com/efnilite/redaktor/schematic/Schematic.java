@@ -1,11 +1,15 @@
 package com.efnilite.redaktor.schematic;
 
 import com.efnilite.redaktor.event.SchematicPasteEvent;
+import com.efnilite.redaktor.event.SchematicSaveEvent;
 import com.efnilite.redaktor.queue.BlockMap;
 import com.efnilite.redaktor.queue.types.CopyQueue;
+import com.efnilite.redaktor.schematic.io.SchematicReader;
+import com.efnilite.redaktor.schematic.io.SchematicWriter;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.selection.Dimensions;
-import com.efnilite.redaktor.util.Util;
+import com.efnilite.redaktor.selection.Selection;
+import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.annotations.Expose;
@@ -13,6 +17,7 @@ import com.google.gson.stream.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EntityType;
 
 import java.io.FileReader;
@@ -38,14 +43,14 @@ public class Schematic {
     private String file;
 
     /**
-     * The CuboidSelection
+     * The selection
      */
-    private CuboidSelection cuboid;
+    private Selection selection;
 
     /**
      * The dimensions
      */
-    private WritableDimensions dimensions;
+    private Dimensions dimensions;
 
     /**
      * Creates a new instance from a file
@@ -54,9 +59,8 @@ public class Schematic {
      *          The file
      */
     public Schematic(String file) {
-        this.cuboid = null;
-        this.file = file.endsWith(".json") ? file : file + ".json";
-        this.dimensions = null;
+        this.file = file.endsWith(".rschem") ? file : file + ".rschem";
+        this.selection = null;
         this.gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
                 .disableHtmlEscaping()
@@ -65,57 +69,21 @@ public class Schematic {
     }
 
     /**
-     * Creates a new instance from a {@link CuboidSelection}
+     * Creates a new instance from a {@link Selection}
      *
-     * @param   cuboid
-     *          The CuboidSelection
+     * @param   selection
+     *          The selection
      */
-    public Schematic(CuboidSelection cuboid) {
+    public Schematic(Selection selection) {
         this.file = null;
-        this.cuboid = cuboid;
-        this.dimensions = this.fromStandardDimensions(cuboid.getDimensions());
+        this.selection = selection;
+        this.dimensions = selection.getDimensions();
         this.gson = new GsonBuilder()
                 .excludeFieldsWithoutExposeAnnotation()
                 .disableHtmlEscaping()
                 .setPrettyPrinting()
                 .create();
     }
-
-    /**
-     * Saves a Schematic to a file using a String.
-     *
-     * @param   file
-     *          The file path where the Schematic should be saved.
-     *
-     * @throws  IOException
-     *          For any exceptions during the saving,
-     *          this is targeted to the user so they can choose what to do
-     *          with the error.
-     */
-    public void save(String file) throws IOException {
-        /*if (cuboid != null) {
-            Bukkit.getPluginManager().callEvent(new SchematicSaveEvent(this, file));
-
-            FileWriter writer = new FileWriter(file.endsWith(".json") ? file : file + ".json");
-            new AsyncBlockIndexGetter(cuboid.getPos1(), cuboid.getPos2(), l -> {
-                List<WritableBlock> blocks = new ArrayList<>();
-                for (Block block : l.keySet()) {
-                    BlockIndex index = l.get(block);
-                    blocks.add(new WritableBlock(block.getBlockData().getAsString(), index.getX(), index.getY(), index.getZ()));
-                }
-                WritableSchematic schematic = new WritableSchematic(blocks, dimensions);
-                gson.toJson(schematic, writer);
-                try {
-                    writer.close();
-                } catch (IOException | StackOverflowError e) {
-                    e.printStackTrace();
-                }
-            });
-        } else {
-            throw new IllegalArgumentException("Cuboid can't be null to save!");
-        }*/
-    }
-
 
     /**
      * Saves a Schematic to a file using a String.
@@ -125,42 +93,22 @@ public class Schematic {
      *
      * @param   options
      *          The options for saving.
-     *
-     * @throws  IOException
-     *          For any exceptions during the saving,
-     *          this is targeted to the user so they can choose what to do
-     *          with the error.
      */
-    public void save(String file, SaveOptions... options) throws IOException {
-        /*if (cuboid != null) {
+    public void save(String file, SaveOptions... options) {
+        if (selection != null) {
             Bukkit.getPluginManager().callEvent(new SchematicSaveEvent(this, file));
 
-            List<SaveOptions> saveOptions = Arrays.asList(options);
-            FileWriter writer = new FileWriter(file.endsWith(".json") ? file : file + ".json");
-            new AsyncBlockIndexGetter(cuboid.getPos1(), cuboid.getPos2(), l -> {
-                List<WritableBlock> blocks = new ArrayList<>();
-                for (Block block : l.keySet()) {
-                    BlockIndex index = l.get(block);
-                    if (saveOptions.contains(SaveOptions.SKIP_AIR)) {
-                        if (block.getType() != Material.AIR) {
-                            blocks.add(new WritableBlock(block.getBlockData().getAsString(), index.getX(), index.getY(), index.getZ()));
-                        }
-                    } else {
-                        blocks.add(new WritableBlock(block.getBlockData().getAsString(), index.getX(), index.getY(), index.getZ()));
-                    }
-                }
-
-                WritableSchematic schematic = new WritableSchematic(blocks, dimensions);
-                gson.toJson(schematic, writer);
+            SchematicWriter writer = new SchematicWriter(file);
+            new AsyncBlockGetter(selection, l -> {
                 try {
-                    writer.close();
-                } catch (IOException | StackOverflowError e) {
+                    writer.write(l, selection.getDimensions(), options);
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
         } else {
             throw new IllegalArgumentException("Cuboid can't be null to save!");
-        }*/
+        }
     }
 
     /**
@@ -180,18 +128,11 @@ public class Schematic {
         if (file != null) {
             Bukkit.getPluginManager().callEvent(new SchematicPasteEvent(this, at, file));
 
-            JsonReader reader = new JsonReader(new FileReader(file.endsWith(".json") ? file : file + ".json"));
-            WritableSchematic schematic = gson.fromJson(reader, WritableSchematic.class);
-            Dimensions dimensions = toStandardDimensions(schematic.getDimensions());
-            List<WritableBlock> writableBlocks = schematic.getBlocks();
-            List<BlockMap> blocks = new ArrayList<>();
-            for (WritableBlock block : writableBlocks) {
-                Location current = at.clone();
-                current.add(block.getX(), block.getY(), block.getZ()); // to offset from original point
-                blocks.add(new BlockMap(current.getBlock(), Bukkit.createBlockData(block.getData())));
-            }
+            SchematicReader reader = new SchematicReader(file);
+            SchematicReader.ReaderReturn readerReturn = reader.read();
+            Dimensions dimensions = readerReturn.getDimensions();
             CopyQueue blockQueue = new CopyQueue();
-            blockQueue.build(blocks);
+            //blockQueue.build(readerReturn);
             return new CuboidSelection(dimensions.getMaximumPoint(), dimensions.getMinimumPoint());
         } else {
             throw new IllegalArgumentException("File can't be null to save!");
@@ -220,22 +161,20 @@ public class Schematic {
             if (angle % 90 == 0) {
                 Bukkit.getPluginManager().callEvent(new SchematicPasteEvent(this, at, file));
 
-                JsonReader reader = new JsonReader(new FileReader(file));
-                WritableSchematic schematic = gson.fromJson(reader, WritableSchematic.class);
-                Dimensions dimensions = toStandardDimensions(schematic.getDimensions());
-                List<WritableBlock> writableBlocks = schematic.getBlocks();
-                List<BlockMap> blocks = new ArrayList<>();
-                for (WritableBlock block : writableBlocks) {
-                    Location current = at.clone();
-                    current.add(block.getX(), block.getY(), block.getZ()); // to offset from original point
+                SchematicReader reader = new SchematicReader(file);
+                SchematicReader.ReaderReturn readerReturn = reader.read();
+                Dimensions dimensions = readerReturn.getDimensions();
+                List<BlockData> update = new ArrayList<>();
+                CopyQueue blockQueue = new CopyQueue();
 
-                    String data = block.getData();
+                for (BlockData block : readerReturn.getData()) {
+                    String data = block.getAsString();
                     Pattern pattern = Pattern.compile("facing=(\\w+)");
 
                     Facing facing;
                     Matcher matcher = pattern.matcher(data);
                     if (!matcher.find()) {
-                        blocks.add(new BlockMap(current.getBlock(), Bukkit.createBlockData(data)));
+                        update.add(Bukkit.createBlockData(data));
                         continue;
                     }
                     String group = matcher.group().replaceAll("facing=", "");
@@ -243,10 +182,11 @@ public class Schematic {
 
                     data = data.replaceAll(pattern.toString(), "facing=" + facing.getString());
 
-                    blocks.add(new BlockMap(current.getBlock(), Bukkit.createBlockData(data)));
+                    update.add(Bukkit.createBlockData(data));
                 }
-                CopyQueue blockQueue = new CopyQueue();
-                blockQueue.build(blocks);
+
+                readerReturn.setData(update);
+                //blockQueue.build(readerReturn);
                 return new CuboidSelection(dimensions.getMaximumPoint(), dimensions.getMinimumPoint());
             } else {
                 throw new IllegalArgumentException("Angle must be divisible by 90!");
@@ -269,13 +209,14 @@ public class Schematic {
      *          with the error.
      */
     public CuboidSelection getCuboidSelection() throws IOException {
-        if (file != null) {
+        /*if (file != null) {
             FileReader reader = new FileReader(file);
             Dimensions dimensions = toStandardDimensions(gson.fromJson(reader, WritableSchematic.class).getDimensions());
             return new CuboidSelection(dimensions.getMaximumPoint(), dimensions.getMinimumPoint());
         } else {
             throw new IllegalArgumentException("File can't be null!");
-        }
+        }*/
+        return null;
     }
 
     /**
@@ -291,12 +232,13 @@ public class Schematic {
      *          with the error.
      */
     public Dimensions getDimensions() throws IOException {
-        if (file != null) {
+        /*if (file != null) {
             FileReader reader = new FileReader(file);
             return toStandardDimensions(gson.fromJson(reader, WritableSchematic.class).getDimensions());
         } else {
             throw new IllegalArgumentException("File can't be null!");
-        }
+        }*/
+        return null;
     }
 
     /**
@@ -306,33 +248,6 @@ public class Schematic {
      */
     public String getFile() {
         return file;
-    }
-
-    /**
-     * Turns WritableDimensions to normal Dimensions
-     *
-     * @param   dimensions
-     *          The {@link WritableDimensions}
-     *
-     * @return  a standard {@link Dimensions} instance
-     */
-    private Dimensions toStandardDimensions(WritableDimensions dimensions) {
-        return new Dimensions(new CuboidSelection(Util.fromDeserializableString(dimensions.getMaximum()),
-                Util.fromDeserializableString(dimensions.getMinumum())));
-    }
-
-    /**
-     * Turns Dimensions into WritableDimensions usable for saving
-     *
-     * @param   dimensions
-     *          The {@link Dimensions}
-     *
-     * @return  a new {@link WritableDimensions} instance
-     */
-    private WritableDimensions fromStandardDimensions(Dimensions dimensions) {
-        return new WritableDimensions(Util.toDeserializableString(dimensions.getMaximumPoint()),
-                Util.toDeserializableString(dimensions.getMinimumPoint()), dimensions.getWidth(),
-                dimensions.getHeight(), dimensions.getLength());
     }
 
     /**
@@ -346,11 +261,13 @@ public class Schematic {
          * This means that only solid blocks will be placed in the area where the schematic will be placed,
          * so if there's an air block in the schematic and there's a normal block in the current world the
          * block in the current world will not be set to air.
-         * <p>
-         * This option also saves a lot of storage space, since in a lot of schematics, most blocks are
-         * air.
          */
         SKIP_AIR,
+
+        /**
+         * If the schematic should save the biome the blocks are in
+         */
+        SAVE_BIOMES
 
     }
 

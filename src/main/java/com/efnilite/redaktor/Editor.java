@@ -314,7 +314,7 @@ public class Editor<T extends CommandSender> {
 
                 this.undos.add(0, new HistorySelection(selection));
 
-                queue.build(selection.getBlockMap());
+                //queue.build(selection.getBlockMap());
 
                 this.history.remove(0);
             } else {
@@ -336,7 +336,7 @@ public class Editor<T extends CommandSender> {
                 HistorySelection selection = this.undos.get(0);
 
                 CopyQueue queue = new CopyQueue();
-                queue.build(selection.getBlockMap());
+                //queue.build(selection.getBlockMap());
 
                 this.undos.remove(0);
             } else {

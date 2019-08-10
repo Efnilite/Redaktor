@@ -1,10 +1,11 @@
 package com.efnilite.redaktor.command;
 
+import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.command.util.Command;
 import com.efnilite.redaktor.command.util.Commandable;
+import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.player.BukkitPlayer;
-import com.efnilite.redaktor.schematic.Schematic;
-import com.efnilite.redaktor.schematic.io.SchematicReader;
+import com.efnilite.redaktor.queue.types.BlockQueue;
 import com.efnilite.redaktor.schematic.io.SchematicWriter;
 import com.efnilite.redaktor.selection.CuboidSelection;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
@@ -13,28 +14,6 @@ import com.efnilite.redaktor.wrapper.RedaktorPlayer;
 import java.io.IOException;
 
 public class CuboidCommands implements Commandable {
-
-    @Command
-    public void test(RedaktorPlayer<?> sender, String[] args) {
-        SchematicWriter writer = new SchematicWriter("plugins/lol");
-        new AsyncBlockGetter(sender.getSelection(), t -> {
-            try {
-                writer.write(t, Schematic.SaveOptions.SKIP_AIR);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-    }
-
-    @Command
-    public void test1(RedaktorPlayer<?> sender, String[] args) {
-        SchematicReader reader = new SchematicReader("plugins/lol");
-        try {
-            reader.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Command(permission = "redaktor.chunk")
     public void chunk(RedaktorPlayer<?> sender, String[] args) {

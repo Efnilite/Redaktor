@@ -91,11 +91,7 @@ public class RedaktorAPI {
      */
     public static void saveCuboid(CuboidSelection cuboid, String file) {
         newBlockGetter(cuboid, l -> {
-            try {
-                new Schematic(cuboid).save(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            new Schematic(cuboid).save(file);
         });
     }
 

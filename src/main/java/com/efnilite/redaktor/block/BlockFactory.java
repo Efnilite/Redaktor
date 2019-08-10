@@ -1,7 +1,12 @@
 package com.efnilite.redaktor.block;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.data.BlockData;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Class for setting and getting blocks using net.minecraft.server
@@ -10,7 +15,20 @@ import org.bukkit.block.data.BlockData;
  * automatically update blocks that have been placed, resulting
  * in a lot of lag for block updates.
  */
-public interface BlockFactory {
+public abstract class BlockFactory {
+
+    protected int change;
+    protected List<Location> locations;
+    protected HashMap<Chunk, List<Location>> chunks;
+
+    /**
+     * Creates a new instance
+     */
+    public BlockFactory() {
+        /*this.change = 0;
+        this.chunks = new HashMap<>();
+        this.locations = new ArrayList<>();*/
+    }
 
     /**
      * Set a block without updating the surroundings or the block.
@@ -21,6 +39,8 @@ public interface BlockFactory {
      * @param   data
      *          The BlockData it's going to be set to.
      */
-    void setBlock(Location location, BlockData data);
+    public abstract void setBlock(Location location, BlockData data);
+
+    public abstract void flush();
 
 }

@@ -2,6 +2,7 @@ package com.efnilite.redaktor.schematic.io;
 
 import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.schematic.Schematic;
+import com.efnilite.redaktor.selection.Dimensions;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
@@ -41,17 +42,20 @@ public class SchematicWriter {
      * @throws  IOException
      *          If something goes wrong
      */
-    public void write(List<Block> blocks, Schematic.SaveOptions... options) throws IOException {
+    public void write(List<Block> blocks, Dimensions dimensions, Schematic.SaveOptions... options) throws IOException {
         StringJoiner joiner = new StringJoiner(",");
         List<Schematic.SaveOptions> saveOptions = Arrays.asList(options);
         FileWriter writer = new FileWriter(file);
         HashSet<String> filter = new HashSet<>();
         HashMap<String, Integer> palette = new HashMap<>();
+        String separator = System.lineSeparator();
 
-        writer.write(Redaktor.SCHEMATIC_VERSION + System.lineSeparator());
+        writer.write(Redaktor.SCHEMATIC_VERSION + separator);
+        writer.write(dimensions.toString() + separator);
 
+        writer.write("*");
         if (saveOptions.contains(Schematic.SaveOptions.SKIP_AIR)) {
-            writer.write("#" + System.lineSeparator());
+            writer.write("#" + separator);
         }
 
         blocks.forEach(block -> filter.add(block.getBlockData().getAsString()));
@@ -59,11 +63,11 @@ public class SchematicWriter {
         int index = 0;
         for (String data : filter) {
             palette.put(data, index);
-            writer.write(index + " > " + data + System.lineSeparator());
+            writer.write(index + " > " + data + separator);
             index++;
         }
 
-        writer.write("-" + System.lineSeparator());
+        writer.write("-" + separator);
 
         int counter = 1;
         BlockData previous = null;
