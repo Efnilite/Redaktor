@@ -3,10 +3,10 @@ package com.efnilite.redaktor.util;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -90,6 +90,38 @@ public class Util {
     public static Location fromDeserializableString(String string) {
         String[] elements = string.replaceAll(" ", "").split(",");
         return new Location(Bukkit.getWorld(elements[3]), Integer.parseInt(elements[0]), Integer.parseInt(elements[1]), Integer.parseInt(elements[2]));
+    }
+
+    /**
+     * Gets the max of the locations
+     *
+     * @param   pos1
+     *          The first location
+     *
+     * @param   pos2
+     *          The second location
+     *
+     * @return  the max values of the locations
+     */
+    public static Location max(Location pos1, Location pos2) {
+        World world = pos1.getWorld() == null ? pos2.getWorld() : pos1.getWorld();
+        return new Location(world, Math.max(pos1.getBlockX(), pos2.getBlockX()), Math.max(pos1.getBlockY(), pos2.getBlockY()), Math.max(pos1.getBlockZ(), pos2.getBlockZ()));
+    }
+
+    /**
+     * Gets the min of the locations
+     *
+     * @param   pos1
+     *          The first location
+     *
+     * @param   pos2
+     *          The second location
+     *
+     * @return  the min values of the locations
+     */
+    public static Location min(Location pos1, Location pos2) {
+        World world = pos1.getWorld() == null ? pos2.getWorld() : pos1.getWorld();
+        return new Location(world, Math.min(pos1.getBlockX(), pos2.getBlockX()), Math.min(pos1.getBlockY(), pos2.getBlockY()), Math.min(pos1.getBlockZ(), pos2.getBlockZ()));
     }
 
     /**

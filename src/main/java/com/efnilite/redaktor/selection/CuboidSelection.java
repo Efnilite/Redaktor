@@ -69,6 +69,21 @@ public class CuboidSelection implements Selection {
     }
 
     /**
+     * Shifts the cuboid
+     * <p>
+     * Sets the minimum location and auto adjusts the max location
+     * to the same as this selection instance
+     *
+     * @param   min
+     *          The min location
+     *
+     * @return  the new cuboid instance
+     */
+    public CuboidSelection move(Location min) {
+        return new CuboidSelection(min, this.getMaximumPoint().add(min));
+    }
+
+    /**
      * Gets the walls
      *
      * @return the collection of cuboids containing the walls.

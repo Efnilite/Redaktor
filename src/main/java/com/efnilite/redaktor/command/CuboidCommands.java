@@ -1,17 +1,10 @@
 package com.efnilite.redaktor.command;
 
-import com.efnilite.redaktor.Redaktor;
 import com.efnilite.redaktor.command.util.Command;
 import com.efnilite.redaktor.command.util.Commandable;
-import com.efnilite.redaktor.pattern.Pattern;
 import com.efnilite.redaktor.player.BukkitPlayer;
-import com.efnilite.redaktor.queue.types.BlockQueue;
-import com.efnilite.redaktor.schematic.io.SchematicWriter;
 import com.efnilite.redaktor.selection.CuboidSelection;
-import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.efnilite.redaktor.wrapper.RedaktorPlayer;
-
-import java.io.IOException;
 
 public class CuboidCommands implements Commandable {
 

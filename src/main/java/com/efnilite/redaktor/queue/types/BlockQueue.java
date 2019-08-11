@@ -7,7 +7,6 @@ import com.efnilite.redaktor.queue.EditQueue;
 import com.efnilite.redaktor.selection.Selection;
 import com.efnilite.redaktor.util.Tasks;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
-import com.efnilite.redaktor.util.thread.QueueThread;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.scheduler.BukkitRunnable;

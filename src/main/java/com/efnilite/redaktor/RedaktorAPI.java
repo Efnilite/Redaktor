@@ -20,7 +20,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
 

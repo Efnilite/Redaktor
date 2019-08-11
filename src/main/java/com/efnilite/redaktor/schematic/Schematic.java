@@ -2,8 +2,6 @@ package com.efnilite.redaktor.schematic;
 
 import com.efnilite.redaktor.event.SchematicPasteEvent;
 import com.efnilite.redaktor.event.SchematicSaveEvent;
-import com.efnilite.redaktor.queue.BlockMap;
-import com.efnilite.redaktor.queue.types.CopyQueue;
 import com.efnilite.redaktor.schematic.io.SchematicReader;
 import com.efnilite.redaktor.schematic.io.SchematicWriter;
 import com.efnilite.redaktor.selection.CuboidSelection;
@@ -12,15 +10,11 @@ import com.efnilite.redaktor.selection.Selection;
 import com.efnilite.redaktor.util.getter.AsyncBlockGetter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.annotations.Expose;
-import com.google.gson.stream.JsonReader;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.EntityType;
 
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -131,8 +125,8 @@ public class Schematic {
             SchematicReader reader = new SchematicReader(file);
             SchematicReader.ReaderReturn readerReturn = reader.read();
             Dimensions dimensions = readerReturn.getDimensions();
-            CopyQueue blockQueue = new CopyQueue();
-            //blockQueue.build(readerReturn);
+            SchematicQueue queue = new SchematicQueue(at);
+            queue.build(readerReturn);
             return new CuboidSelection(dimensions.getMaximumPoint(), dimensions.getMinimumPoint());
         } else {
             throw new IllegalArgumentException("File can't be null to save!");
@@ -165,7 +159,7 @@ public class Schematic {
                 SchematicReader.ReaderReturn readerReturn = reader.read();
                 Dimensions dimensions = readerReturn.getDimensions();
                 List<BlockData> update = new ArrayList<>();
-                CopyQueue blockQueue = new CopyQueue();
+                SchematicQueue queue = new SchematicQueue(at);
 
                 for (BlockData block : readerReturn.getData()) {
                     String data = block.getAsString();
@@ -186,7 +180,7 @@ public class Schematic {
                 }
 
                 readerReturn.setData(update);
-                //blockQueue.build(readerReturn);
+                queue.build(readerReturn);
                 return new CuboidSelection(dimensions.getMaximumPoint(), dimensions.getMinimumPoint());
             } else {
                 throw new IllegalArgumentException("Angle must be divisible by 90!");
@@ -197,48 +191,32 @@ public class Schematic {
     }
 
     /**
-     * Returns the CuboidSelection of a Schematic
+     * Returns the selection of a schematic
      *
-     * @see     CuboidSelection
-     *
-     * @return  The CuboidSelection of a Schematic
+     * @return  The selection of a schematic
      *
      * @throws  IOException
-     *          For any exceptions during the reading,
-     *          this is targeted to the user so they can choose what to do
-     *          with the error.
+     *          When something goes wrong with the reading
      */
     public CuboidSelection getCuboidSelection() throws IOException {
-        /*if (file != null) {
-            FileReader reader = new FileReader(file);
-            Dimensions dimensions = toStandardDimensions(gson.fromJson(reader, WritableSchematic.class).getDimensions());
-            return new CuboidSelection(dimensions.getMaximumPoint(), dimensions.getMinimumPoint());
-        } else {
-            throw new IllegalArgumentException("File can't be null!");
-        }*/
-        return null;
+        return getDimensions().getSelection();
     }
 
     /**
-     * Returns the Dimensions of a Schematic
+     * Returns the dimensions of a schematic
      *
-     * @see     Dimensions
-     *
-     * @return  The Dimensions of a Schematic
+     * @return  The dimensions of a schematic
      *
      * @throws  IOException
-     *          For any exceptions during the reading,
-     *          this is targeted to the user so they can choose what to do
-     *          with the error.
+     *          When something goes wrong with the reading
      */
     public Dimensions getDimensions() throws IOException {
-        /*if (file != null) {
-            FileReader reader = new FileReader(file);
-            return toStandardDimensions(gson.fromJson(reader, WritableSchematic.class).getDimensions());
+        if (file != null) {
+            SchematicReader reader = new SchematicReader(file);
+            return reader.getDimensions();
         } else {
             throw new IllegalArgumentException("File can't be null!");
-        }*/
-        return null;
+        }
     }
 
     /**
@@ -267,7 +245,7 @@ public class Schematic {
         /**
          * If the schematic should save the biome the blocks are in
          */
-        SAVE_BIOMES
+        //SAVE_BIOMES
 
     }
 
@@ -364,139 +342,6 @@ public class Schematic {
                 default:
                     return NORTH;
             }
-        }
-    }
-
-    private class WritableDimensions {
-
-        @Expose
-        private int width;
-        @Expose
-        private int height;
-        @Expose
-        private int length;
-        @Expose
-        private String maximum;
-        @Expose
-        private String minumum;
-
-        public WritableDimensions(String maximum, String minumum, int width, int height, int length) {
-            this.width = width;
-            this.height = height;
-            this.length = length;
-            this.maximum = maximum;
-            this.minumum = minumum;
-        }
-
-        public int getWidth() {
-            return width;
-        }
-
-        public int getHeight() {
-            return height;
-        }
-
-        public int getLength() {
-            return length;
-        }
-
-        public String getMaximum() {
-            return maximum;
-        }
-
-        public String getMinumum() {
-            return minumum;
-        }
-    }
-
-    private class WritableBlock {
-
-        @Expose
-        private String data;
-        @Expose
-        private int x;
-        @Expose
-        private int y;
-        @Expose
-        private int z;
-
-        public WritableBlock(String data, int x, int y, int z) {
-            this.data = data.replaceAll("minecraft:", "");
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        public String getData() {
-            return data;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getY() {
-            return y;
-        }
-
-        public int getZ() {
-            return z;
-        }
-    }
-
-    private class WritableEntity {
-
-        @Expose
-        private EntityType type;
-        @Expose
-        private double x;
-        @Expose
-        private double y;
-        @Expose
-        private double z;
-
-        public WritableEntity(EntityType type, double x, double y, double z) {
-            this.type = type;
-            this.x = x;
-            this.y = y;
-            this.z = z;
-        }
-
-        public EntityType getType() {
-            return type;
-        }
-
-        public double getX() {
-            return x;
-        }
-
-        public double getY() {
-            return y;
-        }
-
-        public double getZ() {
-            return z;
-        }
-    }
-
-    private class WritableSchematic {
-
-        @Expose
-        private WritableDimensions dimensions;
-        @Expose
-        private List<WritableBlock> blocks;
-
-        public WritableSchematic(List<WritableBlock> blocks, WritableDimensions dimensions) {
-            this.dimensions = dimensions;
-            this.blocks = blocks;
-        }
-
-        public WritableDimensions getDimensions() {
-            return dimensions;
-        }
-
-        public List<WritableBlock> getBlocks() {
-            return blocks;
         }
     }
 }

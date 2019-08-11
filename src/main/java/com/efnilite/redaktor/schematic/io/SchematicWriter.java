@@ -43,7 +43,6 @@ public class SchematicWriter {
      *          If something goes wrong
      */
     public void write(List<Block> blocks, Dimensions dimensions, Schematic.SaveOptions... options) throws IOException {
-        StringJoiner joiner = new StringJoiner(",");
         List<Schematic.SaveOptions> saveOptions = Arrays.asList(options);
         FileWriter writer = new FileWriter(file);
         HashSet<String> filter = new HashSet<>();
@@ -57,6 +56,7 @@ public class SchematicWriter {
         if (saveOptions.contains(Schematic.SaveOptions.SKIP_AIR)) {
             writer.write("#" + separator);
         }
+        writer.write(separator);
 
         blocks.forEach(block -> filter.add(block.getBlockData().getAsString()));
 
@@ -67,7 +67,7 @@ public class SchematicWriter {
             index++;
         }
 
-        writer.write("-" + separator);
+        writer.write("~" + separator);
 
         int counter = 1;
         BlockData previous = null;
@@ -76,12 +76,12 @@ public class SchematicWriter {
             mutable.remove(block);
             BlockData data = block.getBlockData();
 
-            String id = palette.get(block.getBlockData().getAsString()).toString();
-            String blockData = data.getAsString().replaceAll("minecraft:", "");
-            String parsed = blockData.replaceAll("\\w+", id);
+            String id = Integer.toString(palette.get(block.getBlockData().getAsString()));
+            String blockData = data.getAsString();
+            String parsed = blockData.replaceAll(".+", id);
 
             if (blockData.contains("[")) {
-                parsed = blockData.replaceAll("\\w+\\[.*?]", id);
+                parsed = blockData.replaceAll(".+\\[.+]", id);
             }
 
             if (previous != null) {
@@ -89,13 +89,13 @@ public class SchematicWriter {
                     counter++;
                     if (mutable.size() == 0) {
                         parsed += "x" + counter;
-                        joiner.add(parsed);
+                        writer.write(parsed);
                     }
                 } else {
                     if (counter != 1) {
-                        parsed += "x" + counter;
+                        parsed += "x" + counter + ",";
                     }
-                    joiner.add(parsed);
+                    writer.write(parsed);
                     counter = 1;
                 }
             }
@@ -103,69 +103,8 @@ public class SchematicWriter {
             previous = data;
         }
 
-        writer.write(joiner.toString());
         writer.close();
     }
-
-    // This is still work in progress
-    /*public void write(List<Block> blocks, Schematic.SaveOptions... options) throws IOException {
-        HashMap<String, Integer> palette = new HashMap<>();
-        HashSet<String> filter = new HashSet<>();
-        List<Schematic.SaveOptions> saveOptions = Arrays.asList(options);
-        FileOutputStream output = new FileOutputStream(file);
-        DataOutputStream stream = new DataOutputStream(new GZIPOutputStream(output));
-
-        stream.writeInt(Redaktor.SCHEMATIC_VERSION);
-
-        if (saveOptions.contains(Schematic.SaveOptions.SKIP_AIR)) {
-            stream.writeUTF("#");
-        }
-
-        blocks.forEach(block -> filter.add(block.getBlockData().getAsString()));
-
-        List<Integer> ints = new ArrayList<>();
-
-        for (String data : filter) {
-            palette.computeIfAbsent(data, k -> palette.size());
-            ints.add(palette.get(data));
-        }
-
-        stream.writeInt(palette.size());
-        IntWriter writer = this.getWriteFunction(stream, palette.size());
-
-        for (String data : palette.keySet()) {
-            stream.writeUTF(data);
-        }
-        for (int i : ints) {
-            writer.write(i);
-        }
-
-        stream.flush();
-        stream.close();
-    }
-
-    private interface IntWriter {
-        void write(int i) throws IOException;
-    }
-
-    private IntWriter getWriteFunction(DataOutputStream stream, int numElements) {
-        int bits = log2(numElements);
-        switch (bits / 8 + 1) {
-            case 1:
-                return stream::writeByte;
-            case 2:
-                return stream::writeShort;
-            default:
-                throw new IllegalArgumentException("Too much blocks");
-        }
-    }
-
-    private int log2(int bits) {
-        if (bits == 0) {
-            return 0;
-        }
-        return 31 - Integer.numberOfLeadingZeros(bits);
-    }*/
 
     /**
      * Gets the file

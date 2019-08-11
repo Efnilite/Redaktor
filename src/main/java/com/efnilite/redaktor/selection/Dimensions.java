@@ -36,14 +36,20 @@ public class Dimensions {
     private Location minumum;
 
     /**
+     * The selection
+     */
+    private CuboidSelection selection;
+
+    /**
      * Creates a new instance
      *
-     * @param   cuboid
+     * @param   selection
      *          The cuboid
      */
-    public Dimensions(CuboidSelection cuboid) {
-        this.maximum = cuboid.getMaximumPoint();
-        this.minumum = cuboid.getMinimumPoint();
+    public Dimensions(CuboidSelection selection) {
+        this.selection = selection;
+        this.maximum = selection.getMaximumPoint();
+        this.minumum = selection.getMinimumPoint();
 
         Location max = this.maximum;
         Location min = this.minumum;
@@ -100,14 +106,24 @@ public class Dimensions {
 
     /**
      * Gets the minimal point
+     *
      * @return the minimal point
      */
     public Location getMinimumPoint() {
         return minumum;
     }
 
+    /**
+     * Gets the selection
+     *
+     * @return the selection
+     */
+    public CuboidSelection getSelection() {
+        return selection;
+    }
+
     @Override
     public String toString() {
-        return Util.toDeserializableString(maximum) + "," + Util.toDeserializableString(minumum);
+        return Util.toDeserializableString(maximum) + "/" + Util.toDeserializableString(minumum);
     }
 }

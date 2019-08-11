@@ -5,7 +5,6 @@ import com.efnilite.redaktor.block.BlockFactory;
 import com.efnilite.redaktor.queue.BlockMap;
 import com.efnilite.redaktor.queue.EditQueue;
 import com.efnilite.redaktor.util.Tasks;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.LinkedList;

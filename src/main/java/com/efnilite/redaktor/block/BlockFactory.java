@@ -4,7 +4,6 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.block.data.BlockData;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

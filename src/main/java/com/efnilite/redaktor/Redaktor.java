@@ -1,7 +1,6 @@
 package com.efnilite.redaktor;
 
 import com.efnilite.redaktor.block.BlockFactory;
-import com.efnilite.redaktor.block.server.v1_13_R2.BlockFactory_v1_13_R2;
 import com.efnilite.redaktor.block.server.v1_14_R1.BlockFactory_v1_14_R1;
 import com.efnilite.redaktor.command.*;
 import com.efnilite.redaktor.command.util.CommandFactory;
@@ -38,7 +37,7 @@ public class Redaktor extends JavaPlugin {
     private static boolean isLatest;
 
     public static String PREFIX = "&8&l(&c&lRedaktor&8&l)";
-    public static String SCHEMATIC_VERSION = "1.0";
+    public static String SCHEMATIC_VERSION = "1";
 
     @Override
     public void onEnable() {
@@ -49,11 +48,8 @@ public class Redaktor extends JavaPlugin {
         if (version.equals("v1_14_R1")) {
             blockFactory = new BlockFactory_v1_14_R1();
             isLatest = true;
-        } else if (version.equals("v1_13_R2")) {
-            blockFactory = new BlockFactory_v1_13_R2();
-            isLatest = false;
         } else {
-            this.getLogger().severe("Redaktor only works on 1.14.x and 1.13.x (not 1.13)");
+            this.getLogger().severe("Redaktor only works on 1.14.x");
             this.getServer().getPluginManager().disablePlugin(this);
             return;
         }

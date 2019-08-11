@@ -54,7 +54,6 @@ public class SchematicReader {
 
         String version = lines.get(0);
         String dimension = lines.get(1);
-        String properties = lines.get(2);
         String blocks = lines.get(lines.size() - 1);
 
         if (!version.equals(Redaktor.SCHEMATIC_VERSION)) {
@@ -63,7 +62,6 @@ public class SchematicReader {
             Redaktor.getInstance().getLogger().warning("This might take a while");
 
             // Currently impossible due to there only being one version
-            // TODO - Updater
         }
 
         boolean readPalette = false;
@@ -71,7 +69,7 @@ public class SchematicReader {
             if (string.contains("*")) {
                 readPalette = true;
                 continue;
-            } else if (string.contains("-")) {
+            } else if (string.contains("~")) {
                 break;
             }
             if (readPalette) {
@@ -80,29 +78,65 @@ public class SchematicReader {
             }
         }
 
-        for (String string : blocks.split(",")) {
-            String[] elements = string.split("x");
-            if (string.contains("x")) {
+        if (blocks.contains(",")) {
+            for (String string : blocks.split(",")) {
+                String[] elements = string.split("x");
+                if (string.contains("x")) {
+                    int loop = Integer.parseInt(elements[1]);
+                    for (int i = 0; i < loop; i++) {
+                        String element = elements[0];
+                        data.add(palette.get(Integer.parseInt(element)));
+                    }
+                } else {
+                    String element = elements[0];
+                    data.add(palette.get(Integer.parseInt(element)));
+                }
+            }
+        } else {
+            if (blocks.contains("x")) {
+                String[] elements = blocks.split("x");
                 int loop = Integer.parseInt(elements[1]);
                 for (int i = 0; i < loop; i++) {
                     String element = elements[0];
                     data.add(palette.get(Integer.parseInt(element)));
                 }
             } else {
-                String element = elements[0];
-                data.add(palette.get(Integer.parseInt(element)));
+                data.add(palette.get(Integer.parseInt(blocks)));
             }
         }
 
         Location[] locations = new Location[2];
         int i = 0;
-        for (String string : dimension.split(",")) {
+        for (String string : dimension.split("/")) {
             locations[i] = Util.fromDeserializableString(string);
             i++;
         }
 
         World world = locations[0].getWorld() == null ? locations[1].getWorld() : locations[0].getWorld();
         return new ReaderReturn(new Dimensions(new CuboidSelection(locations[0], locations[1], world)), data);
+    }
+
+    /**
+     * Reads the schematic file and gets the dimensions
+     *
+     * @return the dimensions of the schematic
+     *
+     * @throws IOException
+     *         If something goes wrong with reading the file
+     */
+    public Dimensions getDimensions() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        List<String> lines = reader.lines().collect(Collectors.toList());
+
+        Location[] locations = new Location[2];
+        int i = 0;
+        for (String string : lines.get(1).split("/")) {
+            locations[i] = Util.fromDeserializableString(string);
+            i++;
+        }
+
+        World world = locations[0].getWorld() == null ? locations[1].getWorld() : locations[0].getWorld();
+        return new Dimensions(new CuboidSelection(locations[0], locations[1], world));
     }
 
     /**
