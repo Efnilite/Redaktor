@@ -15,5 +15,9 @@ language: en
 
 # Change count
 # Here you can change how many blocks per 1/20th of a second can be changed.
-# Default: 2000.
-change: 2000
+# Default: 100000
+change: 100000
+
+# Show bounding
+# Shows a square box when selecting a square
+bounding: true

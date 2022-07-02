@@ -2,18 +2,41 @@ plugins {
     id 'java'
 }
 
-group 'com.efnilite'
-version '1.1'
+group 'dev.efnilite'
+version '1.2'
 
 sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
+
+    maven {
+        url 'https://papermc.io/repo/repository/maven-public/'
+    }
+    maven {
+        url 'https://hub.spigotmc.org/nexus/content/repositories/snapshots/'
+    }
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots'
+    }
+    maven {
+        url 'https://repo.dmulloy2.net/nexus/repository/public/'
+    }
+    maven {
+        url 'https://repo.codemc.org/repository/maven-public'
+    }
+    maven {
+        url 'https://repo.destroystokyo.com/repository/maven-public/'
+    }
+    maven {
+        url 'https://jitpack.io'
+    }
 }
 
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
-    compile files("libs/spigot-1.13.jar")
-    compile files("libs/spigot-1.14.jar")
+    implementation 'org.jetbrains:annotations:21.0.0'
+    implementation 'org.spigotmc:spigot-api:1.19-R0.1-SNAPSHOT'
+    implementation 'net.md-5:bungeecord-chat:1.19-SNAPSHOT'
 }
